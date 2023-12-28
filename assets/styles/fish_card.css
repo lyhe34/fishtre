@@ -1,0 +1,27 @@
+.fish-card
+{
+    border-style: none;
+    padding: 1rem 2rem;
+    cursor: pointer;
+}
+
+.fish-card img
+{
+    border-radius: 20px;
+    transition: transform 0.025s;
+}
+
+.fish-card h5
+{
+    font-size: 1.5em;
+}
+
+.fish-card img:hover
+{
+    transform: scale(1.05);
+}
+
+.fish-card-text
+{
+    padding: 0.75rem 0;
+}

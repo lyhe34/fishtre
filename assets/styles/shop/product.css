@@ -1,0 +1,70 @@
+.product
+{
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.product img
+{
+    border-radius: 20px;
+}
+
+.product-infos
+{
+    margin-top: 0.5rem;
+}
+
+.product-infos h5
+{
+    font-size: 1.75em;
+}
+
+.product-infos p
+{
+    font-size: 1.1em;
+}
+
+.product .price
+{
+    margin-top: 0.75rem;
+    font-size: 1.5em;
+}
+
+.product form
+{
+    margin-top: 0.75rem;
+}
+
+.product form button,
+.product form select
+{
+    border-radius: 0;
+    height: 40px;
+}
+
+.product form select
+{
+    background-color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--blue);
+}
+
+.product form button
+{
+    margin-top: 0.255rem;
+}
+
+@media (min-width: 764px)
+{
+    .product img
+    {
+        width: 70%;
+        margin-right: 3rem;
+    }
+
+    .product > div
+    {
+        width: 30%;
+    }
+}

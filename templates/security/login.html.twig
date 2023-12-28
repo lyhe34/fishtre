@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+    {% include 'header.html.twig' %}
+    <main>
+        {% if error %}
+            <div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        <form class="container form" method="post">
+            <h1 class="form-head text-center color-blue">Connexion</h1>
+            <div class="form-row color-blue">
+                <label class="form-label" for="inputEmail">Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control form-input" autocomplete="email" required autofocus>
+            </div>
+            <div class="form-row color-blue">
+                <label class="form-label" for="inputPassword">Mot de passe</label>
+                <input type="password" name="password" id="inputPassword" class="form-control form-input" autocomplete="current-password" required>
+            </div>
+            <div class="form-row d-flex justify-content-center">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <button class="form-button bg-blue text-white" type="submit">Se connecter</button>
+            </div>
+        </form>    
+    </main>
+    {% include 'footer.html.twig' %}
+{% endblock %}

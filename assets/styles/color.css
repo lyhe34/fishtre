@@ -1,0 +1,52 @@
+:root
+{
+    --blue: #265073;
+    --turquoise-dark: #2D9596;
+    --turquoise-light: #9AD0C2;
+    --cream: #ECF4D6;
+}
+
+.bg-blue
+{
+    background-color: #265073;
+}
+
+.bg-turquoise-dark
+{
+    background-color: #2D9596;
+}
+
+.bg-turquoise-light
+{
+    background-color: #9AD0C2;
+}
+
+.bg-cream
+{
+    background-color: #ECF4D6;
+}
+
+.color-blue
+{
+    color: #265073;
+}
+
+.color-turquoise-dark
+{
+    color: #2D9596;
+}
+
+.color-turquoise-light
+{
+    color: #9AD0C2;
+}
+
+.color-cream
+{
+    color: #ECF4D6;
+}
+
+.color-red
+{
+    color: #c24040;
+}

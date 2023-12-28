@@ -1,0 +1,42 @@
+.filters
+{
+    margin-top: 1.5rem;
+}
+
+.filters h5
+{
+    font-size: 1.5em;
+}
+
+.filters-select
+{
+    background-color: white;
+    margin-top: 1rem;
+    min-width: 200px;
+    height: 30px;
+    border-radius: 0px;
+    border-width: 1px;
+    border-color: var(--blue);
+    color: var(--blue);
+}
+
+.filters-select option
+{
+    border: 2px solid var(--blue);
+}
+
+.filters-radios
+{
+    min-width: 420px;
+    margin-top: 1rem;
+}
+
+.filters-radios div
+{
+    width: 33%;
+}
+
+.products
+{
+    margin-top: 2rem;
+}

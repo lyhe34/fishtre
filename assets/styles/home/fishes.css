@@ -1,0 +1,18 @@
+.fishes
+{
+    padding: 2.5rem 0;
+}
+
+.fishes h3
+{
+    font-size: 2em;
+    margin-bottom: 1.5rem;
+}
+
+.fishes button
+{
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
+    height: 70px;
+    width: 200px;
+}

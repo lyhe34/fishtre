@@ -1,0 +1,21 @@
+<div {{ attributes }} class="product container-xl d-flex flex-column flex-md-row justify-content-center color-blue">
+    <img src={{ asset('images/daurade.webp')}} class="card-img-top" alt="...">
+    <div class="d-flex flex-column justify-content-start">
+        <div class="product-infos d-flex justify-content-between align-items-center color-blue">
+            <h5 class="m-0">Daurade</h5>
+            <p class="price-by-weight m-0 fst-italic">12€/kg</p>
+        </div>
+        <p class="price color-red">{{ this.quantity * 12 }} €</p>
+        <form class="d-flex flex-column">
+            <label>Sélectionnez une quantité :</label>
+            <select data-model="quantity" data-action="live#$render" id="quantity" class="color-blue" name="quantity">
+                {% set quantity = 200 %}
+                {% for i in 1..10 %}
+                    <option value={{ quantity / 1000 }}>{{ quantity }} grammes</option>
+                    {% set quantity = quantity + 200 %}
+                {% endfor %}
+                </select>
+            <button class="bg-blue text-white whiten-hover">Ajouter au panier</button>
+        </form>
+    </div>
+</div>

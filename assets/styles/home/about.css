@@ -1,0 +1,62 @@
+.home-about
+{
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+.home-about img
+{
+    border-radius: 30px;
+    box-shadow: 0 0 30px 2px rgba(0, 0, 0, 0.75);
+}
+
+.home-about img
+{
+    width: 100%;
+    margin-top: 2rem;
+    max-width: 600px;
+}
+
+.home-about h3
+{
+    font-size: 2.75em;
+    color: var(--cream);
+}
+
+.home-about p
+{
+    font-size: 1.5em;
+    color: white;
+}
+
+.home-about-bottom
+{
+    margin-top: 5rem;
+}
+
+.home-about button
+{
+    font-size: 1.2em;
+    margin-top: 5rem;
+    width: 200px;
+    height: 70px;
+}
+
+@media (min-width: 992px) 
+{
+    .home-about
+    {
+        padding-top: 5rem;
+    }
+
+    .home-about img
+    {
+        margin-top: 0;
+    }
+
+    .home-about img,
+    .home-about-text
+    {
+        width: 48%;
+    }    
+}

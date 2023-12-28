@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Boutique{% endblock %}
+
+{% block body %}
+    {% include 'header.html.twig' %}
+    <main>
+        <div class="container-xl">
+            <div class="filters d-flex flex-column justify-content-center align-items-center color-blue">
+                <h5>Trier par :</h5>
+                <select class="filters-select">
+                    <option>Popularité</option>
+                    <option>Prix croissant</option>
+                    <option>Prix décroissant</option>
+                </select>
+            </div>
+            <div class="products">
+                <div class="row justify-content-evenly align-items-center">
+                    {% include "fish_card.html.twig" %}
+                    {% include "fish_card.html.twig" %}
+                    {% include "fish_card.html.twig" %}
+                    {% include "fish_card.html.twig" %}
+                    {% include "fish_card.html.twig" %}
+                    {% include "fish_card.html.twig" %}
+                    {% include "fish_card.html.twig" %}
+                    {% include "fish_card.html.twig" %}
+                    {% include "fish_card.html.twig" %}
+                    {% include "fish_card.html.twig" %}
+                </div>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+    {% include 'footer.html.twig' %}
+{% endblock %}

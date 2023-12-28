@@ -1,0 +1,49 @@
+.logo-temp
+{
+    width: 100px;
+    height: 30px;
+    background-color: var(--blue);
+    border-radius: 10px;
+}
+
+.header-item
+{
+    color: #265073;
+}
+
+.header-item:hover
+{
+    color: #9AD0C2;
+}
+
+.header-button-img
+{
+    width: 30px;
+    /* padding-bottom: 0;
+    padding-top: 0; */
+}
+
+.header-button
+{
+    background-color: transparent;
+    border-style: none;
+}
+
+.header-dropdown-menu
+{
+    border-radius: 0;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--blue);
+}
+
+.header-dropdown-item:active
+{
+    background-color: var(--cream);
+    color: var(--blue);
+}
+
+.cart-btn-close
+{
+    color: var(--blue);
+}
