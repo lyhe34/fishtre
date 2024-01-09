@@ -1,0 +1,8 @@
+.header-cart-list
+{
+    max-height: 70vh;
+    overflow-y: scroll;
+    padding-right: 1rem;
+    scrollbar-color: var(--blue);
+    scrollbar-width: thin;
+}

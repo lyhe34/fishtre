@@ -1,0 +1,9 @@
+<li {{ attributes }} class="color-blue">
+    {% if this.cartProducts|length == 0 %}
+        <p>Votre panier est vide</p>
+    {% else %}
+        {% for cartProduct in this.cartProducts %}
+            {{ component('CartProductCard', { cartProduct: cartProduct }) }}
+        {% endfor %}
+    {% endif %}
+</li>

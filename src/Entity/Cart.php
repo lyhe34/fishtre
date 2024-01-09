@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CartRepository;
+use App\Service\Utilities;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,15 +16,15 @@ class Cart
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'cart', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'cart', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
-    #[ORM\ManyToMany(targetEntity: OrderProduct::class)]
-    private Collection $orderProducts;
+    #[ORM\OneToMany(mappedBy: 'cart', targetEntity: CartProduct::class)]
+    private Collection $cartProducts;
 
     public function __construct()
     {
-        $this->orderProducts = new ArrayCollection();
+        $this->cartProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -36,34 +37,50 @@ class Cart
         return $this->user;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(User $user): static
     {
+        // set the owning side of the relation if necessary
+        if ($user->getCart() !== $this) {
+            $user->setCart($this);
+        }
+
         $this->user = $user;
 
         return $this;
     }
-
+    
     /**
-     * @return Collection<int, OrderProduct>
+     * @return Collection<int, CartProduct>
      */
-    public function getOrderProducts(): Collection
+    public function getCartProducts(): Collection
     {
-        return $this->orderProducts;
+        return $this->cartProducts;
     }
 
-    public function addOrderProduct(OrderProduct $orderProduct): static
+    public function addCartProduct(CartProduct $cartProduct): static
     {
-        if (!$this->orderProducts->contains($orderProduct)) {
-            $this->orderProducts->add($orderProduct);
+        if (!$this->cartProducts->contains($cartProduct)) {
+            $this->cartProducts->add($cartProduct);
+            $cartProduct->setCart($this);
         }
 
         return $this;
     }
 
-    public function removeOrderProduct(OrderProduct $orderProduct): static
+    public function removeCartProduct(CartProduct $cartProduct): static
     {
-        $this->orderProducts->removeElement($orderProduct);
+        if ($this->cartProducts->removeElement($cartProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($cartProduct->getCart() === $this) {
+                $cartProduct->setCart(null);
+            }
+        }
 
         return $this;
+    }
+
+    public function getTotalPrice(): float
+    {
+        return Utilities::getTotalPrice($this->getCartProducts());
     }
 }

@@ -47,3 +47,26 @@
 {
     color: var(--blue);
 }
+
+.cart-button
+{
+    height: 50px;
+    border-radius: 0;
+    margin-bottom: 0.75rem;
+}
+
+.header-cart .cart-price
+{
+    font-size: 1.5em;
+    color: var(--red);
+}
+
+.header-cart-price
+{
+    margin: 1rem 0;
+}
+
+.header-cart-price h5
+{
+    font-size: 1.25em;
+}

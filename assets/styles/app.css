@@ -31,12 +31,6 @@ ul
     padding: 0;
 }
 
-button
-{
-    border-style: none;
-    border-radius: 10px;
-}
-
 .darken-hover:hover
 {
     background-image: linear-gradient(rgb(0 0 0/10%) 0 0);

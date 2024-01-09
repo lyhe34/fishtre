@@ -13,38 +13,39 @@ class OrderProduct
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $count = null;
+    #[ORM\ManyToOne(inversedBy: 'orderProducts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Order $order = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderProducts')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?FishProduct $fishProduct = null;
+    private ?Product $product = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCount(): ?int
+    public function getOrder(): ?Order
     {
-        return $this->count;
+        return $this->order;
     }
 
-    public function setCount(int $count): static
+    public function setOrder(?Order $order): static
     {
-        $this->count = $count;
+        $this->order = $order;
 
         return $this;
     }
 
-    public function getFishProduct(): ?FishProduct
+    public function getProduct(): ?Product
     {
-        return $this->fishProduct;
+        return $this->product;
     }
 
-    public function setFishProduct(?FishProduct $fishProduct): static
+    public function setProduct(?Product $product): static
     {
-        $this->fishProduct = $fishProduct;
+        $this->product = $product;
 
         return $this;
     }

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    {% include 'header.html.twig' %}
+    <main class="d-flex flex-column justify-content-center">
+        {{ component('FishProductForm', { fish: fish, fishProducts: fish.fishProducts.toArray, selectedFishProductId: fish.fishProducts[0].id }) }}
+    </main>
+    {% include 'footer.html.twig' %}
+{% endblock %}

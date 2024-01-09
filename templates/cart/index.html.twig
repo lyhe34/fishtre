@@ -1,9 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CartController!{% endblock %}
+{% block title %}Panier{% endblock %}
 
 {% block body %}
     {% include 'header.html.twig' %}
-    
+    <h1>Panier</h1>
+    {{ component('CartList') }}
+    <div>
+        
+    </div>
     {% include 'footer.html.twig' %}
 {% endblock %}

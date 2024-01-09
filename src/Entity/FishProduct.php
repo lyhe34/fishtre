@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\FishProductRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FishProductRepository::class)]
@@ -15,42 +13,26 @@ class FishProduct
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $image = null;
-
     #[ORM\Column]
     private ?int $pieces = null;
 
     #[ORM\Column]
     private ?float $weight = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
     #[ORM\ManyToOne(inversedBy: 'fishProducts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Fish $fish = null;
 
-    #[ORM\OneToMany(mappedBy: 'fishProduct', targetEntity: OrderProduct::class)]
-    private Collection $orderProducts;
-
-    public function __construct()
-    {
-        $this->orderProducts = new ArrayCollection();
-    }
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Product $product = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(string $image): static
-    {
-        $this->image = $image;
-
-        return $this;
     }
 
     public function getPieces(): ?int
@@ -77,6 +59,18 @@ class FishProduct
         return $this;
     }
 
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
     public function getFish(): ?Fish
     {
         return $this->fish;
@@ -89,33 +83,45 @@ class FishProduct
         return $this;
     }
 
-    /**
-     * @return Collection<int, OrderProduct>
-     */
-    public function getOrderProducts(): Collection
+    public function getProduct(): ?Product
     {
-        return $this->orderProducts;
+        return $this->product;
     }
 
-    public function addOrderProduct(OrderProduct $orderProduct): static
+    public function setProduct(Product $product): static
     {
-        if (!$this->orderProducts->contains($orderProduct)) {
-            $this->orderProducts->add($orderProduct);
-            $orderProduct->setFishProduct($this);
-        }
+        $this->product = $product;
 
         return $this;
     }
 
-    public function removeOrderProduct(OrderProduct $orderProduct): static
+    public function getPrice(): float
     {
-        if ($this->orderProducts->removeElement($orderProduct)) {
-            // set the owning side to null (unless already changed)
-            if ($orderProduct->getFishProduct() === $this) {
-                $orderProduct->setFishProduct(null);
-            }
-        }
+        return ($this->weight * $this->pieces) * $this->fish->getPricePerKilo();
+    }
 
-        return $this;
+    public function getName(): string
+    {
+        $pieces = $this->pieces > 0 ? "pièces" : "pièce";
+        $isKilo = $this->weight >= 1; 
+        $weight = $this->weight;
+
+        if($isKilo)
+        {
+            $unit = $this->weight >= 2 ? "kilogrammes" : "kilogramme";
+        }
+        else
+        {
+            $unit = "grammes";
+            $weight *= 1000;
+        }
+        
+        return $this->pieces . " " . $pieces . " de " . $weight . " " . $unit; 
+    }
+
+    
+    public function getFullName(): string
+    {
+        return $this->fish->getName() . " - " . $this->getName();;
     }
 }

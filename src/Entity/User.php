@@ -31,6 +31,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified = false;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstName = null;
 
@@ -52,14 +55,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 5, nullable: true)]
     private ?string $zipCode = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Cart $cart = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
     private Collection $orders;
-
-    #[ORM\Column(type: 'boolean')]
-    private $isVerified = false;
 
     public function __construct()
     {
@@ -134,6 +135,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
     }
 
     public function getFirstName(): ?string
@@ -225,18 +238,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->cart;
     }
 
-    public function setCart(?Cart $cart): static
+    public function setCart(Cart $cart): static
     {
-        // unset the owning side of the relation if necessary
-        if ($cart === null && $this->cart !== null) {
-            $this->cart->setUser(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($cart !== null && $cart->getUser() !== $this) {
-            $cart->setUser($this);
-        }
-
         $this->cart = $cart;
 
         return $this;
@@ -268,18 +271,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $order->setUser(null);
             }
         }
-
-        return $this;
-    }
-
-    public function isVerified(): bool
-    {
-        return $this->isVerified;
-    }
-
-    public function setIsVerified(bool $isVerified): static
-    {
-        $this->isVerified = $isVerified;
 
         return $this;
     }

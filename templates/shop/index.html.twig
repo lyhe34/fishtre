@@ -16,16 +16,9 @@
             </div>
             <div class="products">
                 <div class="row justify-content-evenly align-items-center">
-                    {% include "fish_card.html.twig" %}
-                    {% include "fish_card.html.twig" %}
-                    {% include "fish_card.html.twig" %}
-                    {% include "fish_card.html.twig" %}
-                    {% include "fish_card.html.twig" %}
-                    {% include "fish_card.html.twig" %}
-                    {% include "fish_card.html.twig" %}
-                    {% include "fish_card.html.twig" %}
-                    {% include "fish_card.html.twig" %}
-                    {% include "fish_card.html.twig" %}
+                    {% for fish in fishes %}
+                        {% include "fish_card.html.twig" with { 'fish': fish } %}    
+                    {% endfor %}
                 </div>
                 </div>
             </div>

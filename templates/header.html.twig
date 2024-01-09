@@ -14,13 +14,13 @@
                 {% if app.user %}
                     <li class="nav-item">
                         <button class="nav-link header-item" data-bs-toggle="dropdown" aria-expanded="false">
-                            MON COMPTE
+                            COMPTE
                         </button>
                         <div class="dropdown">
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li class="dropdown-item"><a class="header-item">Mes informations</a></li>
-                                <li class="dropdown-item"><a class="header-item">Mes commandes</a></li>
-                                <li class="dropdown-item"><a class="header-item">Se déconnecter</a></li>
+                            <ul class="dropdown-menu dropdown-menu-end header-dropdown-menu">
+                                <li class="dropdown-item"><a class="header-item">Informations</a></li>
+                                <li class="dropdown-item"><a class="header-item">Commandes</a></li>
+                                <li class="dropdown-item"><a class="header-item">Déconnexion</a></li>
                             </ul>
                         </div>
                     </li>
@@ -28,8 +28,7 @@
                     <li class="nav-item"><a class="header-item nav-link" href="{{ path('app_register')}}">INSCRIPTION</a></li>
                     <li class="nav-item"><a class="header-item nav-link" href="{{ path('app_login')}}">CONNEXION</a></li>
                 {% endif %}
-                
-                <li class="nav-item"><button class="header-item nav-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">PANIER (0)</button></li>
+                <li class="nav-item"><button class="header-item nav-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">PANIER ({{component('CartCount', { count: cartManager.cart.cartProducts|length })}})</button></li>
             </ul>
         </div>
         <div class="container-xl d-flex d-lg-none">
@@ -55,15 +54,13 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end header-dropdown-menu color-blue">
                             {% if app.user %}
-                                <li class="dropdown-item"><a class="header-item">Mes informations</a></li>
-                                <li class="dropdown-item"><a class="header-item">Mes commandes</a></li>
-                                <li class="dropdown-item"><a class="header-item">Se déconnecter</a></li>
+                                <li class="dropdown-item"><a class="header-item">Informations</a></li>
+                                <li class="dropdown-item"><a class="header-item">Commandes</a></li>
+                                <li class="dropdown-item"><a class="header-item">Déconnexion</a></li>
                             {% else %}
                                 <li><a class="header-dropdown-item dropdown-item color-blue" href="{{ path('app_register')}}">Inscription</a></li>
                                 <li><a class="header-dropdown-item dropdown-item color-blue" href="{{ path('app_login')}}">Connexion</a></li>    
-                            {% endif %}
-                            
-                            
+                            {% endif %}                        
                         </ul>
                     </div>   
                 </li>
@@ -80,7 +77,16 @@
             <h5 class="offcanvas-title color-blue" id="offcanvasExampleLabel">Panier</h5>
             <button type="button" class="btn-close cart-btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body">
+        <div class="offcanvas-body header-cart d-flex flex-column">
+            <div class="header-cart-list">
+                {{ component('CartList', { cartProducts: cartManager.cart.cartProducts.toArray }) }}
+            </div>
+            <div class="header-cart-price d-flex justify-content-between align-items-center">
+                <h5 class="color-blue">Sous-Total :</h5>
+                {{ component('CartPrice', { totalPrice: cartManager.cart.totalPrice }) }}
+            </div>
+            <a class="w-100 cart-button link-button button-white color-blue" href="{{ path('app_cart')}}">Voir le panier</a>
+            <a class="w-100 cart-button link-button button-blue bg-blue text-white">Paiement</a>
         </div>
     </div>
 </header>

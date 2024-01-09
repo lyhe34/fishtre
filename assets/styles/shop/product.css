@@ -27,12 +27,17 @@
 .product .price
 {
     margin-top: 0.75rem;
-    font-size: 1.5em;
+    font-size: 2em;
 }
 
 .product form
 {
     margin-top: 0.75rem;
+}
+
+.product form label
+{
+    margin-bottom: 0.25rem;
 }
 
 .product form button,
@@ -53,6 +58,12 @@
 .product form button
 {
     margin-top: 0.255rem;
+}
+
+.recipes-link
+{
+    margin-top: 2rem;
+    font-size: 0.925em;
 }
 
 @media (min-width: 764px)

@@ -25,7 +25,10 @@ class Order
     #[ORM\Column(length: 10)]
     private ?string $state = null;
 
-    #[ORM\ManyToMany(targetEntity: OrderProduct::class)]
+    #[ORM\Column(length: 255)]
+    private ?string $mode = null;
+
+    #[ORM\OneToMany(mappedBy: 'command', targetEntity: OrderProduct::class, orphanRemoval: true)]
     private Collection $orderProducts;
 
     public function __construct()
@@ -74,6 +77,18 @@ class Order
         return $this;
     }
 
+    public function getMode(): ?string
+    {
+        return $this->mode;
+    }
+
+    public function setMode(string $mode): static
+    {
+        $this->mode = $mode;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, OrderProduct>
      */
@@ -86,6 +101,7 @@ class Order
     {
         if (!$this->orderProducts->contains($orderProduct)) {
             $this->orderProducts->add($orderProduct);
+            $orderProduct->setOrder($this);
         }
 
         return $this;
@@ -93,7 +109,12 @@ class Order
 
     public function removeOrderProduct(OrderProduct $orderProduct): static
     {
-        $this->orderProducts->removeElement($orderProduct);
+        if ($this->orderProducts->removeElement($orderProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($orderProduct->getOrder() === $this) {
+                $orderProduct->setOrder(null);
+            }
+        }
 
         return $this;
     }

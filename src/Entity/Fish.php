@@ -24,11 +24,14 @@ class Fish
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
-    #[ORM\OneToMany(mappedBy: 'fish', targetEntity: FishProduct::class)]
-    private Collection $fishProducts;
+    #[ORM\Column]
+    private ?bool $active = true;
 
     #[ORM\Column]
-    private ?bool $active = null;
+    private ?bool $featured = false;
+
+    #[ORM\OneToMany(mappedBy: 'fish', targetEntity: FishProduct::class, orphanRemoval: true)]
+    private Collection $fishProducts;
 
     public function __construct()
     {
@@ -76,6 +79,30 @@ class Fish
         return $this;
     }
 
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): static
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    public function isFeatured(): ?bool
+    {
+        return $this->featured;
+    }
+
+    public function setFeatured(bool $featured): static
+    {
+        $this->featured = $featured;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, FishProduct>
      */
@@ -102,18 +129,6 @@ class Fish
                 $fishProduct->setFish(null);
             }
         }
-
-        return $this;
-    }
-
-    public function isActive(): ?bool
-    {
-        return $this->active;
-    }
-
-    public function setActive(bool $active): static
-    {
-        $this->active = $active;
 
         return $this;
     }

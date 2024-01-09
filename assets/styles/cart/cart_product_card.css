@@ -1,0 +1,48 @@
+.cpc
+{
+    margin-bottom: 1rem;
+    height: 100px;
+}
+
+.cpc > *
+{
+    height: 100%;
+}
+
+.cpc-product-name
+{
+    font-size: 0.95em;
+}
+
+.cpc-product-price
+{
+    font-size: 1.25em;
+    color: var(--red);
+}
+
+.cpc-product-price-container
+{
+    flex: 1;
+}
+
+.cpc-product-image
+{
+    border-radius: 10px;
+}
+
+.cpc-text
+{
+    padding-left: 0.5rem;
+    padding-right: 1em;
+}
+
+.cpc-remove-button
+{
+    border-style: none;
+    background-color: transparent;
+    background-image: url('../../../public/images/trash.svg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: 50% 50%;
+    width: 22px;
+}
