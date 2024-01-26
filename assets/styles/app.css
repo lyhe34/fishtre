@@ -2,6 +2,7 @@
 {
     font-family: 'InriaSerif';
     list-style: none;
+    color: var(--blue);
 }
 
 .sf-toolbar
@@ -31,6 +32,22 @@ ul
     padding: 0;
 }
 
+button
+{
+    border-style: none;
+}
+
+.form-control
+{
+    color: var(--blue);
+}
+
+.form-control:focus
+{
+    box-shadow: none;
+    border-color: var(--blue);
+}
+
 .darken-hover:hover
 {
     background-image: linear-gradient(rgb(0 0 0/10%) 0 0);
@@ -44,5 +61,32 @@ ul
 a
 {
     text-decoration: none;
+    color: var(--blue);
     cursor: pointer;
 }
+
+.flex-center
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader {
+    border: solid;
+    border-radius: 50%;
+    border-top: solid;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+  }
+  
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

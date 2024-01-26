@@ -9,7 +9,7 @@
             <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
         {% endfor %}
 
-        {{ form_start(registrationForm, { attr: { class: 'form container color-blue' } }) }}
+        {{ form_start(registrationForm, { attr: { class: 'form container security-form color-blue' } }) }}
             <h1 class="form-head text-center color-blue">Inscription</h1>
             <div class="form-row">
                 {{ form_label(registrationForm.email, null, { label_attr: { class: 'form-label' } }) }}

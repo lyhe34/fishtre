@@ -2,12 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\Authenticator;
 use App\Security\EmailVerifier;
+use App\Service\CartManager;
+use App\Service\SessionStorage;
+use App\Service\StripeService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -29,7 +34,7 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, Security $security, UserRepository $userRepository): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, Security $security, SessionStorage $sessionStorage, StripeService $stripeService): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -43,18 +48,24 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            
+            $cart = $sessionStorage->get('cart', Cart::class) ?? new Cart();
+
+            $user->setCart($cart);
+            $cart->setUser($user);
 
             $entityManager->persist($user);
+            $entityManager->persist($cart);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('luc.eymard34@laposte.net', 'Poissonnerie'))
-                    ->to($user->getEmail())
-                    ->subject('Confirmer votre email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
+            // $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            //     (new TemplatedEmail())
+            //         ->from(new Address('luc.eymard34@laposte.net', 'Poissonnerie'))
+            //         ->to($user->getEmail())
+            //         ->subject('Confirmer votre email')
+            //         ->htmlTemplate('registration/confirmation_email.html.twig')
+            // );
 
             $security->login($user, Authenticator::class);
             

@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\CartRepository;
-use App\Service\Utilities;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -79,8 +78,28 @@ class Cart
         return $this;
     }
 
+    public function setCartProducts(Collection $cartProducts)
+    {
+        foreach($cartProducts->getValues() as $cartProduct) {
+            $this->addCartProduct($cartProduct);
+        }
+    }
+
     public function getTotalPrice(): float
     {
-        return Utilities::getTotalPrice($this->getCartProducts());
+        $total = 0;
+
+        foreach($this->cartProducts as $cartProduct) {
+            $total += $cartProduct->getProduct()->getPrice();
+        }
+
+        return $total;
+    }
+
+    public function clear()
+    {
+        foreach($this->cartProducts->getValues() as $cartProduct) {
+            $this->removeCartProduct($cartProduct);
+        }
     }
 }

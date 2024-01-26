@@ -1,32 +1,26 @@
-.form
+.security-form
 {
     max-width: 500px;
     margin-top: 3rem;
 }
 
-.form-head
+.security-form .form-head
 {
     font-size: 2.5em;
 }
 
-.form-row
+.security-form .form-row
 {
     margin-top: 2rem;
 }
 
-.form-control:focus
-{
-    box-shadow: none;
-    border-color: var(--blue);
-}
-
-.form-button
+.security-form .form-button
 {
     height: 50px;
     width: 130px;
 }
 
-.form-error
+.security-form .form-error
 {
     margin-top: 0.5rem;
 }

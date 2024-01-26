@@ -10,8 +10,6 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 class CartManager
 {
-    private ?Cart $cart = null;
-
     public function __construct(
         private Security $security, 
         private SessionStorage $sessionStorage, 
@@ -22,18 +20,11 @@ class CartManager
 
     public function getCart(): Cart
     {
-        if(null !== $this->cart)
-        {
-            return $this->cart;
-        }
-
         /** @var User */
-        if($user = $this->security->getUser())
-        {
+        if($user = $this->security->getUser()) {
             $cart = $user->getCart();
 
-            if(null === $cart)
-            {
+            if(null === $cart) {
                 $cart = new Cart();
                 $cart->setUser($user);
                 $user->setCart($cart);
@@ -41,9 +32,8 @@ class CartManager
                 /** @var Cart */
                 $sessionCart = $this->sessionStorage->get('cart', Cart::class);
 
-                if($sessionCart !== null && ($sessionCartProducts = $sessionCart->getCartProducts()) > 0)
-                {
-                    
+                if($sessionCart !== null && ($sessionCartProducts = $sessionCart->getCartProducts()) > 0 && $cart->getCartProducts()->isEmpty()) {
+                    $cart->setCartProducts($sessionCartProducts);
                 }
                 
                 $this->entityManager->persist($user);
@@ -51,28 +41,22 @@ class CartManager
                 $this->entityManager->flush();
             }
 
-            $this->cart = $cart;
-
             return $cart;
         }
 
         $cart = $this->sessionStorage->get('cart', Cart::class);
 
-        if(null === $cart)
-        {
+        if(null === $cart) {
             $cart = new Cart();
             $this->sessionStorage->set('cart', $cart);
+            $this->entityManager->persist($cart);
+            $this->entityManager->flush();
         }
         
-        $this->cart = $cart;
-
-        $this->entityManager->persist($cart);
-        $this->entityManager->flush();
-
         return $cart;
     }
 
-    public function convertToOrder(): Order
+    public function createOrder(): Order
     {
         $order = new Order();
 

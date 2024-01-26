@@ -18,12 +18,17 @@ class CartProduct
     private ?Cart $cart = null;
 
     #[ORM\ManyToOne(inversedBy: 'cartProducts')]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getPrice(): float
+    {
+        return $this->product->getPrice();
     }
 
     public function getCart(): ?Cart
@@ -48,10 +53,5 @@ class CartProduct
         $this->product = $product;
 
         return $this;
-    }
-
-    public function getPrice(): float
-    {
-        return $this->product->getPrice();
     }
 }

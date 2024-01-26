@@ -19,8 +19,7 @@ class SessionStorage
     {
         $k = $this->getKey($key);
 
-        if(null === $k)
-        {
+        if(null === $k) {
             return null;
         }
 

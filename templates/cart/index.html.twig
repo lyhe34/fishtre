@@ -4,10 +4,14 @@
 
 {% block body %}
     {% include 'header.html.twig' %}
-    <h1>Panier</h1>
-    {{ component('CartList') }}
-    <div>
-        
-    </div>
+    <main class="container-xl d-flex flex-column flex-md-row align-items-md-start justify-content-center cart">
+        <div class="d-flex flex-column cart-list-container">
+            <h1>Panier</h1>
+            {{ component('CartList', { cartProducts: cartManager.cart.cartProducts.toArray }) }}
+        </div>
+        {% if cartManager.cart.cartProducts|length > 0 %}
+            {{ component('ShippingAddressForm', { initialFormData: address }) }}   
+        {% endif %}
+    </main>
     {% include 'footer.html.twig' %}
 {% endblock %}

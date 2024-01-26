@@ -30,7 +30,7 @@ class Fish
     #[ORM\Column]
     private ?bool $featured = false;
 
-    #[ORM\OneToMany(mappedBy: 'fish', targetEntity: FishProduct::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'fish', targetEntity: FishProduct::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $fishProducts;
 
     public function __construct()

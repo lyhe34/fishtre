@@ -8,7 +8,7 @@ use App\Entity\Product;
 
 class CartProductFactory
 {
-    public static function create(Cart $cart, Product $product): CartProduct
+    public function create(Cart $cart, Product $product): CartProduct
     {
         $cartProduct = new CartProduct();
 

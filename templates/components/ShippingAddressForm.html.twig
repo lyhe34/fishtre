@@ -1,0 +1,91 @@
+<div {{ attributes }} class="container-fluid cart-delivery-container">
+    <div class="cart-price-infos">
+        <div class="d-flex justify-content-between align-items-center">
+            <span class="color-blue">Sous-Total :</span>
+            {{ component('CartPrice', { totalPrice: cartManager.cart.totalPrice }) }}
+        </div>
+        {% if app.user %}
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="color-blue">{% if this.mode == "delivery" %}Livraison à domicile : {% else %}Retrait en magasin : {% endif %}</span>
+                <span class="shipping-cost">{{ this.shippingCost }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="color-blue">Total :</span>
+                <span class="total-price color-red">{{ this.totalCost }}</span>
+            </div>
+            <form data-model="*">
+                <fieldset>
+                    <div>
+                        <input type="radio" name="mode" value="delivery" checked>
+                        <label>Livraison à domicile</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="mode" value="pickup">
+                        <label>Récupérer en magasin</label>
+                    </div>
+                </fieldset>
+            </form>
+        {% endif %}
+    </div>
+    {% if app.user %}
+        {% if this.mode == "delivery" %}       
+            {% if this.modifyAddress %}
+                <span>{{ this.error }}</span>
+                {{ form_start(form, { attr: { autocomplete: "off", 'data-action': 'live#action', 'data-action-name': 'prevent|saveAddress' } }) }}
+                    <div class="form-row">
+                        {{ form_label(form.firstName, null, { label_attr: { class: 'form-label' } }) }}
+                        {{ form_widget(form.firstName, { attr: { class: 'form-control' } }) }}
+                        {% include 'errors.html.twig' with { errors: form.firstName.vars.errors } %} 
+                    </div>
+                    <div class="form-row">
+                        {{ form_label(form.lastName, null, { label_attr: { class: 'form-label' } }) }}
+                        {{ form_widget(form.lastName, { attr: { class: 'form-control' } }) }}
+                        {% include 'errors.html.twig' with { errors: form.lastName.vars.errors } %} 
+                    </div>
+                    <div class="form-row">
+                        {{ form_label(form.address1, null, { label_attr: { class: 'form-label' } }) }}
+                        {{ form_widget(form.address1, { attr: { class: 'form-control' } }) }}
+                        {% include 'errors.html.twig' with { errors: form.address1.vars.errors } %} 
+                    </div>
+                    <div class="form-row">
+                        {{ form_label(form.address2, null, { label_attr: { class: 'form-label' } }) }}
+                        {{ form_widget(form.address2, { attr: { class: 'form-control' } }) }}
+                        {% include 'errors.html.twig' with { errors: form.address2.vars.errors } %} 
+                    </div>
+                    <div class="form-row">
+                        {{ form_label(form.postalCode, null, { label_attr: { class: 'form-label' } }) }}
+                        {{ form_widget(form.postalCode, { attr: { class: 'form-control' } }) }}
+                        {% include 'errors.html.twig' with { errors: form.postalCode.vars.errors } %} 
+                    </div>
+                    <div class="form-row">
+                        {{ form_label(form.city, null, { label_attr: { class: 'form-label' } }) }}
+                        {{ form_widget(form.city, { attr: { class: 'form-control' } }) }}
+                        {% include 'errors.html.twig' with { errors: form.city.vars.errors } %} 
+                    </div>
+                    <div class="form-row">
+                        {{ form_label(form.phone, null, { label_attr: { class: 'form-label' } }) }}
+                        {{ form_widget(form.phone, { attr: { class: 'form-control' } }) }}
+                        {% include 'errors.html.twig' with { errors: form.phone.vars.errors } %} 
+                    </div>
+                    <button type="submit" class="button-blue w-100 confirm-address-button">Confirmer</button>
+                {{ form_end(form) }}
+            {% else %}
+            <div class="d-flex flex-column current-address">
+                <span>Vous serez livrer à cette addresse :</span>
+                <span class="address-component">{{ this.initialFormData.firstName }}</span>
+                <span class="address-component">{{ this.initialFormData.lastName }}</span>
+                <span class="address-component">{{ this.initialFormData.address1 }}</span>
+                <span class="address-component">{{ this.initialFormData.postalCode }}</span>
+                <span class="address-component">{{ this.initialFormData.city }}</span>
+                <span class="address-component">{{ this.initialFormData.phone }}</span>
+                <button type="button" class="link-like-button text-start fw-bold modify-address-button" data-model="modifyAddress" data-value="true" data-action="live#update">Modifier</button>
+                <a class="w-100 button-blue flex-center finalize-button" href="{{ path('app_payment_checkout_delivery') }}">Finaliser la commande</a>
+            </div>
+            {% endif %}
+        {% else %}
+        <a class="w-100 button-blue flex-center finalize-button" href="{{ path('app_payment_checkout_pickup') }}">Finaliser la commande</a>
+        {% endif %}    
+    {% else %}
+        <span>Veuillez vous <a href="{{ path('app_login') }}">connecter</a> pour passer commande.</span>
+    {% endif %}
+</div>

@@ -3,8 +3,7 @@
 namespace App\Components;
 
 use App\Entity\CartProduct;
-use App\Service\CartManager;
-use ArrayTools;
+use App\Service\ArrayTools;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -16,9 +15,14 @@ class CartList
 {    
     use DefaultActionTrait;
 
-    #[LiveProp]
     /** @var CartProduct[] */
+    #[LiveProp]
     public $cartProducts = [];
+
+    public function __construct(private ArrayTools $arrayTools) 
+    {
+        
+    }
 
     #[LiveListener('cartProductAdded')]
     public function addCartProduct(#[LiveArg] CartProduct $cartProduct)
@@ -29,11 +33,6 @@ class CartList
     #[LiveListener('cartProductRemoved')]
     public function removeCartProduct(#[LiveArg] CartProduct $cartProduct)
     {
-        ArrayTools::removeBy($this->cartProducts, 'id', $cartProduct->getId());
-    }
-
-    public function getCartProducts(CartManager $cartManager)
-    {
-        return $cartManager->getCart()->getCartProducts();
+        $this->arrayTools->removeBy($this->cartProducts, 'id', $cartProduct->getId());
     }
 }

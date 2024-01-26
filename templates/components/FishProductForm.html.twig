@@ -17,7 +17,7 @@
                     {% endif %}        
                 {% endfor %}
             </select>
-            <button class="bg-blue text-white whiten-hover" data-action="live#action" data-action-name="prevent|addToCart">Ajouter au panier</button>
+            <button class="bg-blue text-white whiten-hover flex-center add-to-cart-button" data-action="live#action" data-action-name="prevent|addToCart" data-loading="addAttribute(disabled)"><div class="loader" data-loading="show"></div><span class="text-white" data-loading="hide">Ajouter au panier</span></button>
         </form>
         <p class="recipes-link"><a href="#">Consultez nos recettes </a>pour cuisiner vos {{ fish.name }}.</p>
     </div>

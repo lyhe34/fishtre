@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240108202849 extends AbstractMigration
+final class Version20240126133008 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20240108202849 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE cart_product CHANGE cart_id cart_id INT DEFAULT NULL, CHANGE product_id product_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE cart_product CHANGE cart_id cart_id INT DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE cart_product CHANGE cart_id cart_id INT NOT NULL, CHANGE product_id product_id INT NOT NULL');
+        $this->addSql('ALTER TABLE cart_product CHANGE cart_id cart_id INT NOT NULL');
     }
 }

@@ -2,21 +2,56 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Cart;
+use App\Entity\Config;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\User;
 use App\Entity\Fish;
 use App\Entity\FishProduct;
 use App\Factory\ProductFactory;
-
+use App\Service\StripeService;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class AppFixtures extends Fixture
 {
+    public function __construct(
+        private StripeService $stripeService,
+        private ProductFactory $productFactory,
+        private UserPasswordHasherInterface $passwordHasher,
+    ) {
+
+    }
+
     public function load(ObjectManager $manager)
     {
+        $config = new Config();
+        $config
+            ->setName('default')
+            ->setShopAddress('Port de plaisance, 34250 Palavas-les-Flots')
+            ->setMinShippingCost(1.90)
+            ->setMaxShippingCost(4.90)
+            ->setShipCostStartIncrAt(3)
+            ->setMaxShipCostReachAt(8)
+            ->setMaxShippingDistance(20)
+            ->setFreeShipMinCost(30)
+            ->setDelivMinDaysApart(2)
+            ->setDeliveryDays([3, 5]);
+
+        $cart = new Cart();
+
+        $admin = new User();
+        $admin
+            ->setEmail('admin@fishshop.com')
+            ->setRoles(['ROLE_USER', 'ROLE_ADMIN'])
+            ->setPassword($this->passwordHasher->hashPassword($admin, 'p+LugGsi!](,')) 
+            ->setCart($cart);
+            
         $daurade = new Fish();
-        $daurade->setName("Daurade");
-        $daurade->setPricePerKilo(16);
-        $daurade->setImage("daurade.png");
-        $daurade->setFeatured(true);
+        $daurade
+            ->setName("Daurade")
+            ->setPricePerKilo(16)
+            ->setImage("daurade.png")
+            ->setFeatured(true);
 
         $loup = new Fish();
         $loup->setName("Loup");
@@ -68,7 +103,7 @@ class AppFixtures extends Fixture
         $daurade1->setPieces(2);
         $daurade1->setWeight(0.5);
 
-        $product1 = ProductFactory::create($daurade1);
+        $product1 = $this->productFactory->create($daurade1);
         
         $daurade1->setProduct($product1);
 
@@ -78,9 +113,13 @@ class AppFixtures extends Fixture
         $daurade2->setPieces(4);
         $daurade2->setWeight(0.25);
 
-        $product2 = ProductFactory::create($daurade2);
+        $product2 = $this->productFactory->create($daurade2);
 
         $daurade2->setProduct($product2);
+
+        $manager->persist($config);
+
+        $manager->persist($admin);
 
         $manager->persist($daurade);
         $manager->persist($loup);

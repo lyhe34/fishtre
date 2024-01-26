@@ -24,19 +24,16 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: CartProduct::class, orphanRemoval: true)]
-    private Collection $cartProducts;
-
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderProduct::class, orphanRemoval: true)]
     private Collection $orderProducts;
 
-    #[ORM\Column]
-    private ?int $stripeId = null;
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: CartProduct::class)]
+    private Collection $cartProducts;
 
     public function __construct()
     {
-        $this->cartProducts = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
+        $this->cartProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -81,36 +78,6 @@ class Product
     }
 
     /**
-     * @return Collection<int, CartProduct>
-     */
-    public function getCartProducts(): Collection
-    {
-        return $this->cartProducts;
-    }
-
-    public function addCartProduct(CartProduct $cartProduct): static
-    {
-        if (!$this->cartProducts->contains($cartProduct)) {
-            $this->cartProducts->add($cartProduct);
-            $cartProduct->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCartProduct(CartProduct $cartProduct): static
-    {
-        if ($this->cartProducts->removeElement($cartProduct)) {
-            // set the owning side to null (unless already changed)
-            if ($cartProduct->getProduct() === $this) {
-                $cartProduct->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, OrderProduct>
      */
     public function getOrderProducts(): Collection
@@ -140,14 +107,37 @@ class Product
         return $this;
     }
 
-    public function getStripeId(): ?int
+    public function getPriceInCents(): float
     {
-        return $this->stripeId;
+        return $this->getPrice() * 100;
     }
 
-    public function setStripeId(int $stripeId): static
+    /**
+     * @return Collection<int, CartProduct>
+     */
+    public function getCartProducts(): Collection
     {
-        $this->stripeId = $stripeId;
+        return $this->cartProducts;
+    }
+
+    public function addCartProduct(CartProduct $cartProduct): static
+    {
+        if (!$this->cartProducts->contains($cartProduct)) {
+            $this->cartProducts->add($cartProduct);
+            $cartProduct->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartProduct(CartProduct $cartProduct): static
+    {
+        if ($this->cartProducts->removeElement($cartProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($cartProduct->getProduct() === $this) {
+                $cartProduct->setProduct(null);
+            }
+        }
 
         return $this;
     }

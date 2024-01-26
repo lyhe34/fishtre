@@ -12,9 +12,8 @@
     color: white;
 }
 
-.link-button
+.link-like-button
 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: transparent;
+    padding: 0;
 }

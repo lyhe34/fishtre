@@ -66,6 +66,16 @@
     font-size: 0.925em;
 }
 
+.add-to-cart-button .loader
+{
+    border-width: 6px;
+    border-top-width: 6px;
+    border-color: #265073;
+    border-top-color: white;
+    width: 25px;
+    height: 25px;
+}
+
 @media (min-width: 764px)
 {
     .product img

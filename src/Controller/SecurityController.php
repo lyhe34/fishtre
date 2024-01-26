@@ -12,9 +12,9 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -29,4 +29,22 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+    // #[Route(path: '/admin/login', name: 'app_admin_login')]
+    // public function adminLogin(AuthenticationUtils $authenticationUtils)
+    // {
+    //     $error = $authenticationUtils->getLastAuthenticationError();
+    //     $lastUsername = $authenticationUtils->getLastUsername();
+
+    //     return $this->render('@EasyAdmin/page/login.html.twig', [
+    //         'error' => $error,
+    //         'last_username' => $lastUsername,
+    //         'csrf_token_intention' => 'authenticate',
+    //         'target_path' => $this->generateUrl('admin_dashboard'),
+    //         'username_label' => 'Identifiant',
+    //         'password_label' => 'Mot de passe',
+    //         'sign_in_label' => 'Connexion',
+    //         'forgot_password_enabled' => true,
+    //     ]);
+    // }
 }

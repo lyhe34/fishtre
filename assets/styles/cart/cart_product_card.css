@@ -28,6 +28,7 @@
 .cpc-product-image
 {
     border-radius: 10px;
+    height: 100%;
 }
 
 .cpc-text
@@ -45,4 +46,14 @@
     background-size: 100%;
     background-position: 50% 50%;
     width: 22px;
+}
+
+.cpc .loader
+{
+    border-width: 6px;
+    border-top-width: 6px;
+    border-color: #c240406c;
+    border-top-color: #c24040;
+    width: 20px;
+    height: 20px;
 }

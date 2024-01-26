@@ -7,7 +7,7 @@ use App\Entity\FishProduct;
 use App\Factory\CartProductFactory;
 use App\Repository\FishProductRepository;
 use App\Service\CartManager;
-use App\Service\Utilities;
+use App\Service\ArrayTools;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -38,6 +38,8 @@ class FishProductForm
         private FishProductRepository $fishProductRepository,
         private CartManager $cartManager,
         private EntityManagerInterface $entityManager,
+        private ArrayTools $arrayTools,
+        private CartProductFactory $cartProductFactory,
     ) {
     
     }
@@ -45,18 +47,18 @@ class FishProductForm
     public function setSelectedFishProductId(int $id)
     {
         $this->selectedFishProductId = $id;
-        $this->selectedFishProduct = Utilities::arrayFind($this->fishProducts, 'id', $this->selectedFishProductId);
+        $this->selectedFishProduct = $this->arrayTools->find($this->fishProducts, 'id', $this->selectedFishProductId);
     }
 
     #[LiveAction]
     public function addToCart()
     {
         $cart = $this->cartManager->getCart();
-        $cartProduct = CartProductFactory::create($cart, $this->selectedFishProduct->getProduct());
+        $cartProduct = $this->cartProductFactory->create($cart, $this->selectedFishProduct->getProduct());
         $this->entityManager->persist($cartProduct);
         $cart->addCartProduct($cartProduct);
         $this->entityManager->persist($cart);
         $this->entityManager->flush();
-        $this->emit('cartProductAdded', [ 'cartProduct' => $cartProduct->getId()]);
+        $this->emit('cartProductAdded', ['cartProduct' => $cartProduct->getId()]);
     }
 }

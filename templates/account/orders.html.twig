@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commandes{% endblock %}
+
+{% block body %}
+    {% include 'header.html.twig' %}
+    <main>
+        <h1 class="orders-head text-center">Commandes</h1>
+        {% if orders|length == 0 %}
+            <span class="d-block text-center">Vous n'avez aucune commandes</span>
+        {% else %}
+            <div class="d-flex flex-column align-items-center">
+            {% for order in orders %}
+                {% include 'account/order_card.html.twig' with { 'order': order } %}
+            {% endfor %}
+            </div>
+        {% endif %}
+        
+    </main>
+    {% include 'footer.html.twig' %}
+{% endblock %}

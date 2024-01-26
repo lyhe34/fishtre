@@ -7,7 +7,7 @@ use App\Entity\Product;
 
 class ProductFactory
 {
-    public static function create(FishProduct $fishProduct): Product
+    public function create(FishProduct $fishProduct): Product
     {
         $product = new Product();
 

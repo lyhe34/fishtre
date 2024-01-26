@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <main class="container-xl d-flex align-items-center">
+        <div id="checkout" class="w-100" data-client-secret="{{ clientSecret }}">
+        </div>
+    </main>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="checkout.js" defer></script>
+{% endblock %}

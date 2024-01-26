@@ -1,0 +1,9 @@
+<div {{ attributes}}>
+    {% if this.show %}
+        <div class="header-cart-price d-flex justify-content-between align-items-center">
+            <h5 class="color-blue">Sous-Total :</h5>
+            {{ component('CartPrice', { totalPrice: cart.totalPrice }) }}
+        </div>
+        <a class="w-100 cart-button flex-center button-blue" href="{{ path('app_cart') }}">Paiement</a>
+    {% endif %}
+</div>

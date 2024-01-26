@@ -1,0 +1,44 @@
+<div class="order d-flex flex-column flex-lg-row justify-content-center">
+    <div class="order-section order-start d-flex flex-column">
+        <span>Total : <span class="color-red">{{ order.totalPrice }} €</span></span>
+        <div class="d-flex flex-column">
+            {% if order.orderProducts|length <= 4 %}
+                {% for orderProduct in order.orderProducts.toArray %}
+                    <span>{{ orderProduct.product.name }}</span>
+                {% endfor %}
+            {% else %}
+                {% for i in 0..2 %}
+                    <span>{{ order.orderProducts[i].product.name }}</span>
+                {% endfor %}
+                {% set remain = order.orderProducts|length - 3 %}
+                <span>+ {{ remain }} autres produits...</span>    
+            {% endif %}
+        </div>
+    </div>
+    <div class="order-section order-center d-flex flex-column justify-content-center">
+        <span><strong>Statut : </strong>
+                {% if order.state == 'confirmed' %}
+                    Confirmée
+                {% elseif order.state == 'ready' %}
+                    {% if order.mode == 'delivery' %}
+                        En cours de livraison
+                    {% elseif order.mode == 'pickup' %}
+                        Prête à être récupérée
+                    {% endif %}
+                {% elseif order.state == 'complete' %}
+                    Commande reçue
+                {% elseif order.state == 'canceled' %}
+                    Annulée
+                {% endif %}
+        </span>
+        <span><strong>Date de livraison : </strong>{{ order.deliveryDate|date("d/m/Y") }}</span>
+        <span><strong>Commande effectuée le : </strong>{{ order.date|date("d/m/Y") }}</span>
+        <span><strong>Numéro de commande : </strong>{{ order.id }}</span>
+    </div>
+    <div class="order-section order-end flex-center flex-column text-center">
+        <a class="p-2">Voir la commande</a>
+        {% if order.state == 'confirmed' %}
+            <a class="p-2 color-red flex-center" href="{{ path('app_refund', { order: order.id } )}}">Annuler la commande</a>
+        {% endif %}
+    </div>
+</div>
