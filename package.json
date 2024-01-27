@@ -22,6 +22,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "platformsh-config": "^2.4.1",
         "prop-types": "^15.8.1"
     }
 }
