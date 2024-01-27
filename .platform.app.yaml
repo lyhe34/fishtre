@@ -59,4 +59,4 @@ hooks:
         symfony-deploy
 
 relationships:
-    mysql_database: "db:mysql"
+    mysql_database: "mysql:mysql"
