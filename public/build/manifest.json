@@ -1,9 +1,9 @@
 {
-  "build/app.css": "/build/app.css",
-  "build/app.js": "/build/app.js",
-  "build/runtime.js": "/build/runtime.js",
-  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-5b66d3.css": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-5b66d3.css",
-  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-5b66d3.js": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-5b66d3.js",
+  "build/app.css": "/build/app.d818df18.css",
+  "build/app.js": "/build/app.00ba5af8.js",
+  "build/runtime.js": "/build/runtime.18a02a75.js",
+  "build/292.3c177990.css": "/build/292.3c177990.css",
+  "build/292.79c4b9c2.js": "/build/292.79c4b9c2.js",
   "build/fonts/InriaSerif-Regular.ttf": "/build/fonts/InriaSerif-Regular.f43b3e7f.ttf",
   "build/fonts/InriaSans-Regular.ttf": "/build/fonts/InriaSans-Regular.b8aeafc1.ttf",
   "build/images/trash.svg": "/build/images/trash.d1029922.svg"
