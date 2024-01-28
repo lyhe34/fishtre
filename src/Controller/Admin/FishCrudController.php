@@ -24,7 +24,7 @@ class FishCrudController extends AbstractCrudController
             BooleanField::new('active')->renderAsSwitch(false),
             BooleanField::new('featured')->renderAsSwitch(false),
             ImageField::new('image')->hideOnIndex()->setUploadDir('file_storage'),
-            CollectionField::new('fishProducts')->useEntryCrudForm()->setEntryIsComplex()->hideOnIndex(),
+            CollectionField::new('fishProducts')->useEntryCrudForm()->setEntryIsComplex()->hideOnIndex()->setRequired(true),
         ];
     }
 }

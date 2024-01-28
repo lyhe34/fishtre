@@ -14,12 +14,9 @@ class ProductFactory
         $product->setName($fishProduct->getFullName());
         $product->setPrice($fishProduct->getPrice());
 
-        if($fishProductImage = $fishProduct->getImage())
-        {
+        if($fishProductImage = $fishProduct->getImage()) {
             $product->setImage($fishProductImage);
-        }
-        else
-        {
+        } else {
             $product->setImage($fishProduct->getFish()->getImage());
         }
 

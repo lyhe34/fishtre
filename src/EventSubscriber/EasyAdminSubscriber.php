@@ -9,8 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use App\Service\StripeService;
-use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 
 class EasyAdminSubscriber implements EventSubscriberInterface
 {
@@ -22,7 +22,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
     }
 
-    public function createProductForFish(BeforeEntityUpdatedEvent $event): void
+    public function createProductForFish($event): void
     {
         $entity = $event->getEntityInstance();
 
@@ -49,6 +49,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            BeforeEntityPersistedEvent::class => ['createProductForFish'],
             BeforeEntityUpdatedEvent::class => ['createProductForFish'],
             AfterEntityUpdatedEvent::class => ['cancelOrder'],
         ];
