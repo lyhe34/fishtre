@@ -8,6 +8,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ConfigCrudController extends AbstractCrudController
 {
@@ -30,15 +33,15 @@ class ConfigCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            'shopAddress',
-            'minShippingCost',
-            'maxShippingCost',
-            'shipCostStartIncrAt',
-            'maxShipCostReachAt',
-            'maxShippingDistance',
-            'freeShipMinCost',
-            'delivMinDaysApart',
-            ArrayField::new('deliveryDays'),
+            TextField::new('shopAddress')->setHelp("L'adresse où les clients récupèreront leur commandes. Les frais de livraison sont estimés en fonction de cette adresse."),
+            NumberField::new('minShippingCost')->setHelp("Frais de livraison minimum."),
+            NumberField::new('maxShippingCost')->setHelp("Frais de livraison maximum."),
+            NumberField::new('shipCostStartIncrAt')->setHelp("A partir de combien de distance les frais de livraison augmente (kilomètres)."),
+            NumberField::new('maxShipCostReachAt')->setHelp("A quelle distance les frais de livraison maximum sont atteint (kilomètres)."),
+            NumberField::new('maxShippingDistance')->setHelp("La distance de livraison maximum (kilomètres)."),
+            NumberField::new('freeShipMinCost')->setHelp('Coût de commande minimum pour la livraison gratuite.'),
+            IntegerField::new('delivMinDaysApart')->setHelp("Combien de jours d'écart minimum pour être livré/récupérer la commande le prochain jours de livraison/récupération."),
+            ArrayField::new('deliveryDays')->setHelp('Les jours de livraison/récupération (Lundi = 1, Mardi = 2, etc..).'),
         ];
     }
 }

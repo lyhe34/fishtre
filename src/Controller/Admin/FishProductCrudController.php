@@ -19,8 +19,8 @@ class FishProductCrudController extends AbstractCrudController
     {
         return [
             IntegerField::new('pieces'),
-            NumberField::new('weight'),
-            ImageField::new('image')->setUploadDir('file_storage'),
+            NumberField::new('weight')->setHelp('En Kilogrammes (0.5 = 500 grammes)'),
+            ImageField::new('image')->setUploadDir('file_storage')->setHelp('Image spécifique pour ce produit. Pas obligatoire.'),
         ];
     }
 }
