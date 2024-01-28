@@ -10,12 +10,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\Translation\TranslatableMessage;
 
 class OrderCrudController extends AbstractCrudController
 {
@@ -36,7 +33,12 @@ class OrderCrudController extends AbstractCrudController
                 'Prête' => 'ready',
                 'Terminée' => 'complete',
                 'Annulée' => 'canceled'
-            ]),
+            ])->setHelp(
+                "Confimée : Commandes payées.
+                Prête : En cours de livraison/Prête à être récupérée.
+                Terminée : Commandes livrées/récupérées.
+                Les commandes sauvegardées avec l'état Annuléee seront automatiquement remboursées."
+            ),
             ArrayField::new('orderProducts')->onlyOnDetail(),
             TextField::new('address1')->setDisabled()->onlyOnDetail(),
             TextField::new('address2')->setDisabled()->onlyOnDetail(),
