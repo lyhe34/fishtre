@@ -43,7 +43,7 @@ workers:
 
 mounts:
     "/var": { source: local, source_path: var }
-    
+    "/file_storage": { source: local, source_path: file_storage }
 
 hooks:
     build: |

@@ -49,7 +49,7 @@ class CreateAdminCommand extends Command
         $this->entityManager->persist($admin);
         $this->entityManager->flush();
 
-        $output->writeln('Admin user created successfully.');
+        $output->writeln("Admin user created successfully. Password is $password");
 
         return Command::SUCCESS;
     }
