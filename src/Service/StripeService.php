@@ -109,7 +109,7 @@ class StripeService
     {
         $payload = $request->getContent();
         $sigHeader = $request->headers->get('Stripe-Signature');
-        $endpointSecret = 'whsec_cacbadb14f945992a2c70a2741a64dcdd1931d824a37feae9d551184c7b8535f';
+        $endpointSecret = 'whsec_xBeI8BjQ1HLyXJmGBJCYm3Yd7w5NWdZl';
 
         $event = null;
 
