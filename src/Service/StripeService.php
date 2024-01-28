@@ -17,6 +17,7 @@ use Stripe\Refund;
 use Stripe\Webhook as StripeWebhook;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class StripeService
 {
@@ -24,6 +25,7 @@ class StripeService
         private EntityManagerInterface $entityManager,
         private Security $security,
         private UserRepository $userRepository,
+        private UrlGeneratorInterface $router
     ) {
         Stripe::setApiKey('sk_test_51OKqCHE9VPfeCGyPUb6Q3vdXTOLrBJRavBd0IvB47nqCiUh83aXmlmCRdf187Rl3ouTBm6nB3qT4UgXZ6jjjEKW000FEkrY0vw');
     }
@@ -72,7 +74,7 @@ class StripeService
             'ui_mode' => 'embedded',
             'line_items' => $items,
             'mode' => 'payment',
-            'return_url' => 'https://localhost:8000/payment/success?session_id={CHECKOUT_SESSION_ID}',
+            'return_url' => $this->router->generate('app_payment_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'metadata' => [
                 'user_id' => $user->getId()
             ],
