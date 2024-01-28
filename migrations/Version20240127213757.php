@@ -99,9 +99,9 @@ final class Version20240127213757 extends AbstractMigration
             body longtext COLLATE utf8mb4_unicode_ci NOT NULL,
             headers longtext COLLATE utf8mb4_unicode_ci NOT NULL,
             queue_name varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
-            created_at datetime NOT NULL COMMENT (DC2Type:datetime_immutable),
-            available_at datetime NOT NULL COMMENT (DC2Type:datetime_immutable),
-            delivered_at datetime DEFAULT NULL COMMENT (DC2Type:datetime_immutable),
+            created_at datetime NOT NULL COMMENT "(DC2Type:datetime_immutable)",
+            available_at datetime NOT NULL COMMENT "(DC2Type:datetime_immutable)",
+            delivered_at datetime DEFAULT NULL COMMENT "(DC2Type:datetime_immutable)",
             PRIMARY KEY (id),
             KEY IDX_75EA56E0FB7336F0 (queue_name),
             KEY IDX_75EA56E0E3BD61CE (available_at),
@@ -111,7 +111,7 @@ final class Version20240127213757 extends AbstractMigration
         $this->addSql('CREATE TABLE IF NOT EXISTS order (
             id int NOT NULL AUTO_INCREMENT,
             user_id int NOT NULL,
-            date datetime NOT NULL COMMENT (DC2Type:datetime_immutable),
+            date datetime NOT NULL COMMENT "(DC2Type:datetime_immutable)",
             state varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
             mode varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
             delivery_date datetime NOT NULL,
@@ -150,8 +150,8 @@ final class Version20240127213757 extends AbstractMigration
             user_id int NOT NULL,
             selector varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
             hashed_token varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-            requested_at datetime NOT NULL COMMENT (DC2Type:datetime_immutable),
-            expires_at datetime NOT NULL COMMENT (DC2Type:datetime_immutable),
+            requested_at datetime NOT NULL COMMENT "(DC2Type:datetime_immutable)",
+            expires_at datetime NOT NULL COMMENT "(DC2Type:datetime_immutable)",
             PRIMARY KEY (id),
             KEY IDX_7CE748AA76ED395 (user_id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
