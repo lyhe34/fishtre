@@ -28,9 +28,11 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
         if($entity instanceof Fish) {
             foreach($entity->getFishProducts()->getValues() as $fishProduct) {
-                $product = $this->productFactory->create($fishProduct);
-                $this->entityManager->persist($product);
-                $fishProduct->setProduct($product);
+                if($fishProduct->getProduct() === null) {
+                    $product = $this->productFactory->create($fishProduct);
+                    $this->entityManager->persist($product);
+                    $fishProduct->setProduct($product);
+                }
             }
         }
     }
