@@ -54,11 +54,15 @@ class FishProductForm
     public function addToCart()
     {
         $cart = $this->cartManager->getCart();
+
         $cartProduct = $this->cartProductFactory->create($cart, $this->selectedFishProduct->getProduct());
-        $this->entityManager->persist($cartProduct);
+        
         $cart->addCartProduct($cartProduct);
+
         $this->entityManager->persist($cart);
         $this->entityManager->flush();
-        $this->emit('cartProductAdded', ['cartProduct' => $cartProduct->getId()]);
+
+        $this->emit('cartChanged');
+        $this->emit('cartProductAdded');
     }
 }

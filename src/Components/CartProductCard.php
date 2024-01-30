@@ -22,12 +22,13 @@ class CartProductCard
 
     #[LiveAction]
     public function removeFromCart(CartManager $cartManager, EntityManagerInterface $entityManager)
-    {     
-        $this->emit('cartProductRemoved', ['cartProduct' => $this->cartProduct->getId()]);
-
+    {    
         $cart = $cartManager->getCart();
         $cart->removeCartProduct($this->cartProduct);
         $entityManager->persist($cart);
         $entityManager->flush();
+
+        $this->emit('cartChanged');
+        $this->emit('cartProductRemoved');
     }
 }

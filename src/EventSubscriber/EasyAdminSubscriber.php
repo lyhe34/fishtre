@@ -30,7 +30,6 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             foreach($entity->getFishProducts()->getValues() as $fishProduct) {
                 if($fishProduct->getProduct() === null) {
                     $product = $this->productFactory->create($fishProduct);
-                    $this->entityManager->persist($product);
                     $fishProduct->setProduct($product);
                 }
             }

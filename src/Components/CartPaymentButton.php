@@ -22,14 +22,8 @@ class CartPaymentButton
         
     }
 
-    #[LiveListener('cartProductAdded')]
-    public function onCartProductAdded()
-    {
-        $this->show = $this->cartManager->getCart()->getCartProducts()->count() > 0;
-    }
-
-    #[LiveListener('cartProductRemoved')]
-    public function onCartProductRemoved()
+    #[LiveListener('cartChanged')]
+    public function onCartChanged()
     {
         $this->show = $this->cartManager->getCart()->getCartProducts()->count() > 0;
     }

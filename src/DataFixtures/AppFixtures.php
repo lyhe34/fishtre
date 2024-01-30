@@ -37,15 +37,6 @@ class AppFixtures extends Fixture
             ->setDelivMinDaysApart(2)
             ->setDeliveryDays([3, 5]);
 
-        $cart = new Cart();
-
-        $admin = new User();
-        $admin
-            ->setEmail('admin@fishshop.com')
-            ->setRoles(['ROLE_USER', 'ROLE_ADMIN'])
-            ->setPassword($this->passwordHasher->hashPassword($admin, 'p+LugGsi!](,')) 
-            ->setCart($cart);
-            
         // $daurade = new Fish();
         // $daurade
         //     ->setName("Daurade")
@@ -118,8 +109,6 @@ class AppFixtures extends Fixture
         // $daurade2->setProduct($product2);
 
         $manager->persist($config);
-
-        $manager->persist($admin);
 
         // $manager->persist($daurade);
         // $manager->persist($loup);

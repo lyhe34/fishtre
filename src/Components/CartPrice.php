@@ -9,6 +9,7 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use App\Entity\CartProduct;
+use App\Service\CartManager;
 
 #[AsLiveComponent]
 class CartPrice
@@ -17,17 +18,17 @@ class CartPrice
     use DefaultActionTrait;
 
     #[LiveProp]
-    public int $totalPrice;
+    public float $totalPrice;
     
-    #[LiveListener('cartProductAdded')]
-    public function addProductPrice(#[LiveArg] CartProduct $cartProduct)
-    {
-        $this->totalPrice += $cartProduct->getPrice();
+    public function __construct(
+        private CartManager $cartManager,
+    ) {
+        
     }
 
-    #[LiveListener('cartProductRemoved')]
-    public function removeProductPrice(#[LiveArg] CartProduct $cartProduct)
+    #[LiveListener('cartChanged')]
+    public function onCartChanged()
     {
-        $this->totalPrice -= $cartProduct->getPrice();
+        $this->totalPrice = $this->cartManager->getCart()->getTotalPrice();
     }
 }

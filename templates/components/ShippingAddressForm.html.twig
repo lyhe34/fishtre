@@ -7,11 +7,25 @@
         {% if app.user %}
             <div class="d-flex justify-content-between align-items-center">
                 <span class="color-blue">{% if this.mode == "delivery" %}Livraison à domicile : {% else %}Retrait en magasin : {% endif %}</span>
-                <span class="shipping-cost">{{ this.shippingCost }}</span>
+                <span class="shipping-cost">
+                    {% if this.mode == 'pickup' or this.initialFormData is not null and this.initialFormData.shippingCost == 0 %}
+                        Gratuit
+                    {% elseif this.initialFormData is null or this.initialFormData.shippingCost is null %}
+                        -- €
+                    {% else %}
+                        {{ this.initialFormData.shippingCost }} €
+                    {% endif %}
+                </span>
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <span class="color-blue">Total :</span>
-                <span class="total-price color-red">{{ this.totalCost }}</span>
+                <span class="total-price color-red">
+                    {% if this.mode == 'pickup' or this.initialFormData is not null and this.initialFormData.shippingCost is not null %}
+                        {{ this.totalPrice }} €
+                    {% else %}
+                        -- €
+                    {% endif %}
+                </span>
             </div>
             <form data-model="*">
                 <fieldset>
@@ -86,6 +100,6 @@
         <a class="w-100 button-blue flex-center finalize-button" href="{{ path('app_payment_checkout_pickup') }}">Finaliser la commande</a>
         {% endif %}    
     {% else %}
-        <span>Veuillez vous <a href="{{ path('app_login') }}">connecter</a> pour passer commande.</span>
+        <span>Veuillez vous <a class="fw-bold" href="{{ path('app_login') }}">connecter</a> pour passer commande.</span>
     {% endif %}
 </div>
