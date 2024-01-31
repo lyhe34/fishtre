@@ -27,7 +27,7 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderProduct::class, orphanRemoval: true)]
     private Collection $orderProducts;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: CartProduct::class)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: CartProduct::class, orphanRemoval: true)]
     private Collection $cartProducts;
 
     public function __construct()
