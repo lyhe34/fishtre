@@ -65,7 +65,7 @@
                 <div class="delivery-images d-flex justify-content-evenly align-items-between flex-column flex-md-row">
                     {% include 'home/delivery_info.html.twig' with { 'image': 'images/house.svg', 'text': 'Livraison à domicile' } %}
                     {% include 'home/delivery_info.html.twig' with { 'image': 'images/truck.svg', 'text': 'Transport frais' } %}
-                    {% include 'home/delivery_info.html.twig' with { 'image': 'images/euro.svg', 'text': 'Gratuite à partir de 20€' } %}
+                    {% include 'home/delivery_info.html.twig' with { 'image': 'images/euro.svg', 'text': "Gratuite à partir de #{freeShipMinCost} €" } %}
                 </div>
             </div>
         </div>
