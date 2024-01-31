@@ -60,7 +60,7 @@ class Order
     #[ORM\Column(length: 255)]
     private ?string $paymentIntentId = null;
 
-    #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderProduct::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderProduct::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $orderProducts;
 
     public const STATE_CONFIRMED = 'confirmed';

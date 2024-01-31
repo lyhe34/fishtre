@@ -12,6 +12,7 @@ class OrderProductFactory
     {
         $orderProduct = new OrderProduct();
 
+        $orderProduct->setProductName($product->getName());
         $orderProduct->setProduct($product);
         $orderProduct->setOrder($order);
 

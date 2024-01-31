@@ -24,10 +24,10 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderProduct::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderProduct::class)]
     private Collection $orderProducts;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: CartProduct::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: CartProduct::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $cartProducts;
 
     public function __construct()
@@ -89,7 +89,6 @@ class Product
     {
         if (!$this->orderProducts->contains($orderProduct)) {
             $this->orderProducts->add($orderProduct);
-            $orderProduct->setProduct($this);
         }
 
         return $this;
@@ -97,12 +96,7 @@ class Product
 
     public function removeOrderProduct(OrderProduct $orderProduct): static
     {
-        if ($this->orderProducts->removeElement($orderProduct)) {
-            // set the owning side to null (unless already changed)
-            if ($orderProduct->getProduct() === $this) {
-                $orderProduct->setProduct(null);
-            }
-        }
+        $this->orderProducts->removeElement($orderProduct);
 
         return $this;
     }

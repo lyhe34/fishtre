@@ -60,7 +60,6 @@ class OrderFactory
             $product = $this->productRepository->find($item->price->product->metadata['product_id']);
             if($product) {
                 $orderProduct = $this->orderProductFactory->create($product, $order);
-                $this->entityManager->persist($orderProduct);
                 $order->addOrderProduct($orderProduct);
             }
         }

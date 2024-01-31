@@ -91,17 +91,6 @@ class StripeService
         return $checkoutSession;
     }
 
-    public function createCustomer(User $user): ?Customer
-    {
-        $customer = Customer::create([
-            'email' => $user->getEmail(),
-        ]);
-
-        $user->setStripeId($customer->id);
-        
-        return $customer;
-    }
-
     public function refundPayment($paymentIntentId) 
     {
         Refund::create(['payment_intent' => $paymentIntentId]);

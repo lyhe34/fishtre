@@ -19,8 +19,10 @@ class OrderProduct implements Stringable
     private ?Order $order = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderProducts')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $productName = null;
 
     public function getId(): ?int
     {
@@ -54,5 +56,17 @@ class OrderProduct implements Stringable
     public function __toString()
     {
         return $this->product->getName();
+    }
+
+    public function getProductName(): ?string
+    {
+        return $this->productName;
+    }
+
+    public function setProductName(string $productName): static
+    {
+        $this->productName = $productName;
+
+        return $this;
     }
 }

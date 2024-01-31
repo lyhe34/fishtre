@@ -8,7 +8,7 @@
                 {% endfor %}
             {% else %}
                 {% for i in 0..2 %}
-                    <span>{{ order.orderProducts[i].product.name }}</span>
+                    <span>{{ order.orderProducts[i].productName }}</span>
                 {% endfor %}
                 {% set remain = order.orderProducts|length - 3 %}
                 <span>+ {{ remain }} autres produits...</span>    
