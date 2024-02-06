@@ -9,14 +9,12 @@ use Doctrine\Persistence\ObjectManager;
 use App\Entity\User;
 use App\Entity\Fish;
 use App\Entity\FishProduct;
-use App\Factory\ProductFactory;
 use App\Service\StripeService;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class AppFixtures extends Fixture
 {
     public function __construct(
         private StripeService $stripeService,
-        private ProductFactory $productFactory,
         private UserPasswordHasherInterface $passwordHasher,
     ) {
 

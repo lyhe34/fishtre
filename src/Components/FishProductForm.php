@@ -55,7 +55,7 @@ class FishProductForm
     {
         $cart = $this->cartManager->getCart();
 
-        $cartProduct = $this->cartProductFactory->create($cart, $this->selectedFishProduct->getProduct());
+        $cartProduct = $this->cartProductFactory->create($cart, $this->selectedFishProduct);
         
         $cart->addCartProduct($cartProduct);
 

@@ -13,28 +13,28 @@ class Address
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 50)]
     private ?string $address1 = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $address2 = null;
 
     #[ORM\Column(length: 5)]
     private ?string $postalCode = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 50)]
     private ?string $city = null;
     
     #[ORM\Column]
     private ?float $shippingCost = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 50)]
     private ?string $firstName = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 50)]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 14)]
     private ?string $phone = null;
 
     public function getId(): ?int

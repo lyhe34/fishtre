@@ -15,4 +15,9 @@ class FileStorage
     {
         return $this->filesDirectory . '/' . $path;
     }
+
+    public function removeFile($path)
+    {
+        unlink($this->resolveUri($path));
+    }
 }

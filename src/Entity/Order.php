@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: "`order`")]
 class Order
 {
+    public const STATE_CONFIRMED = 'confirmed';
+    public const STATE_READY = 'ready';
+    public const STATE_COMPLETE = 'complete';
+    public const STATE_CANCELED = 'canceled';
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -27,34 +32,34 @@ class Order
     #[ORM\Column(length: 10)]
     private ?string $state = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 10)]
     private ?string $mode = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $deliveryDate = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $address1 = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $address2 = null;
 
     #[ORM\Column(length: 5, nullable: true)]
     private ?string $postalCode = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $city = null;
     
     #[ORM\Column]
     private ?float $shippingCost = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $firstName = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 14, nullable: true)]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
@@ -62,11 +67,6 @@ class Order
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderProduct::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $orderProducts;
-
-    public const STATE_CONFIRMED = 'confirmed';
-    public const STATE_READY = 'ready';
-    public const STATE_COMPLETE = 'complete';
-    public const STATE_CANCELED = 'canceled';
 
     public function __construct()
     {

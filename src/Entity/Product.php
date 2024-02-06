@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use App\Attribute\FileColumn;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap(['product' => Product::class, 'fish' => FishProduct::class])]
 class Product
 {
     #[ORM\Id]
@@ -15,13 +19,14 @@ class Product
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100)]
     private ?string $name = null;
 
     #[ORM\Column]
     private ?float $price = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[FileColumn]
     private ?string $image = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderProduct::class)]
@@ -65,6 +70,11 @@ class Product
         return $this;
     }
 
+    public function getPriceInCents(): float
+    {
+        return $this->getPrice() * 100;
+    }
+
     public function getImage(): ?string
     {
         return $this->image;
@@ -99,11 +109,6 @@ class Product
         $this->orderProducts->removeElement($orderProduct);
 
         return $this;
-    }
-
-    public function getPriceInCents(): float
-    {
-        return $this->getPrice() * 100;
     }
 
     /**

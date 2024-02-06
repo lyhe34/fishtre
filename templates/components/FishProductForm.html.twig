@@ -5,13 +5,13 @@
             <h5 class="m-0">{{ this.fish.name }}</h5>
             <p class="price-by-weight m-0 fst-italic">{{ this.fish.pricePerKilo }}€/kg</p>
         </div>
-        <p class="price color-red">{{ this.selectedFishProduct.product.price }} €</p>
+        <p class="price color-red">{{ this.selectedFishProduct.price }} €</p>
         <form class="d-flex flex-column">
             <label>Sélectionnez vos pièces :</label>
             <select data-model="selectedFishProductId" class="color-blue">
                 {% for fishProduct in this.fishProducts %}
                     {% if this.selectedFishProductId == fishProduct.id %}
-                        <option value="{{ fishProduct.id }}" selected>{{ fishProduct.name }}</option>
+                        <option value="{{ fishProduct.id }}" selected>{{ fishProduct.shortName }}</option>
                     {% else %}
                         <option value="{{ fishProduct.id }}">{{ fishProduct.name }}</option>                            
                     {% endif %}        

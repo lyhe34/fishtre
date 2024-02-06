@@ -9,8 +9,7 @@ function initAutocomplete()
     address2Field = document.querySelector("#address_address2");
     postCodeField = document.querySelector("#address_postalCode");
   
-    autocomplete = new google.maps.places.Autocomplete(address1Field, 
-        {
+    autocomplete = new google.maps.places.Autocomplete(address1Field, {
             componentRestrictions: { country: ["fr"] },
             fields: ["address_components", "geometry"],
             types: ["address"],

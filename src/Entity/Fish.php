@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use App\Attribute\FileColumn;
 use App\Repository\FishRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FishRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Fish
 {
     #[ORM\Id]
@@ -15,13 +17,14 @@ class Fish
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 50)]
     private ?string $name = null;
 
     #[ORM\Column]
     private ?float $pricePerKilo = null;
 
     #[ORM\Column(length: 255)]
+    #[FileColumn]
     private ?string $image = null;
 
     #[ORM\Column]
