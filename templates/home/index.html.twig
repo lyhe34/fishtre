@@ -54,34 +54,29 @@
         </div>
 
         {# DELIVERY #}
-        <div class="delivery color-blue">
+        <div class="delivery">
             <div class="container-xl">
                 <div class="text-center">
                     <h3>Livraison</h3>
-                    <p>Les livraisons sont <strong>le Mercredi et le Vendredi</strong> toute la journée.</p>
-                    <p class="fst-italic">Commandez <strong>avant Mardi</strong> pour une livraison <strong>le Mercredi</strong>.</p>
-                    <p class="fst-italic">Commandez <strong>avant Jeudi</strong> pour une livraison <strong>le Vendredi</strong>.</p>
+                    <p class="delivery-days">Les livraisons sont <strong>le Mercredi et le Vendredi</strong> toute la journée.</p>
+                    <p class="delivery-condition fst-italic">Commandez <strong>avant Mardi</strong> pour une livraison <strong>le Mercredi</strong>.</p>
+                    <p class="delivery-condition fst-italic">Commandez <strong>avant Jeudi</strong> pour une livraison <strong>le Vendredi</strong>.</p>
                 </div>
-                <div class="delivery-images d-flex justify-content-evenly align-items-between flex-column flex-md-row">
-                    {% include 'home/delivery_info.html.twig' with { 'image': 'images/house.svg', 'text': 'Livraison à domicile' } %}
-                    {% include 'home/delivery_info.html.twig' with { 'image': 'images/truck.svg', 'text': 'Transport frais' } %}
-                    {% include 'home/delivery_info.html.twig' with { 'image': 'images/euro.svg', 'text': "Gratuite à partir de #{freeShipMinCost} €" } %}
+                <div class="delivery-infos-images d-flex justify-content-evenly align-items-between flex-column flex-md-row">
+                    {% include 'home/delivery_info_image.html.twig' with { 'image': 'images/house.svg', 'text': 'Livraison à domicile' } %}
+                    {% include 'home/delivery_info_image.html.twig' with { 'image': 'images/truck.svg', 'text': 'Transport frais' } %}
+                    {% include 'home/delivery_info_image.html.twig' with { 'image': 'images/euro.svg', 'text': "Gratuite à partir de #{freeShipMinCost} €" } %}
                 </div>
+                <p class="pickup-address color-blue text-center">Ou récupérez directement vos achats au <strong>Port de Palavas-les-Flots.</strong></p>
             </div>
         </div>
 
         {# INFOS #}
         <div class="infos">
             <div class="container-xl">
-                <h3 class="color-blue text-center">Ou récupérez directement vos achats au <strong>Port de Palavas-les-Flots.</strong></h3>
-                <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start bg-cream">
+                <div class="d-flex flex-column align-items-center">
                     <img class="w-100" src={{ asset('images/map.png') }}>
-                    <div class="infos-text d-flex flex-column text-center text-md-start">
-                        <h4 class="color-blue">Adresse :</h4>
-                        <p class="color-turquoise-dark">Port de plaisance, 34250 Palavas-les-Flots</p>
-                        <h4 class="color-blue">Horaires :</h4>
-                        <p class="color-turquoise-dark"> Lundi à Vendredi de 8h à 20h</p>
-                    </div>
+                    
                 </div>
             </div>
         </div>
