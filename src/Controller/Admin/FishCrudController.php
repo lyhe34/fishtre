@@ -23,9 +23,9 @@ class FishCrudController extends AbstractCrudController
             MoneyField::new('pricePerKilo')->setCurrency('EUR')->setStoredAsCents(false),
             BooleanField::new('active')->renderAsSwitch(false),
             BooleanField::new('featured')->renderAsSwitch(false)->setHelp("Affiche ou non le poisson en page d'accueil."),
-            ImageField::new('image')->hideOnIndex()->setUploadDir('file_storage')->setHelp(
+            ImageField::new('image')->hideOnIndex()->setBasePath('file_storage')->setUploadDir('file_storage')->setHelp(
                 "Image qualité faible/moyenne pour des raisons de performance. Essayer d'avoir la même taille d'image pour tout les poissons."
-            ),
+            )->setUploadedFileNamePattern('[uuid]-[name].[extension]'),
             CollectionField::new('fishProducts')->useEntryCrudForm()->setEntryIsComplex()->hideOnIndex()->setRequired(true),
         ];
     }
