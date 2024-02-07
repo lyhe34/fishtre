@@ -10,6 +10,9 @@ import './bootstrap.js';
 import '../node_modules/bootstrap/scss/bootstrap.scss';
 import '../node_modules/bootstrap/dist/js/bootstrap.js';
 
+require('@fortawesome/fontawesome-free/css/all.min.css');
+require('@fortawesome/fontawesome-free/js/all.js');
+
 import './scripts/checkout.js';
 
 import './styles/app.scss';
