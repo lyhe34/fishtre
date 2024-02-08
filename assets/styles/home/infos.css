@@ -1,12 +1,17 @@
 .infos
 {
-    padding-bottom: 4rem;
+    padding-bottom: 3rem;
 }
 
-.infos h3
+.info
 {
-    font-size: 1.2em;
-    margin-bottom: 4rem;
+    margin-top: 2rem;
+}
+
+.info-heading
+{
+    margin-top: 2rem;
+    margin-bottom: 1rem;
 }
 
 .infos-text
