@@ -5,7 +5,6 @@ namespace App\Components;
 use App\Entity\Fish;
 use App\Entity\FishProduct;
 use App\Factory\CartProductFactory;
-use App\Repository\FishProductRepository;
 use App\Service\CartManager;
 use App\Service\ArrayTools;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,7 +34,6 @@ class FishProductForm
     public int $selectedFishProductId;
 
     public function __construct(
-        private FishProductRepository $fishProductRepository,
         private CartManager $cartManager,
         private EntityManagerInterface $entityManager,
         private ArrayTools $arrayTools,

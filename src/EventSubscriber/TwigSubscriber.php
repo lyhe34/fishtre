@@ -16,7 +16,7 @@ class TwigSubscriber implements EventSubscriberInterface
         
     }
 
-    public function onKernerController($event): void
+    public function onKernelController($event): void
     {
         $this->twig->addGlobal('cart', $this->cartManager->getCart());
     }
@@ -24,7 +24,7 @@ class TwigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            ControllerEvent::class => 'onKernerController',
+            ControllerEvent::class => 'onKernelController',
         ];
     }
 }

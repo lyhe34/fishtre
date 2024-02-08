@@ -3,18 +3,13 @@
 namespace App\Service;
 
 use App\Entity\Cart;
-use App\Entity\Product;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Stripe\Stripe;
-use Stripe\Checkout\Session as StripeSession;
-use Stripe\Customer;
-use Stripe\Product as StripeProduct;
-use Stripe\Price as StripePrice;
+use Stripe\Checkout\Session;
 use Stripe\Refund;
-use Stripe\Webhook as StripeWebhook;
+use Stripe\Webhook;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -28,23 +23,6 @@ class StripeService
         private UrlGeneratorInterface $router
     ) {
         Stripe::setApiKey('sk_test_51OKqCHE9VPfeCGyPUb6Q3vdXTOLrBJRavBd0IvB47nqCiUh83aXmlmCRdf187Rl3ouTBm6nB3qT4UgXZ6jjjEKW000FEkrY0vw');
-    }
-
-    public function createStripeProduct(Product $product)
-    {
-        $stripeProduct = StripeProduct::create([
-                'name' => $product->getName(),
-            ]
-        );
-
-        $stripePrice = StripePrice::create([
-                'product' => $stripeProduct->id,
-                'unit_amount' => $product->getPrice() * 100,
-                'currency' => 'eur',
-            ]
-        );  
-
-        return $stripeProduct;
     }
 
     public function createCheckoutSession(Cart $cart, array $params = null)
@@ -83,11 +61,11 @@ class StripeService
         
         if($params !== null) {
             $mergedParams = array_merge($defaultParams, $params);
-            $checkoutSession = StripeSession::create($mergedParams);
+            $checkoutSession = Session::create($mergedParams);
             return $checkoutSession;
         }
 
-        $checkoutSession = StripeSession::create($defaultParams);
+        $checkoutSession = Session::create($defaultParams);
         return $checkoutSession;
     }
 
@@ -104,15 +82,15 @@ class StripeService
 
         $event = null;
 
-        $event = StripeWebhook::constructEvent($payload, $sigHeader, $endpointSecret);
+        $event = Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
 
         return $event;
     }
 
-    public function retrieveEventSession($event): StripeSession
+    public function retrieveEventSession($event): Session
     {
         if($event->type == 'checkout.session.completed') {
-            return StripeSession::retrieve([
+            return Session::retrieve([
                 'id' => $event->data->object->id,
                 'expand' => [
                     'line_items',

@@ -411,7 +411,7 @@
       </trans-unit>
       <trans-unit id="f_lviDt" resname="The password strength is too low. Please use a stronger password.">
         <source>The password strength is too low. Please use a stronger password.</source>
-        <target>La force du mot de passe est trop faible. Veuillez utiliser un mot de passe plus fort.</target>
+        <target>Le mot de passe est trop faible. Veuillez utiliser un mot de passe plus fort.</target>
       </trans-unit>
       <trans-unit id="xfCh6.k" resname="This value contains characters that are not allowed by the current restriction-level.">
         <source>This value contains characters that are not allowed by the current restriction-level.</source>
