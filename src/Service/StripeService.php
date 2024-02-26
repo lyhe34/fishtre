@@ -89,7 +89,7 @@ class StripeService
 
     public function retrieveEventSession($event): Session
     {
-        if($event->type == 'checkout.session.completed' || $event->type == 'checkout.session.expired') {
+        if($event->type == 'checkout.session.completed') {
             return Session::retrieve([
                 'id' => $event->data->object->id,
                 'expand' => [

@@ -151,15 +151,6 @@ class PaymentController extends AbstractController
                     return new JsonResponse('Session Error: ' . $e->getMessage(), 400);
                 }
 
-                if($session->payment_status === 'unpaid') {
-                    foreach($session->line_items as $item) {
-                        $product = $this->productRepository->find($item->price->product->metadata['product_id']);                        
-                        if($product) {
-                            $product->setStock($product->getStock() + $item->quantity);
-                        }
-                    }
-                }
-
                 $order = $this->orderFactory->create($session);
 
                 $this->entityManager->persist($order);

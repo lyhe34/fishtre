@@ -43,11 +43,13 @@ class CartManager
             $this->entityManager->flush();
         }
         
+        $this->cleanCart();
+        
         return $cart;
     }
 
     /**
-     * Cleans the cart by removing inactive or out of stock products.
+     * Cleans the cart by removing inactive products.
      * 
      * @return bool If a product has been removed from cart.
      */
