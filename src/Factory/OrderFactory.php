@@ -8,7 +8,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use App\Entity\Order;
 use App\Repository\UserRepository;
 use App\Service\ConfigManager;
-use App\Service\OrderDating;
+use App\Service\OrderHelper;
 use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +21,7 @@ class OrderFactory
         private ProductRepository $productRepository,
         private EntityManagerInterface $entityManager,
         private UserRepository $userRepository,
-        private OrderDating $orderDating,
+        private OrderHelper $orderHelper,
         private ConfigManager $configManager,
     ) {
         
@@ -35,7 +35,7 @@ class OrderFactory
         $order = new Order();
         $order->setUser($user);
         $order->setDate(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
-        $order->setDeliveryDate($this->orderDating->getOrderDeliveryDate($order->getDate()));
+        $order->setDeliveryDate($this->orderHelper->getOrderDeliveryDate($order->getDate()));
         $order->setState('confirmed');
         $order->setPaymentIntentId($session->payment_intent);
 
@@ -55,11 +55,11 @@ class OrderFactory
             $order->setShippingCost($session->shipping_cost['amount_total'] / 100);
         }
 
-        // set order products
+        // Set order products.
         foreach($session->line_items as $item) {
             $product = $this->productRepository->find($item->price->product->metadata['product_id']);
             if($product) {
-                $orderProduct = $this->orderProductFactory->create($product, $order);
+                $orderProduct = $this->orderProductFactory->create($product, $order, $item->quantity);
                 $order->addOrderProduct($orderProduct);
             }
         }

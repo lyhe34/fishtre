@@ -1,32 +1,30 @@
 @import "app.css";
-
 @import "font.css";
-
 @import "color.css";
+@import "security_form.css";
+@import "card.css";
 
 @import "header.css";
 @import "footer.css";
 
-@import "button.css";
-
-@import "home/banner.css";
-@import "home/fishes.css";
-@import "home/about.css";
-@import "home/delivery.css";
-@import "home/infos.css";
-
-@import "shop/shop.css";
-@import "shop/product.css";
+@import "account/orders.css";
 
 @import "cart/cart.css";
 @import "cart/shipping_address_form.css";
 @import "cart/cart_product_card.css";
 @import "cart/cart_list.css";
+@import "cart/offcanvas_cart.css";
+
+@import "home/banner.css";
+@import "home/featured_categories.css";
+@import "home/about_short.css";
+@import "home/delivery_infos.css";
+@import "home/shop_infos.css";
 
 @import "payment/checkout.css";
 
-@import "fish_card.css";
-
-@import "security_form.css";
-
-@import "account/orders.css";
+@import "shop/shop.css";
+@import "shop/product_form.css";
+@import "shop/category_card.css";
+@import "shop/product_card.css";
+@import "shop/quantity_select.css";

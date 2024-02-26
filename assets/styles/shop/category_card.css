@@ -1,0 +1,12 @@
+.category-card {
+    width: 350px;
+}
+
+.category-card__image {
+    border-radius: 20px;
+}
+
+.category-card__title {
+    margin-top: 0.5rem;
+    font-size: 1.75em;
+}

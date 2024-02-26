@@ -2,6 +2,7 @@
 
 namespace App\Components;
 
+use App\Service\CartManager;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -12,18 +13,18 @@ class CartCount
 {
     use DefaultActionTrait;
 
+    public function __construct(
+        private CartManager $cartManager,
+    ) {
+        
+    }
+
     #[LiveProp]
     public int $count = 0;
 
-    #[LiveListener('cartProductAdded')]
-    public function incrementProductCount()
+    #[LiveListener('cartChanged')]
+    public function setCount()
     {
-        $this->count++;
-    }
-
-    #[LiveListener('cartProductRemoved')]
-    public function decrementProductCount()
-    {
-        $this->count--;
+        $this->count = $this->cartManager->getCart()->getProductsQuantity();
     }
 }

@@ -20,15 +20,50 @@ class CartProductCard
     #[LiveProp(updateFromParent: true)]
     public CartProduct $cartProduct;
 
+    public const MAX_QUANTITY = 10;
+
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private CartManager $cartManager,
+    ) {
+    }
+
     #[LiveAction]
-    public function removeFromCart(CartManager $cartManager, EntityManagerInterface $entityManager)
+    public function removeFromCart()
     {    
-        $cart = $cartManager->getCart();
-        $cart->removeCartProduct($this->cartProduct);
-        $entityManager->persist($cart);
-        $entityManager->flush();
+        $this->cartManager->getCart()->removeCartProduct($this->cartProduct);
+        $this->entityManager->flush();
 
         $this->emit('cartChanged');
-        $this->emit('cartProductRemoved');
+    }
+
+    #[LiveAction]
+    public function incrementQuantity()
+    {
+        $quantity = $this->cartProduct->getQuantity();
+
+        if($quantity >= self::MAX_QUANTITY || $quantity >= $this->cartProduct->getProduct()->getStock()) {
+            return;
+        }
+
+        $this->cartProduct->setQuantity($quantity + 1);
+        $this->entityManager->flush();
+
+        $this->emit('cartChanged');
+    }
+
+    #[LiveAction]
+    public function decrementQuantity()
+    {
+        $quantity = $this->cartProduct->getQuantity();
+
+        if($quantity <= 1) {
+            return;
+        }
+
+        $this->cartProduct->setQuantity($quantity - 1);
+        $this->entityManager->flush();
+
+        $this->emit('cartChanged');
     }
 }

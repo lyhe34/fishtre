@@ -6,87 +6,96 @@
         {# BANNER #}
         <div class="banner bg-blue">
             <div class="container-xl d-flex flex-column flex-lg-row justify-content-center align-items-center">
-                <img class="left-fish d-none d-lg-block" src={{ asset('images/fish.png')}}>
-                <h1 class="text-white text-center">LIVRAISON DE POISSONS FRAIS SUR MONTPELLIER ET ALENTOURS</h1>
+                <img class="banner__left-fish d-none d-lg-block" src={{ asset('images/fish.png')}}>
+                <h1 class="banner__title text-white text-center">LIVRAISON DE POISSONS FRAIS SUR MONTPELLIER ET ALENTOURS</h1>
                 <img class="d-none d-lg-block" src={{ asset('images/fish.png')}}>
-                <img class="banner-divider d-lg-none" src={{ asset('images/divider.svg')}}>
+                <img class="banner__divider d-lg-none" src={{ asset('images/divider.svg')}}>
             </div>
         </div>
 
-        {# FISHES #}
-        <div class="fishes">
+        {# FEATURED CATEGORIES #}
+        <div class="featured-categories">
             <div class="container-xl d-flex flex-column justify-content-center align-items-center">
-                <h3 class="text-center color-blue">Notre sélection :</h3>
+                <h3 class="featured-categories__title text-center">Notre sélection :</h3>
                 <div class="row justify-content-evenly align-items-center">
-                    {% for fish in featuredFishes %}
-                        {% include "fish_card.html.twig" with { 'fish': fish } %}    
+                    {% for featuredCategory in featuredCategories %}
+                        {% include 'shop/category_card.html.twig' with { category: featuredCategory} %}
                     {% endfor %}
                 </div>
-                <button class="bg-blue text-white whiten-hover">Voir nos produits</button>
+                <a class="featured-categories__button flex-center bg-blue whiten-hover"><div class="text-white">Voir nos produits</div></a>
             </div>
         </div>
 
         {# ABOUT #}
-        <div class="home-about bg-turquoise-dark">
-            <div class="container-xl d-flex flex-column align-items-center text-center text-lg-start">
-                <div class="home-about-top d-flex flex-column flex-lg-row align-items-center align-items-lg-start justify-content-between">
-                    <div class="home-about-text">
-                        <h3>Lorem ipsum dolor</h3>
+        <div class="about-short bg-turquoise-dark">
+            <div class="container-xl d-flex flex-column align-items-center text-center text-lg-start ">
+                <div class="about-short__top d-flex flex-column flex-lg-row align-items-center align-items-lg-start justify-content-between">
+                    <div class="about-short__text">
+                        <h3 class="about-short__title text-cream">Lorem ipsum dolor</h3>
                         <br>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sed ligula in lacus tempus viverra sed nec libero.</p> 
+                        <p class="text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sed ligula in lacus tempus viverra sed nec libero.</p> 
                         <br>
-                        <p>Suspendisse aliquet, urna vel posuere pharetra, nulla est aliquam ipsum, lobortis pellentesque ex nisl et libero.</p>
+                        <p class="text-white">Suspendisse aliquet, urna vel posuere pharetra, nulla est aliquam ipsum, lobortis pellentesque ex nisl et libero.</p>
                     </div>
-                    <img src={{ asset('images/landscape1.jpg') }}>
+                    <img class="about-short__image" src={{ asset('images/landscape1.jpg') }}>
                 </div>
-                <div class="home-about-bottom d-flex flex-column flex-lg-row-reverse align-items-center align-items-lg-start justify-content-between">
-                    <div class="home-about-text">
-                        <h3>Lorem ipsum dolor</h3>
+                <div class="about-short__bottom d-flex flex-column flex-lg-row-reverse align-items-center align-items-lg-start justify-content-between">
+                    <div class="about-short__text">
+                        <h3 class="about-short__title text-cream">Lorem ipsum dolor</h3>
                         <br>
-                        <p>Morbi sed ligula in lacus tempus viverra sed nec libero.</p>
+                        <p class="text-white">Morbi sed ligula in lacus tempus viverra sed nec libero.</p>
                         <br>
-                        <p>Suspendisse aliquet, urna vel posuere pharetra, nulla est aliquam ipsum, lobortis pellentesque ex nisl et libero.</p>
+                        <p class="text-white">Suspendisse aliquet, urna vel posuere pharetra, nulla est aliquam ipsum, lobortis pellentesque ex nisl et libero.</p>
                     </div>
-                    <img src={{ asset('images/landscape2.jpg') }}>
+                    <img class="about-short__image" src={{ asset('images/landscape2.jpg') }}>
                 </div>
-                <button class="bg-cream color-blue darken-hover">En Savoir Plus</button>
+                <a class="about-short__button bg-cream flex-center darken-hover"><span class="text-blue">En Savoir Plus</span></a>
             </div>
         </div>
 
         {# DELIVERY #}
-        <div class="delivery">
+        <div class="delivery-infos">
             <div class="container-xl">
                 <div class="text-center">
                     <h3>Livraison</h3>
-                    <p class="delivery-days">Les livraisons sont <strong>le Mercredi et le Vendredi</strong> toute la journée.</p>
-                    <p class="delivery-condition fst-italic">Commandez <strong>avant Mardi</strong> pour une livraison <strong>le Mercredi</strong>.</p>
-                    <p class="delivery-condition fst-italic">Commandez <strong>avant Jeudi</strong> pour une livraison <strong>le Vendredi</strong>.</p>
+                    <p class="delivery-infos__delivery-days">Les livraisons sont <strong>le Mercredi et le Vendredi</strong> toute la journée.</p>
+                    <p class="delivery-infos__delivery-condition fst-italic">Commandez <strong>avant Mardi</strong> pour une livraison <strong>le Mercredi</strong>.</p>
+                    <p class="delivery-infos__delivery-condition fst-italic">Commandez <strong>avant Jeudi</strong> pour une livraison <strong>le Vendredi</strong>.</p>
                 </div>
-                <div class="delivery-infos-images d-flex justify-content-evenly align-items-between flex-column flex-md-row">
-                    {% include 'home/delivery_info_image.html.twig' with { 'image': 'images/house.svg', 'text': 'Livraison à domicile' } %}
-                    {% include 'home/delivery_info_image.html.twig' with { 'image': 'images/truck.svg', 'text': 'Transport frais' } %}
-                    {% include 'home/delivery_info_image.html.twig' with { 'image': 'images/euro.svg', 'text': "Gratuite à partir de #{freeShipMinCost} €" } %}
+                <div class="delivery-infos__images d-flex justify-content-evenly align-items-between flex-column flex-md-row">
+                    <div class="d-flex flex-column align-items-center">
+                        <img src={{ asset('images/house.svg') }} height="60">
+                        <h4 class="delivery-infos__image-text">Livraison à domicile</h4>
+                    </div>
+                    <div class="d-flex flex-column align-items-center">
+                        <img src={{ asset('images/truck.svg') }} height="60">
+                        <h4 class="delivery-infos__image-text">Transport frais</h4>
+                    </div>
+                    <div class="d-flex flex-column align-items-center">
+                        <img src={{ asset('images/euro.svg') }} height="60">
+                        <h4 class="delivery-infos__image-text">Gratuite à partir de {{ freeShipMinCost }}</h4>
+                    </div>
                 </div>
-                <p class="pickup-address color-blue text-center">Ou récupérez directement vos achats au <strong>Port de Palavas-les-Flots.</strong></p>
+                <p class="delivery-infos__pickup-address text-center">Ou récupérez directement vos achats au <strong>Port de Palavas-les-Flots.</strong></p>
             </div>
         </div>
 
         {# INFOS #}
-        <div class="infos">
+        <div class="shop-infos">
             <div class="container-xl">
                 <div class="d-flex flex-column align-items-center">
                     <img class="w-100" src={{ asset('images/map.png') }}>
                     <div class="d-flex flex-column flex-md-row text-center w-100">
                         <div class="d-flex flex-column w-100">
-                            <h3 class="info-heading">Adresse :</h3>
+                            <h3 class="shop-infos__title">Adresse :</h3>
                             <span>Port de plaisance, 34250 Palavas-les-Flots</span>
                         </div>
                         <div class="d-flex flex-column w-100">
-                            <h3 class="info-heading">Horaires :</h3>
+                            <h3 class="shop-infos__title">Horaires :</h3>
                             <span>Lundi au Vendredi, 8h à 20h</span>
                         </div>
                         <div class="d-flex flex-column w-100">
-                            <h3 class="info-heading">Contact :</h3>
+                            <h3 class="shop-infos__title">Contact :</h3>
                             <span class="mb-2">01 22 33 44 55 66</span>
                             <span>address@mail.com</span>
                         </div>

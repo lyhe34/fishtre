@@ -3,7 +3,9 @@
         <p>Votre panier est vide</p>
     {% else %}
         {% for cartProduct in this.cartProducts %}
-            {{ component('CartProductCard', { cartProduct: cartProduct }) }}
+            <ul>
+                {{ component('CartProductCard', { cartProduct: cartProduct }) }}
+            </ul>
         {% endfor %}
     {% endif %}
 </li>

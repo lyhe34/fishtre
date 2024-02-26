@@ -7,12 +7,10 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ORM\InheritanceType('JOINED')]
-#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap(['product' => Product::class, 'fish' => FishProduct::class])]
-class Product
+class Product implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -29,16 +27,26 @@ class Product
     #[FileColumn]
     private ?string $image = null;
 
+    #[ORM\Column]
+    private ?int $stock = null;
+
+    #[ORM\Column]
+    private ?bool $active = null;
+
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderProduct::class)]
     private Collection $orderProducts;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: CartProduct::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $cartProducts;
 
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products', cascade: ['persist'])]
+    private Collection $categories;
+
     public function __construct()
     {
         $this->orderProducts = new ArrayCollection();
         $this->cartProducts = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,6 +91,30 @@ class Product
     public function setImage(?string $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(int $stock): static
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): static
+    {
+        $this->active = $active;
 
         return $this;
     }
@@ -139,5 +171,37 @@ class Product
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

@@ -5,7 +5,7 @@ namespace App\Service;
 use DateTime;
 use DateTimeInterface;
 
-class OrderDating
+class OrderHelper
 {
     private array $days = [
         1 => 'Monday',

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'header.html.twig' %}
+    <main class="d-flex align-items-center">
+        {{ component('ProductForm', { product: product } ) }}
+    </main>
+    {% include 'footer.html.twig' %}
+{% endblock %}

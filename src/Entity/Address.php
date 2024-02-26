@@ -4,9 +4,10 @@ namespace App\Entity;
 
 use App\Repository\AddressRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
-class Address
+class Address implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,9 +25,6 @@ class Address
 
     #[ORM\Column(length: 50)]
     private ?string $city = null;
-    
-    #[ORM\Column]
-    private ?float $shippingCost = null;
 
     #[ORM\Column(length: 50)]
     private ?string $firstName = null;
@@ -90,23 +88,6 @@ class Address
         return $this;
     }
 
-    public function getShippingCost(): ?float
-    {
-        return $this->shippingCost;
-    }
-
-    public function setShippingCost(float $shippingCost): static
-    {
-        $this->shippingCost = number_format($shippingCost, 2);
-
-        return $this;
-    }
-
-    public function getFullName()
-    {
-        return $this->address1 . ' ' . $this->postalCode . ' ' . $this->city;
-    }
-
     public function getFirstName(): ?string
     {
         return $this->firstName;
@@ -141,5 +122,10 @@ class Address
         $this->phone = $phone;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->address1 . ' ' . $this->postalCode . ' ' . $this->city;
     }
 }

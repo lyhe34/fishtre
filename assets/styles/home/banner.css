@@ -1,39 +1,30 @@
-.banner
-{
+.banner {
     padding: 2rem 0;
 }
 
-.banner h1
-{
+.banner__title {
     font-size: 3.5em;
     margin-bottom: 1rem;
 }
 
-.left-fish
-{
+.banner__left-fish {
     transform: scaleX(-1);
 }
 
-.banner-divider
-{
+.banner__divider {
     width: 80%;
     max-width: 550px;
 }
 
-
-@media (max-width: 992px) 
-{
-    .banner h1
-    {
+@media (max-width: 992px) {
+    .banner__title {
         font-size: 3em;
         margin-bottom: 1rem;
     }
 }
 
-@media (max-width: 576px) 
-{
-    .banner h1
-    {
+@media (max-width: 576px) {
+    .banner__title {
         font-size: 2.5em;
     }
 }

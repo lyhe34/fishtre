@@ -1,0 +1,10 @@
+<div {{ attributes }}>
+    {{ component('CartList', { cartProducts: cartManager.cart.cartProducts }) }}
+    {% if not this.isCartEmpty %}
+    <div class="d-flex justify-content-between align-items-center">
+        <h5 class="color-blue">Sous-Total :</h5>
+        {{ component('CartPrice', { class: 'offcanvas-cart__price text-red', price: cartManager.cart.price }) }}
+    </div>
+    <a class="offcanvas-cart__button bg-blue text-white bg-turquoise-dark-hover w-100 flex-center button-blue" href="{{ path('app_cart') }}">Paiement</a>
+    {% endif %}
+</div>

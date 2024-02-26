@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Factory\OrderFactory;
+use App\Repository\ProductRepository;
 use App\Service\StripeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\CartManager;
 use App\Service\ConfigManager;
+use App\Service\Shipping;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +25,8 @@ class PaymentController extends AbstractController
         private EntityManagerInterface $entityManager,
         private OrderFactory $orderFactory,
         private ConfigManager $configManager,
+        private Shipping $shipping,
+        private ProductRepository $productRepository,
     ) {
         
     }
@@ -30,18 +34,40 @@ class PaymentController extends AbstractController
     #[Route('/payment/checkout/shipping', name: 'app_payment_checkout_delivery')]
     public function checkoutShipping(): Response
     {
-        /** @var User */
-        $user = $this->getUser();
+        if($this->cartManager->getCart()->getCartProducts()->count() <= 0) {
+            return $this->redirectToRoute('app_cart');
+        }
 
-        $cart = $user->getCart();
-        $shippingCost = $cart->getTotalPrice() >= $this->configManager->getConfig()->getFreeShipMinCost() ? 0 : $user->getAddress()->getShippingCost() * 100;
+        /** @var user */
+        $user = $this->getUser();
+        $address = $user->getAddress();
+
+        if($address === null) {
+            return $this->redirectToRoute('app_cart');
+        }
+
+        if(!$this->shipping->isAddressAllowed($address)) {
+            $this->addFlash('cart_error', "Votre addresse n'est plus valide.");
+            $user->setAddress(null);
+            $this->entityManager->flush();
+            return $this->redirectToRoute('app_cart');
+        }
+
+        if($this->cartManager->cleanCart()) {
+            $this->addFlash('cart_error', "Certains produits ne sont plus disponbles.");
+            return $this->redirectToRoute('app_cart');
+        }
+
+        $this->entityManager->flush();
+
+        $shippingCost = $this->shipping->calculateShippingCost($this->cartManager->getCart()->getPrice(), $address);
 
         $checkoutSession = $this->stripeService->createCheckoutSession($this->cartManager->getCart(), [
             'shipping_options' => [[
                 'shipping_rate_data' => [
                     'type' => 'fixed_amount',
                     'fixed_amount' => [
-                        'amount' => $shippingCost,
+                        'amount' => $shippingCost * 100,
                         'currency' => 'eur',
                     ],
                     'display_name' => 'Livraison à domicile',
@@ -57,6 +83,15 @@ class PaymentController extends AbstractController
     #[Route('/payment/checkout/pickup', name: 'app_payment_checkout_pickup')]
     public function checkoutPickup(): Response
     {
+        if($this->cartManager->getCart()->getCartProducts() <= 0) {
+            return $this->redirectToRoute('app_cart');
+        }
+        
+        if($this->cartManager->cleanCart()) {
+            $this->addFlash('cart_error', "Certains produits ne sont plus disponbles.");
+            return $this->redirectToRoute('app_cart');
+        }
+
         $checkoutSession = $this->stripeService->createCheckoutSession($this->cartManager->getCart());
 
         return $this->render('payment/checkout.html.twig', [
@@ -71,7 +106,6 @@ class PaymentController extends AbstractController
         
         $cart->clear();
 
-        $this->entityManager->persist($cart);
         $this->entityManager->flush();
 
         return $this->render('payment/success.html.twig', [
@@ -84,6 +118,7 @@ class PaymentController extends AbstractController
         /** @var User */
         $user = $this->getUser();
 
+        // Verify that this order is from the user.
         if($order->getUser()->getId() !== $user->getId()) {
             return $this->redirectToRoute('app_orders');
         }
@@ -91,7 +126,6 @@ class PaymentController extends AbstractController
         if($order->getState() === Order::STATE_CONFIRMED) {
             $this->stripeService->refundPayment($order->getPaymentIntentId());
             $order->setState(Order::STATE_CANCELED);
-            $this->entityManager->persist($order);
             $this->entityManager->flush();
         }
 
@@ -115,6 +149,15 @@ class PaymentController extends AbstractController
                     $session = $this->stripeService->retrieveEventSession($event);
                 } catch (ApiErrorException $e) {
                     return new JsonResponse('Session Error: ' . $e->getMessage(), 400);
+                }
+
+                if($session->payment_status === 'unpaid') {
+                    foreach($session->line_items as $item) {
+                        $product = $this->productRepository->find($item->price->product->metadata['product_id']);                        
+                        if($product) {
+                            $product->setStock($product->getStock() + $item->quantity);
+                        }
+                    }
                 }
 
                 $order = $this->orderFactory->create($session);

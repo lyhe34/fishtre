@@ -9,12 +9,19 @@
     src: url(../fonts/Inria/InriaSans-Regular.ttf);
 }
 
-.inria-serif
-{
+@font-face {
+    font-family: "Exmouth";
+    src: url(../fonts/Exmouth/exmouth_.ttf);
+}
+
+.inria-serif {
     font-family: "InriaSerif";
 }
 
-.inria-sans
-{
+.inria-sans {
     font-family: "InriaSans";
+}
+
+.exmouth {
+    font-family: "Exmouth";
 }

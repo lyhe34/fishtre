@@ -22,10 +22,4 @@ class CartController extends AbstractController
             'address' => $address,
         ]);
     }
-
-    #[Route('/cart/add/{product}', name: 'app_cart_add')]
-    public function add()
-    {
-        
-    }
 }

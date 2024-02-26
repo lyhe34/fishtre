@@ -1,5 +1,4 @@
-:root
-{
+:root {
     --blue: #265073;
     --turquoise-dark: #2D9596;
     --turquoise-light: #9AD0C2;
@@ -7,47 +6,53 @@
     --red: #c24040;
 }
 
-.bg-blue
-{
+.bg-blue,
+.bg-blue-hover:hover {
     background-color: #265073;
 }
 
-.bg-turquoise-dark
-{
+.bg-turquoise-dark,
+.bg-turquoise-dark-hover:hover {
     background-color: #2D9596;
 }
 
-.bg-turquoise-light
-{
+.bg-turquoise-light,
+.bg-turquoise-light-hover:hover {
     background-color: #9AD0C2;
 }
 
-.bg-cream
-{
+.bg-cream,
+.bg-cream-hover:hover {
     background-color: #ECF4D6;
 }
 
-.color-blue
-{
+.bg-transparent {
+    background-color: transparent;
+}
+
+.bg-blue,
+.bg-turquoise-dark,
+.bg-turquoise-light,
+.bg-cream {
+    transition: background-color 0.15s ease-in-out;
+}
+
+.text-blue {
     color: #265073;
 }
 
-.color-turquoise-dark
-{
+.text-turquoise-dark {
     color: #2D9596;
 }
 
-.color-turquoise-light
-{
+.text-turquoise-light {
     color: #9AD0C2;
 }
 
-.color-cream
-{
+.text-cream {
     color: #ECF4D6;
 }
 
-.color-red
-{
+.text-red {
     color: #c24040;
 }

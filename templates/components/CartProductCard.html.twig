@@ -1,15 +1,18 @@
-<ul {{ attributes }} class="cpc d-flex justify-content-between align-items-center" data-live-id="{{ this.cartProduct.id }}">
-    <div class="d-flex flex-center">
-        <img class="cpc-product-image" src={{ path('image', { img: this.cartProduct.product.image }) }} alt="">
-        <div class="cpc-text d-flex flex-column justify-content-between">
-            <h5 class="cpc-product-name">{{ this.cartProduct.product.name }}</h5>
-            <div class="cpc-product-price-container d-flex align-items-center">
-                <p class="cpc-product-price">{{ this.cartProduct.product.price }} €</p>
+<div {{ attributes }} class="cart-product-card d-flex justify-content-between align-items-center" data-live-id="{{ this.cartProduct.id }}">
+    <div class="d-flex justify-content-start">
+        <img class="cart-product-card__image" src={{ path('image', { img: this.cartProduct.product.image }) }} alt="">
+        <div class="d-flex flex-column">
+            <span class="cart-product-card__title">{{ this.cartProduct.quantity }} x {{ this.cartProduct.product.name }}</span>
+            <div class="cart-product-card__quantity-select d-flex">
+                <button class="quantity-select__button" data-action="live#action" data-action-name="prevent|decrementQuantity" data-loading="addAttribute(disabled)"><i class="quantity-select__minus fa-solid fa-minus"></i></button>
+                <span class="quantity-select__quantity text-center">{{ this.cartProduct.quantity }}</span>
+                <button class="quantity-select__button" data-action="live#action" data-action-name="prevent|incrementQuantity" data-loading="addAttribute(disabled)"><i class="quantity-select__plus fa-solid fa-plus"></i></button>
             </div>
+            <p class="cart-product-card__price text-red">{{ this.cartProduct.price }} €</p>
         </div>
     </div>
     <div class="flex-center">
-        <div class="loader" data-loading="show"></div>
+        <div class="cart-product-card__loader loader" data-loading="show"></div>
     </div>
-    <button class="cpc-remove-button" data-action="live#action" data-action-name="removeFromCart" data-loading="hide"></button>
-</ul> 
+    <button class="cart-product-card__button h-100" data-action="live#action" data-action-name="removeFromCart" data-loading="hide"></button>
+</div> 

@@ -2,33 +2,39 @@
 
 namespace App\Controller;
 
-use App\Entity\Fish;
+use App\Entity\Product;
+use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\FishRepository;
 
+#[Route('/shop')]
 class ShopController extends AbstractController
 {
-    #[Route('/shop', name: 'app_shop')]
-    public function index(FishRepository $fishRepository): Response
-    {
-        $fishes = $fishRepository->findBy(['active' => true]);
+    public function __construct(
+        private CategoryRepository $categoryRepository,
+    ) { 
+        
+    }
 
-        return $this->render('shop/index.html.twig', [
-            'fishes' => $fishes,
+    #[Route('/category/{categoryName}', name: 'app_shop_category')]
+    public function category(string $categoryName)
+    {
+        $category = $this->categoryRepository->findOneBy(['name' => $categoryName]);
+
+        if($category === null) {
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('shop/category.html.twig', [
+            'category' => $category,
         ]);
     }
 
-    #[Route('/shop/product/{fish}', name: 'app_shop_product')]
-    public function product(Fish $fish) : Response
+    #[Route('/product/{product}', name: 'app_shop_product')]
+    public function product(Product $product)
     {
-        if($fish->getFishProducts()->count() <= 0) {
-            return $this->redirectToRoute('app_shop');
-        }
-
-        return $this->render('shop/fish_product.html.twig', [
-            'fish' => $fish,
+        return $this->render('shop/product.html.twig', [
+            'product' => $product,
         ]);
     }
 }

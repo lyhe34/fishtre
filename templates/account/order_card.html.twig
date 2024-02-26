@@ -1,5 +1,5 @@
 <div class="order d-flex flex-column flex-lg-row justify-content-center">
-    <div class="order-section order-start d-flex flex-column">
+    <div class="order__section order-start d-flex flex-column">
         <span>Total : <span class="color-red">{{ order.totalPrice }} €</span></span>
         <div class="d-flex flex-column">
             {% if order.orderProducts|length <= 4 %}
@@ -15,7 +15,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="order-section order-center d-flex flex-column justify-content-center">
+    <div class="order__section order-center d-flex flex-column justify-content-center">
         <span><strong>Statut : </strong>
                 {% if order.state == 'confirmed' %}
                     Confirmée
@@ -35,7 +35,7 @@
         <span><strong>Commande effectuée le : </strong>{{ order.date|date("d/m/Y") }}</span>
         <span><strong>Numéro de commande : </strong>{{ order.id }}</span>
     </div>
-    <div class="order-section order-end flex-center flex-column text-center">
+    <div class="order__section order-end flex-center flex-column text-center">
         <a class="p-2">Voir la commande</a>
         {% if order.state == 'confirmed' %}
             <a class="p-2 color-red flex-center" href="{{ path('app_refund', { order: order.id } )}}">Annuler la commande</a>

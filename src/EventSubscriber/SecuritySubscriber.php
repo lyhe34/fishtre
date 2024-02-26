@@ -29,6 +29,10 @@ class SecuritySubscriber implements EventSubscriberInterface
 
         $sessionCart = $this->sessionStorage->get('cart', Cart::class);
 
+        if($sessionCart === null) {
+            return;
+        }
+        
         $userCart->setCartProducts($sessionCart->getCartProducts());
 
         $this->entityManager->persist($userCart);

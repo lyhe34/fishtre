@@ -1,0 +1,8 @@
+.quantity-select__button {
+    background-color: transparent;
+}
+
+.quantity-select__quantity {
+    width: 20px;
+    border: none;
+}

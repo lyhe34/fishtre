@@ -1,0 +1,20 @@
+.product-card {
+    width: 350px;
+}
+
+.product-card__image {
+    border-radius: 20px;
+}
+
+.product-card__body {
+    margin-top: 0.75rem;
+}
+
+.product-card__title {
+    font-size: 1.15em;
+    max-width: 75%;
+}
+
+.product-card__price {
+    font-size: 1.25em;
+}

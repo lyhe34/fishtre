@@ -32,7 +32,6 @@ class StripeService
         $user = $this->security->getUser();
 
         foreach($cart->getCartProducts()->toArray() as $cartProduct) {
-            // array_push($items, ['price' => $cartProduct->getProduct()->getStripePriceId(), 'quantity' => 1]);
             array_push($items, [
                 'price_data' => [
                     'product_data' => [
@@ -44,7 +43,7 @@ class StripeService
                     'currency' => 'eur',
                     'unit_amount' => $cartProduct->getProduct()->getPriceInCents(),
                 ],
-                'quantity' => 1,
+                'quantity' => $cartProduct->getQuantity(),
             ]);
         }
 
@@ -57,6 +56,7 @@ class StripeService
                 'user_id' => $user->getId()
             ],
             'customer_email' => $user->getEmail(),
+            'expires_at' => time() + (60 * 30),
         ];
         
         if($params !== null) {
@@ -78,7 +78,7 @@ class StripeService
     {
         $payload = $request->getContent();
         $sigHeader = $request->headers->get('Stripe-Signature');
-        $endpointSecret = 'whsec_xBeI8BjQ1HLyXJmGBJCYm3Yd7w5NWdZl';
+        $endpointSecret = 'whsec_cacbadb14f945992a2c70a2741a64dcdd1931d824a37feae9d551184c7b8535f';
 
         $event = null;
 
@@ -89,7 +89,7 @@ class StripeService
 
     public function retrieveEventSession($event): Session
     {
-        if($event->type == 'checkout.session.completed') {
+        if($event->type == 'checkout.session.completed' || $event->type == 'checkout.session.expired') {
             return Session::retrieve([
                 'id' => $event->data->object->id,
                 'expand' => [

@@ -1,0 +1,14 @@
+.offcanvas-cart__close-image {
+    font-size: 1.5em;
+}
+
+.offcanvas-cart__price {
+    font-size: 1.3em;
+}
+
+.offcanvas-cart__button {
+    margin-top: 1rem;
+    font-size: 1.1em;
+    height: 50px;
+    border-radius: 7px;
+}

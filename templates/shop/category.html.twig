@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block body %}
+    {% include 'header.html.twig' %}
+    <main>
+        <h1 class=" text-center py-4">{{ category.name }}</h1>
+        <div class="container-xl mt-5">
+            <div class="row justify-content-evenly align-items-center">
+                {% for category in category.childCategories %}
+                    {% include "shop/category_card.html.twig" with { 'category': category } %}    
+                {% endfor %}
+            </div>
+            <div class="row justify-content-evenly align-items-center">
+                {% for product in category.products %}
+                    {% include "shop/product_card.html.twig" with { 'product': product } %}    
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+    {% include 'footer.html.twig' %}
+{% endblock %}

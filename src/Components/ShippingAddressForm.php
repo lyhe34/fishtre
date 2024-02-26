@@ -17,7 +17,6 @@ use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\TwigComponent\Attribute\PostMount;
-use Symfony\UX\TwigComponent\Attribute\PreMount;
 
 #[AsLiveComponent]
 class ShippingAddressForm extends AbstractController
@@ -29,9 +28,12 @@ class ShippingAddressForm extends AbstractController
     public ?Address $initialFormData;
 
     #[LiveProp]
-    public float $totalPrice;
+    public ?float $shippingCost;
 
-    #[LiveProp(writable: true)]
+    #[LiveProp]
+    public ?float $totalPrice;
+
+    #[LiveProp(writable: true, onUpdated: 'update')]
     public string $mode = "delivery";
 
     #[LiveProp]
@@ -43,30 +45,16 @@ class ShippingAddressForm extends AbstractController
     public function __construct(
         private CartManager $cartManager,
         private ConfigManager $configManager,
+        private Shipping $shipping,
     ) {
 
-    }
-
-    #[PreMount]
-    public function preMount()
-    {
-        /** @var User */
-        if($user = $this->getUser()) {
-            $this->modifyAddress = $user->getAddress() === null;
-        }
     }
 
     #[PostMount]
     public function postMount()
     {
-        $subTotal = $this->cartManager->getCart()->getTotalPrice();
-        if($this->initialFormData) {
-            $this->totalPrice = $subTotal + $this->initialFormData->getShippingCost() ?? 0;
-        } else {
-            $this->totalPrice = $subTotal;
-        }
+        $this->update();
     }
-
 
     protected function instantiateForm(): FormInterface
     {
@@ -80,7 +68,7 @@ class ShippingAddressForm extends AbstractController
 
         $this->initialFormData = $this->getForm()->getData();
 
-        $distance = $shipping->getAddressDistance($this->initialFormData->getFullName());
+        $distance = $shipping->getAddressDistance($this->initialFormData);
 
         if(!$distance) {
             $this->error = "Veuillez entrer une adresse valide.";
@@ -92,18 +80,15 @@ class ShippingAddressForm extends AbstractController
             return;
         }
 
-        $cost = $shipping->calculateCost($distance);
-
         /** @var User */
         $user = $this->getUser();
 
-        $this->initialFormData->setShippingCost($cost);
         $user->setAddress($this->initialFormData);
 
-        $entityManager->persist($user);
         $entityManager->persist($this->initialFormData);
         $entityManager->flush();
 
+        $this->update();
         $this->modifyAddress = false;
     }
 
@@ -113,10 +98,32 @@ class ShippingAddressForm extends AbstractController
         $cart = $this->cartManager->getCart();
         
         if($cart->getCartProducts()->isEmpty()) {
-            return $this->redirectToRoute('app_shop');
+            return $this->redirectToRoute('app_home');
         }
 
-        $subTotal = $cart->getTotalPrice();
-        $this->totalPrice = $subTotal + $this->initialFormData->getShippingCost() ?? 0;
+        $this->update();
+    }
+
+    public function update()
+    {
+        $cartPrice = $this->cartManager->getCart()->getPrice();
+
+        if($this->mode === 'pickup') {
+            $this->shippingCost = 0;
+            $this->totalPrice = $cartPrice;
+        } else {
+            /** @var User */
+            $user = $this->getUser();
+
+            if(!$address = $user->getAddress()) {
+                $this->shippingCost = null;
+                $this->totalPrice = null;
+            }
+
+            $shippingCost = $this->shipping->calculateShippingCost($cartPrice, $address->getFullAddress());
+
+            $this->shippingCost = $shippingCost;
+            $this->totalPrice = $cartPrice + $this->shippingCost;
+        }
     }
 }

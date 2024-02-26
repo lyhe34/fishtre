@@ -12,10 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[AsCommand(
-    name: 'make:admin',
-    description: 'Create the main admin account',
-)]
+#[AsCommand(name: 'make:admin', description: 'Create the main admin account',)]
 class CreateAdminCommand extends Command
 {
     public function __construct(
@@ -28,12 +25,14 @@ class CreateAdminCommand extends Command
     protected function configure(): void
     {
         $this
+            ->addArgument('email', InputArgument::REQUIRED, 'Email')
             ->addArgument('password', InputArgument::REQUIRED, 'Password')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $email = $input->getArgument('email');
         $password = $input->getArgument('password');
 
         $admin = new User();
@@ -41,7 +40,7 @@ class CreateAdminCommand extends Command
 
         $hashedPassword = $this->userPasswordHasher->hashPassword($admin, $password);
 
-        $admin->setEmail('admin@poissonnerie.fr');
+        $admin->setEmail($email);
         $admin->setPassword($hashedPassword);
         $admin->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
         $admin->setCart($cart);

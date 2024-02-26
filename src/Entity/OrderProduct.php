@@ -13,6 +13,12 @@ class OrderProduct implements Stringable
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+    
+    #[ORM\Column(length: 255)]
+    private ?string $productName = null;
+
+    #[ORM\Column]
+    private ?int $quantity = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderProducts')]
     #[ORM\JoinColumn(nullable: false)]
@@ -21,12 +27,33 @@ class OrderProduct implements Stringable
     #[ORM\ManyToOne(inversedBy: 'orderProducts')]
     private ?Product $product = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $productName = null;
-
     public function getId(): ?int
     {
         return $this->id;
+    }
+    
+    public function getProductName(): ?string
+    {
+        return $this->productName;
+    }
+
+    public function setProductName(string $productName): static
+    {
+        $this->productName = $productName;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
+
+        return $this;
     }
 
     public function getOrder(): ?Order
@@ -56,17 +83,5 @@ class OrderProduct implements Stringable
     public function __toString()
     {
         return $this->product->getName();
-    }
-
-    public function getProductName(): ?string
-    {
-        return $this->productName;
-    }
-
-    public function setProductName(string $productName): static
-    {
-        $this->productName = $productName;
-
-        return $this;
     }
 }

@@ -1,5 +1,32 @@
-.finalize-button,
-.confirm-address-button
-{
+.shipping-address-form__mode-line,
+.shipping-address-form__total-line {
+    margin-top: 1rem;
+}
+
+.shipping-address-form__mode-selection {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.shipping-address-form__pickup-radio {
+    margin-top: 0.5rem;
+}
+
+.shipping-address-form__total-price {
+    font-size: 1.25em;
+}
+
+.shipping-address-form__address-title {
+    margin-bottom: 0.5rem;
+}
+
+.shipping-address-form__modify-button {
+    margin-top: 0.5rem;
+}
+
+.shipping-address-form__confirm-button,
+.shipping-address-form__finalize-button {
+    margin-top: 1rem;
     height: 50px;
+    border-radius: 7px;
 }

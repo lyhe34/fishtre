@@ -18,7 +18,7 @@ class CartPrice
     use DefaultActionTrait;
 
     #[LiveProp]
-    public float $totalPrice;
+    public float $price;
     
     public function __construct(
         private CartManager $cartManager,
@@ -29,6 +29,6 @@ class CartPrice
     #[LiveListener('cartChanged')]
     public function onCartChanged()
     {
-        $this->totalPrice = $this->cartManager->getCart()->getTotalPrice();
+        $this->price = $this->cartManager->getCart()->getPrice();
     }
 }

@@ -1,29 +1,6 @@
-.orders-head
-{
-    margin-top: 3rem;
-    margin-bottom: 1.5rem;
-}
 
-.order 
-{
-    margin: 1.5rem 0;
-    padding: 1rem 2rem;
-    
-    border-color: var(--blue);    
-    border-radius: 6px;
-    border-style: solid;
-    border-width: 1px;
-}
-
-.order-section
-{
-    margin: 1rem 0;
-}
 
 @media (min-width: 992px)  
 {
-    .order > .order-section:not(:last-child)
-    {
-        margin-right: 2rem;
-    }
+
 }

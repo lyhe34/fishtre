@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Repository\CartRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Timestampable;
 
 #[ORM\Entity(repositoryClass: CartRepository::class)]
 class Cart
@@ -14,6 +16,10 @@ class Cart
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Timestampable(on: 'update')]
+    private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\OneToOne(mappedBy: 'cart')]
     private ?User $user = null;
@@ -29,6 +35,18 @@ class Cart
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     public function getUser(): ?User
@@ -85,15 +103,26 @@ class Cart
         }
     }
 
-    public function getTotalPrice(): float
+    public function getPrice(): float
     {
         $total = 0;
 
         foreach($this->cartProducts as $cartProduct) {
-            $total += $cartProduct->getProduct()->getPrice();
+            $total += $cartProduct->getPrice();
         }
 
         return $total;
+    }
+
+    public function getProductsQuantity(): int
+    {
+        $count = 0;
+
+        foreach($this->cartProducts as $cartProduct) {
+            $count += $cartProduct->getQuantity();
+        }
+
+        return $count;
     }
 
     public function clear()

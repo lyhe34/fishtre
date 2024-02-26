@@ -4,14 +4,19 @@
 
 {% block body %}
     {% include 'header.html.twig' %}
-    <main class="container-xl d-flex flex-column flex-md-row align-items-md-start justify-content-center cart">
-        <div class="d-flex flex-column cart-list-container">
-            <h1>Panier</h1>
-            {{ component('CartList', { cartProducts: cartManager.cart.cartProducts.toArray }) }}
+    {% for flash_error in app.flashes('cart_error') %}
+    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    <main>
+        <div class="cart container-xl d-flex flex-column flex-md-row">
+            <div class="cart__cart-list d-flex flex-column w-100">
+                <h1 class="cart__title">Panier</h1>
+                {{ component('CartList', { cartProducts: cartManager.cart.cartProducts }) }}
+            </div>
+            {% if cartManager.cart.cartProducts|length > 0 %}
+                {{ component('ShippingAddressForm', { class: 'cart__shipping-address-form w-100', initialFormData: address, modifyAddress: app.user.address == null, cartPrice: cartManager.cart.price }) }}   
+            {% endif %}
         </div>
-        {% if cartManager.cart.cartProducts|length > 0 %}
-            {{ component('ShippingAddressForm', { initialFormData: address }) }}   
-        {% endif %}
     </main>
     {% include 'footer.html.twig' %}
 {% endblock %}

@@ -1,69 +1,18 @@
-.cart
-{
-    margin: 2rem auto;
+.cart {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
 }
 
-.cart h1
-{
+.cart__title {
     margin-bottom: 2rem;
 }
 
-.cart-price-infos div
-{
-    margin: 1rem 0;
-}
-
-.cart-delivery-container form,
-.current-address
-{
-    margin-top: 1rem;
-}
-
-.total-price
-{
-    font-size: 1.25em;
-}
-
-.current-address span:nth-of-type(1)
-{
-    font-size: 1.1em;
-    margin-bottom: 0.5rem;
-}
-
-.modify-address-button
-{
-    margin-top: 0.25rem;
-    margin-bottom: 1.5rem;
-}
-
-.address-component
-{
-    font-size: 0.95em;
-}
-
-.finalize-button,
-.confirm-address-button
-{
-    height: 50px;
-}
-
-.confirm-address-button
-{
-    margin-top: 1rem;
-}
-
-@media (min-width: 768px) 
-{
-    .cart-list-container
-    {
-        width: 70%;
-        max-width: 500px;
+@media (min-width: 768px) {
+    .cart__cart-list {
         margin-right: 2rem;
     }
 
-    .cart-delivery-container
-    {
-        max-width: 500px;
-        margin: 0;
+    .cart__shipping-address-form {
+        margin-left: 2rem;
     }
 }
