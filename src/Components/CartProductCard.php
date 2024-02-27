@@ -40,6 +40,10 @@ class CartProductCard
     #[LiveAction]
     public function incrementQuantity()
     {
+        if(!$this->cartProduct->getProduct()->isActive()) {
+            return;
+        }
+
         $quantity = $this->cartProduct->getQuantity();
 
         if($quantity >= self::MAX_QUANTITY || $quantity >= $this->cartProduct->getProduct()->getStock()) {

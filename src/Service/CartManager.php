@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Entity\Cart;
 use App\Entity\User;
-use App\Entity\Product;
 use App\Factory\CartProductFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -23,7 +22,8 @@ class CartManager
     }
 
     /**
-     * Get the user cart, either from an authenticated user, or else from the session. If no cart session has been found, create a new one.
+     * Get the user cart, either from an authenticated user, or else from the session. 
+     * If no cart session has been found, create a new one.
      * 
      * @return Cart
      */
@@ -42,52 +42,7 @@ class CartManager
             $this->entityManager->persist($cart);
             $this->entityManager->flush();
         }
-        
-        $this->cleanCart();
-        
+                
         return $cart;
-    }
-
-    /**
-     * Cleans the cart by removing inactive products.
-     * 
-     * @return bool If a product has been removed from cart.
-     */
-    public function cleanCart(): bool 
-    {
-        $cart = $this->getCart();
-        $removed = false;
-
-        foreach($cart->getCartProducts()->getValues() as $cartProduct) {
-            if(!$cartProduct->getProduct()->isActive()) {
-                $cart->removeCartProduct($cartProduct);
-                $removed = true;
-            }
-        }
-
-        $this->entityManager->flush();
-        return $removed;
-    }
-
-    public function getTotalPrice(): ?float
-    {
-        /** @var User */
-        if(!$user = $this->security->getUser()) {
-            return null;
-        }
-
-        if(!$address = $user->getAddress()) {
-            return null;
-        }
-
-        $cartPrice = $this->getCart()->getPrice();
-
-        $shippingCost = $this->shipping->calculateShippingCost($cartPrice, $address);
-
-        if($shippingCost === null) {
-            return null;
-        }
-
-        return $this->getCart()->getPrice() + $shippingCost;
     }
 }

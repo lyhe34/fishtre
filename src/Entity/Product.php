@@ -109,7 +109,18 @@ class Product implements Stringable
 
     public function isActive(): ?bool
     {
-        return $this->active;
+        if(!$this->active || $this->categories->isEmpty()) {
+            return false;
+        }
+
+        // Check if product has at least one active category
+        foreach($this->categories as $category) {
+            if($category->isActive()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function setActive(bool $active): static

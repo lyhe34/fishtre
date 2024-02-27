@@ -7,14 +7,16 @@ use App\Factory\CartProductFactory;
 use App\Repository\CartProductRepository;
 use App\Service\CartManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
+use Symfony\Component\Scheduler\Attribute\AsSchedule;
 
 #[AsLiveComponent]
-class ProductForm
+class ProductForm extends AbstractController
 {
     use ComponentToolsTrait;
     use DefaultActionTrait;
@@ -39,6 +41,10 @@ class ProductForm
     #[LiveAction]
     public function incrementQuantity()
     {
+        if(!$this->product->isActive()) {
+
+        }
+
         if($this->quantity > self::MAX_QUANTITY || $this->quantity > $this->product->getStock()) {
             return;
         }
@@ -64,19 +70,19 @@ class ProductForm
     #[LiveAction]
     public function addToCart()
     {
-        $cartProduct = $this->cartProductRepository->findOneBy(['cart' => $this->cartManager->getCart(), 'product' => $this->product]);
+        $existingCartProduct = $this->cartProductRepository->findOneBy(['cart' => $this->cartManager->getCart(), 'product' => $this->product]);
         $cart = $this->cartManager->getCart();
         $productStock = $this->product->getStock();
 
-        if($cartProduct === null) {
+        if(null === $existingCartProduct) {
             if($this->quantity < $productStock) {
                 $cartProduct = $this->cartProductFactory->create($cart, $this->product, $this->quantity);
                 $this->cartManager->getCart()->addCartProduct($cartProduct);
             } else {
                 return;
             }
-        } elseif($cartProduct->getQuantity() + $this->quantity <= $this->product->getStock()) {
-            $cartProduct->setQuantity($cartProduct->getQuantity() + $this->quantity);
+        } elseif($existingCartProduct->getQuantity() + $this->quantity <= $this->product->getStock()) {
+            $existingCartProduct->setQuantity($existingCartProduct->getQuantity() + $this->quantity);
         } else {
             return;
         }

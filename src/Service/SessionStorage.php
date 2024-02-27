@@ -15,7 +15,7 @@ class SessionStorage
 
     }
 
-    public function get(string $key, string $class)
+    public function get(string $key, string $entityClass): mixed
     {
         $k = $this->getKey($key);
 
@@ -23,10 +23,9 @@ class SessionStorage
             return null;
         }
 
-        $repository = $this->entityManager->getRepository($class);
-        $object = $repository->find($this->getKey($key));
+        $repository = $this->entityManager->getRepository($entityClass);
 
-        return $object;
+        return $repository->find($k) ?? null;
     }
 
     public function set(string $key, $entity)

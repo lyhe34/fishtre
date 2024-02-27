@@ -53,11 +53,6 @@ class PaymentController extends AbstractController
             return $this->redirectToRoute('app_cart');
         }
 
-        if($this->cartManager->cleanCart()) {
-            $this->addFlash('cart_error', "Certains produits ne sont plus disponbles.");
-            return $this->redirectToRoute('app_cart');
-        }
-
         $this->entityManager->flush();
 
         $shippingCost = $this->shipping->calculateShippingCost($this->cartManager->getCart()->getPrice(), $address);
@@ -84,11 +79,6 @@ class PaymentController extends AbstractController
     public function checkoutPickup(): Response
     {
         if($this->cartManager->getCart()->getCartProducts() <= 0) {
-            return $this->redirectToRoute('app_cart');
-        }
-        
-        if($this->cartManager->cleanCart()) {
-            $this->addFlash('cart_error', "Certains produits ne sont plus disponbles.");
             return $this->redirectToRoute('app_cart');
         }
 
