@@ -1,13 +1,21 @@
+
 <div {{ attributes }} class="product-form container-xl d-flex flex-column flex-md-row justify-content-center color-blue">
     <img class="product-form__image card-img-top" src={{ path('image', { img: this.product.image } )}} alt={{ this.product.name }}>
     <div class="product-form__body d-flex flex-column justify-content-start">
         <h1 class="product-form__title">{{ this.product.name }}</h1>
         <p class="product-form__price text-red">{{ this.price }} €</p>
         <div class="product-form__quantity-select d-flex">
-            <button class="quantity-select__button" data-action="live#action" data-action-name="prevent|decrementQuantity" data-loading="addAttribute(disabled)"><i class="quantity-select__minus fa-solid fa-minus"></i></button>
+            <button class="quantity-select__button" data-action="live#action" data-action-name="prevent|decrementQuantity" data-loading="addAttribute(disabled)">
+                <i class="quantity-select__minus fa-solid fa-minus"></i>
+            </button>
             <span class="quantity-select__quantity text-center">{{ this.quantity }}</span>
-            <button class="quantity-select__button" data-action="live#action" data-action-name="prevent|incrementQuantity" data-loading="addAttribute(disabled)"><i class="quantity-select__plus fa-solid fa-plus"></i></button>
+            <button class="quantity-select__button" data-action="live#action" data-action-name="prevent|incrementQuantity" data-loading="addAttribute(disabled)">
+                <i class="quantity-select__plus fa-solid fa-plus"></i>
+            </button>
         </div>
-        <button class="product-form__button bg-blue text-white bg-turquoise-dark-hover flex-center" data-action="live#action" data-action-name="prevent|addToCart" data-loading="addAttribute(disabled)"><div class="loader" data-loading="show"></div><span class="text-white" data-loading="hide">Ajouter au panier</span></button>
+        <button class="product-form__button bg-blue text-white bg-turquoise-dark-hover flex-center" data-action="live#action" data-action-name="prevent|addToCart" data-loading="addAttribute(disabled)">
+            <div class="loader" data-loading="show"></div>
+            <span class="text-white" data-loading="hide">Ajouter au panier</span>
+        </button>
     </div>
 </div>

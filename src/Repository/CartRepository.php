@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Cart;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,18 @@ class CartRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Cart::class);
+    }
+
+    public function findExpiredSessionCart(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.user', 'u')
+            ->andWhere('u IS NULL')
+            ->andWhere('c.createdAt < :oneHourAgo')
+            ->setParameter('oneHourAgo', new DateTime('-1 hour'))
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
 //    /**

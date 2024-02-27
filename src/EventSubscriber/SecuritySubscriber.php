@@ -35,6 +35,7 @@ class SecuritySubscriber implements EventSubscriberInterface
         
         $userCart->setCartProducts($sessionCart->getCartProducts());
 
+        $this->entityManager->remove($sessionCart);
         $this->entityManager->persist($userCart);
         $this->entityManager->flush();
     }

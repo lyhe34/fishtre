@@ -28,6 +28,13 @@ web:
             expires: 1h
             passthru: "/index.php"
 
+crons:
+    session-carts-cleanup:
+        # Cleanup every day at 1 AM
+        spec: 0 1 * * *
+        cmd: |
+            symfony console app:clean-session-carts
+
 workers:
     messenger:
         # PHP background workers usually don't require much CPU. See

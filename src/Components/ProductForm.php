@@ -13,7 +13,6 @@ use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
-use Symfony\Component\Scheduler\Attribute\AsSchedule;
 
 #[AsLiveComponent]
 class ProductForm extends AbstractController
@@ -41,10 +40,6 @@ class ProductForm extends AbstractController
     #[LiveAction]
     public function incrementQuantity()
     {
-        if(!$this->product->isActive()) {
-
-        }
-
         if($this->quantity > self::MAX_QUANTITY || $this->quantity > $this->product->getStock()) {
             return;
         }
@@ -70,25 +65,27 @@ class ProductForm extends AbstractController
     #[LiveAction]
     public function addToCart()
     {
-        $existingCartProduct = $this->cartProductRepository->findOneBy(['cart' => $this->cartManager->getCart(), 'product' => $this->product]);
         $cart = $this->cartManager->getCart();
+
+        $existingCartProduct = $this->cartProductRepository->findOneBy(['cart' => $cart, 'product' => $this->product]);
+        
         $productStock = $this->product->getStock();
 
         if(null === $existingCartProduct) {
             if($this->quantity < $productStock) {
                 $cartProduct = $this->cartProductFactory->create($cart, $this->product, $this->quantity);
-                $this->cartManager->getCart()->addCartProduct($cartProduct);
+                $cart->addCartProduct($cartProduct);
             } else {
                 return;
             }
-        } elseif($existingCartProduct->getQuantity() + $this->quantity <= $this->product->getStock()) {
+        } elseif($existingCartProduct->getQuantity() + $this->quantity <= $productStock) {
             $existingCartProduct->setQuantity($existingCartProduct->getQuantity() + $this->quantity);
         } else {
             return;
         }
 
         $this->entityManager->flush();
-        
+
         $this->emit('cartChanged');
     }
 }

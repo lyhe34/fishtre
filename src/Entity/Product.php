@@ -123,6 +123,11 @@ class Product implements Stringable
         return false;
     }
 
+    public function isActiveSelf(): ?bool
+    {
+        return $this->active;
+    }
+
     public function setActive(bool $active): static
     {
         $this->active = $active;

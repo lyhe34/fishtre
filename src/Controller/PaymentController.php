@@ -78,7 +78,7 @@ class PaymentController extends AbstractController
     #[Route('/payment/checkout/pickup', name: 'app_payment_checkout_pickup')]
     public function checkoutPickup(): Response
     {
-        if($this->cartManager->getCart()->getCartProducts() <= 0) {
+        if($this->cartManager->getCart()->getCartProducts()->count() <= 0) {
             return $this->redirectToRoute('app_cart');
         }
 
