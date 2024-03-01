@@ -31,3 +31,20 @@ class ProductCrudController extends AbstractCrudController
         ];
     }
 }
+
+// class ProductCrudController extends AbstractCrudController
+// {
+//     public function configureFields(string $pageName): iterable
+//     {
+//         return [
+//             TextField::new('name'),
+//             MoneyField::new('price')->setStoredAsCents(false)->setCurrency('EUR'),
+//             ImageField::new('image')->setUploadDir('file_storage')->setBasePath('file_storage')->setUploadedFileNamePattern('[uuid]-[name].[extension]'),
+//             IntegerField::new('stock'),
+//             BooleanField::new('active'),
+//             AssociationField::new('categories'),
+//         ];
+//     }
+// }
+
+// c

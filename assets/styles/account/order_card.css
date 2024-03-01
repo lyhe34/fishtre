@@ -8,11 +8,6 @@
     border-width: 1px;
 }
 
-.orders__title {
-    margin-top: 3rem;
-    margin-bottom: 1.5rem;
-}
-
-.order__section {
+.order-card__section {
     margin: 1rem 0;
 }

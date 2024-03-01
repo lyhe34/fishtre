@@ -53,3 +53,24 @@ class DashboardController extends AbstractDashboardController
         ];
     }
 }
+
+// class DashboardController extends AbstractDashboardController
+// {
+//     public function configureDashboard(): Dashboard
+//     {
+//         return Dashboard::new()
+//             ->setTitle('Poissonnerie');
+//     }
+
+//     public function configureMenuItems(): iterable
+//     {
+//         return [
+//             MenuItem::linkToCrud('Produits', 'fas fa-list', Product::class),
+//             MenuItem::linkToCrud('Catégories', 'fas fa-list', Category::class),
+//             MenuItem::linkToCrud('Commandes', 'fas fa-list', Order::class),
+//             MenuItem::linkToCrud('Paramètres', 'fas fa-list', Config::class),
+//         ];
+//     }
+// }
+
+// c

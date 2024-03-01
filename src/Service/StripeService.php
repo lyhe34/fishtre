@@ -74,12 +74,6 @@ class StripeService
         Refund::create(['payment_intent' => $paymentIntentId]);
     }
 
-    public function expireCheckoutSession($checkoutSessionId) 
-    {
-        $session = Session::retrieve($checkoutSessionId);
-        $session->expire();
-    }
-
     public function getWebhookEvent(Request $request)
     {
         $payload = $request->getContent();

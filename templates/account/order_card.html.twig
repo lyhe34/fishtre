@@ -1,5 +1,5 @@
-<div class="order d-flex flex-column flex-lg-row justify-content-center">
-    <div class="order__section order-start d-flex flex-column">
+<div class="order-card d-flex flex-column flex-lg-row justify-content-center">
+    <div class="order-card__section order-start d-flex flex-column">
         <span>Total : <span class="color-red">{{ order.totalPrice }} €</span></span>
         <div class="d-flex flex-column">
             {% if order.orderProducts|length <= 4 %}
@@ -15,7 +15,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="order__section order-center d-flex flex-column justify-content-center">
+    <div class="order-card__section order-center d-flex flex-column justify-content-center">
         <span><strong>Statut : </strong>
                 {% if order.state == 'confirmed' %}
                     Confirmée

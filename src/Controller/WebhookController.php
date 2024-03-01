@@ -22,7 +22,7 @@ class WebhookController extends AbstractController
     }
 
     #[Route('/stripe/webhook', name: 'app_stripe_webhook')]
-    public function webhook(Request $request): JsonResponse
+    public function stripeWebhook(Request $request): JsonResponse
     {
         try  {
             $event = $this->stripeService->getWebhookEvent($request);
@@ -51,3 +51,38 @@ class WebhookController extends AbstractController
         return new JsonResponse('Webhook Received: ' . $event->id, 200);
     }
 }
+
+// class WebhookController extends AbstractController
+// {
+//     #[Route('/stripe/webhook', name: 'app_stripe_webhook')]
+//     public function stripeWebhook(Request $request): JsonResponse
+//     {
+//         try  {
+//             $event = $this->stripeService->getWebhookEvent($request);
+//         } catch (\UnexpectedValueException $e) {
+//             return new JsonResponse('Webhook Error: ' . $e->getMessage(), 400);
+//         } catch (\Stripe\Exception\SignatureVerificationException $e) {
+//             return new JsonResponse('Webhook Error: ' . $e->getMessage(), 400);
+//         }
+
+//         switch($event->type) {
+//             case 'checkout.session.completed':
+//                 try {
+//                     $session = $this->stripeService->retrieveEventSession($event);
+//                 } catch (ApiErrorException $e) {
+//                     return new JsonResponse('Session Error: ' . $e->getMessage(), 400);
+//                 }
+
+//                 $order = $this->orderFactory->create($session);
+
+//                 $this->entityManager->persist($order);
+//                 $this->entityManager->flush();
+
+//                 break;
+//         }
+        
+//         return new JsonResponse('Webhook Received: ' . $event->id, 200);
+//     }
+// }
+
+// c

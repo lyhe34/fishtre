@@ -28,3 +28,20 @@ class CategoryCrudController extends AbstractCrudController
         ];
     }
 }
+
+// class CategoryCrudController extends AbstractCrudController
+// {
+//     public function configureFields(string $pageName): iterable
+//     {
+//         return [
+//             TextField::new('name'),
+//             ImageField::new('image')->setUploadDir('file_storage')->setBasePath('file_storage')->setUploadedFileNamePattern('[uuid]-[name].[extension]'),
+//             BooleanField::new('active'),
+//             BooleanField::new('featured'),
+//             AssociationField::new('parentCategories'),
+//             AssociationField::new('products'),
+//         ];
+//     }
+// }
+
+// c

@@ -141,54 +141,24 @@ class PaymentController extends AbstractController
 // #[Route('/payment')]
 // class PaymentController extends AbstractController
 // {
-//     #[Route('/checkout/shipping', name: 'app_payment_checkout_shipping')]
-//     public function checkoutShipping(): Response
+//     #[Route('/refund/{order}', name: 'app_refund')]
+//     public function refund(Order $order)
 //     {
-//         if($this->cartManager->getCart()->getCartProducts()->count() <= 0) {
-//             return $this->redirectToRoute('app_cart');
-//         }
-
-//         /** @var user */
+//         /** @var User */
 //         $user = $this->getUser();
-//         $address = $user->getAddress();
 
-//         if($address === null) {
-//             return $this->redirectToRoute('app_cart');
+//         // Verify that this order is from the user.
+//         if($order->getUser()->getId() !== $user->getId()) {
+//             return $this->redirectToRoute('app_orders');
 //         }
 
-//         // Check if address is still valid, if not, delete address, redirect and notify user
-//         if(!$this->shipping->isAddressAllowed($address)) {
-//             $this->addFlash('cart_error', "Votre addresse n'est plus valide.");
-//             $user->setAddress(null);
+//         if($order->getState() === Order::STATE_CONFIRMED) {
+//             $this->stripeService->refundPayment($order->getPaymentIntentId());
+//             $order->setState(Order::STATE_CANCELED);
 //             $this->entityManager->flush();
-//             return $this->redirectToRoute('app_cart');
 //         }
 
-//         $cart = $this->cartManager->getCart();
-
-//         // Prevent product reserved to go back to stock during checkout
-//         foreach($cart->getCartProducts() as $cartProduct) {
-//             $cartProduct->setUpdatedAt(now());
-//         }
-
-//         $shippingCost = $this->shipping->calculateShippingCost($cart->getPrice(), $address);
-
-//         $checkoutSession = $this->stripeService->createCheckoutSession([
-//             'shipping_options' => [[
-//                 'shipping_rate_data' => [
-//                     'type' => 'fixed_amount',
-//                     'fixed_amount' => [
-//                         'amount' => $shippingCost * 100,
-//                         'currency' => 'eur',
-//                     ],
-//                     'display_name' => 'Livraison à domicile',
-//                 ],
-//             ]],
-//         ]);
-
-//         return $this->render('payment/checkout.html.twig', [
-//             'clientSecret' => $checkoutSession->client_secret,
-//         ]);
+//         return $this->redirectToRoute('app_orders');
 //     }
 // }
 

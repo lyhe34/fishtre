@@ -43,7 +43,6 @@ class OrderFactory
         if(empty($session->shipping_options)) {
             $order->setMode('pickup');
             $order->setShippingCost(0);
-
         } else {
             $address = new Address();
             $address->setAddress1($userAddress->getAddress1());
@@ -71,3 +70,57 @@ class OrderFactory
         return $order;
     }
 }
+
+// class OrderFactory
+// {
+//     /**
+//      * Create an order from a checkout session data
+//      * 
+//      * @param Session $session The checkout session used to created order
+//      * 
+//      * @return Order The order created
+//      */
+//     public function create(Session $session): Order
+//     {
+//         $user = $this->userRepository->find($session->metadata['user_id']);
+//         $userAddress = $user->getAddress();
+
+//         $order = new Order();
+//         $order->setUser($user);
+//         $order->setDate(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
+//         $order->setDeliveryDate($this->orderHelper->getOrderDeliveryDate($order->getDate()));
+//         $order->setState('confirmed');
+//         $order->setPaymentIntentId($session->payment_intent);
+
+//         if(empty($session->shipping_options)) {
+//             $order->setMode('pickup');
+//             $order->setShippingCost(0);
+//         } else {
+//             $address = new Address();
+//             $address->setAddress1($userAddress->getAddress1());
+//             $address->setAddress2($userAddress->getAddress2());
+//             $address->setPostalCode($userAddress->getPostalCode());
+//             $address->setCity($userAddress->getCity());
+//             $address->setFirstName($userAddress->getFirstName());
+//             $address->setLastName($userAddress->getLastName());
+//             $address->setPhone($userAddress->getPhone());
+
+//             $order->setAddress($address);
+//             $order->setMode('shipping');
+//             $order->setShippingCost($session->shipping_cost['amount_total'] / 100);
+//         }
+
+//         // Set order products.
+//         foreach($session->line_items as $item) {
+//             $product = $this->productRepository->find($item->price->product->metadata['product_id']);
+//             if($product) {
+//                 $orderProduct = $this->orderProductFactory->create($product, $order, $item->quantity);
+//                 $order->addOrderProduct($orderProduct);
+//             }
+//         }
+
+//         return $order;
+//     }
+// }
+
+// c
