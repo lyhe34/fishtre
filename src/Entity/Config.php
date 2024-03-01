@@ -43,14 +43,32 @@ class Config
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $schedules = null;
-
     #[ORM\Column(length: 14)]
     private ?string $phone = null;
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $mondaySchedules = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $tuesdaySchedules = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $wednesdaySchedules = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $thursdaySchedules = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $fridaySchedules = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $saturdaySchedules = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $sundaySchedules = null;
 
     public function getId(): ?int
     {
@@ -176,19 +194,7 @@ class Config
 
         return $this;
     }
-
-    public function getSchedules(): ?string
-    {
-        return $this->schedules;
-    }
-
-    public function setSchedules(string $schedules): static
-    {
-        $this->schedules = $schedules;
-
-        return $this;
-    }
-
+    
     public function getPhone(): ?string
     {
         return $this->phone;
@@ -209,6 +215,90 @@ class Config
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getMondaySchedules(): ?string
+    {
+        return $this->mondaySchedules;
+    }
+
+    public function setMondaySchedules(string $mondaySchedules): static
+    {
+        $this->mondaySchedules = $mondaySchedules;
+
+        return $this;
+    }
+
+    public function getTuesdaySchedules(): ?string
+    {
+        return $this->tuesdaySchedules;
+    }
+
+    public function setTuesdaySchedules(string $tuesdaySchedules): static
+    {
+        $this->tuesdaySchedules = $tuesdaySchedules;
+
+        return $this;
+    }
+
+    public function getWednesdaySchedules(): ?string
+    {
+        return $this->wednesdaySchedules;
+    }
+
+    public function setWednesdaySchedules(string $wednesdaySchedules): static
+    {
+        $this->wednesdaySchedules = $wednesdaySchedules;
+
+        return $this;
+    }
+
+    public function getThursdaySchedules(): ?string
+    {
+        return $this->thursdaySchedules;
+    }
+
+    public function setThursdaySchedules(string $thursdaySchedules): static
+    {
+        $this->thursdaySchedules = $thursdaySchedules;
+
+        return $this;
+    }
+
+    public function getFridaySchedules(): ?string
+    {
+        return $this->fridaySchedules;
+    }
+
+    public function setFridaySchedules(string $fridaySchedules): static
+    {
+        $this->fridaySchedules = $fridaySchedules;
+
+        return $this;
+    }
+
+    public function getSaturdaySchedules(): ?string
+    {
+        return $this->saturdaySchedules;
+    }
+
+    public function setSaturdaySchedules(string $saturdaySchedules): static
+    {
+        $this->saturdaySchedules = $saturdaySchedules;
+
+        return $this;
+    }
+
+    public function getSundaySchedules(): ?string
+    {
+        return $this->sundaySchedules;
+    }
+
+    public function setSundaySchedules(string $sundaySchedules): static
+    {
+        $this->sundaySchedules = $sundaySchedules;
 
         return $this;
     }

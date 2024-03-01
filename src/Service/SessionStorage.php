@@ -10,44 +10,103 @@ class SessionStorage
 {
     public function __construct(
         private RequestStack $requestStack, 
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
     ) {
 
     }
 
-    public function get(string $key, string $entityClass): mixed
+    /**
+     * Get entity from current session
+     * 
+     * @param string $name
+     * @param string $entityClass
+     * 
+     * @return mixed The entity
+     */
+    public function get(string $name, string $entityClass): mixed
     {
-        $k = $this->getKey($key);
+        $repository = $this->entityManager->getRepository($entityClass);
 
-        if(null === $k) {
+        $id = $this->getSession()->get($name);
+
+        if(null === $id) {
             return null;
         }
 
-        $repository = $this->entityManager->getRepository($entityClass);
-
-        return $repository->find($k) ?? null;
+        return $repository->find($id) ?? null;
     }
 
-    public function set(string $key, $entity)
+    /**
+     * Set entity to current session
+     * 
+     * @param string $name 
+     * @param mixed $entity
+     */
+    public function set(string $name, mixed $entity)
     {
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
 
-        $this->setKey($key, $entity->getId());
+        $this->getSession()->set($name, $entity->getId());
     }
 
-    private function getKey($key): ?int
-    {
-        return $this->getSession()->get($key);
-    }
-
-    private function setKey($key, $value)
-    {
-        $this->getSession()->set($key, $value);
-    }
-
+    /**
+     * Get the current session from request
+     * 
+     * @return SessionInterface
+     */
     private function getSession(): SessionInterface
     {
         return $this->requestStack->getSession();
     }
 }
+
+// class SessionStorage
+// {
+//     /**
+//      * Get entity from current session
+//      * 
+//      * @param string $name
+//      * @param string $entityClass
+//      * 
+//      * @return mixed The entity
+//      */
+//     public function get(string $name, string $entityClass): mixed
+//     {
+//         $repository = $this->entityManager->getRepository($entityClass);
+
+//         $id = $this->getSession()->get($name);
+
+//         if(null === $id) {
+//             return null;
+//         }
+
+//         return $repository->find($id) ?? null;
+//     }
+
+//     /**
+//      * Set entity to current session
+//      * 
+//      * @param string $name 
+//      * @param mixed $entity
+//      */
+//     public function set(string $name, mixed $entity)
+//     {
+//         $this->entityManager->persist($entity);
+//         $this->entityManager->flush();
+
+//         $this->getSession()->set($name, $entity->getId());
+//     }
+
+//     /**
+//      * Get the current session from request
+//      * 
+//      * @return SessionInterface
+//      */
+//     private function getSession(): SessionInterface
+//     {
+//         return $this->requestStack->getSession();
+//     }
+// }
+
+// class

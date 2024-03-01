@@ -31,10 +31,13 @@ class Shipping
     public function calculateDistanceCost(float $distance): float
     {
         $config = $this->configManager->getConfig();
-        $adjustDistance = $distance - $config->getShipCostStartIncrAt();
-        $adjustMaxDistance = $config->getMaxShipCostReachAt() - $config->getShipCostStartIncrAt();
-        $t = $adjustDistance / $adjustMaxDistance;
-        return $this->math->lerp($config->getMinShippingCost(), $config->getMaxShippingCost(), $t);
+
+        $minShippingCost = $config->getMinShippingCost();
+        $maxShippingCost = $config->getMaxShippingCost();
+        $shipCostStartIncrAt = $config->getShipCostStartIncrAt();
+        $maxShipCostReachdAt = $config->getMaxShipCostReachAt();
+
+        return $this->math->boundedLerp($minShippingCost, $maxShippingCost, $shipCostStartIncrAt, $maxShipCostReachdAt, $distance);
     }
 
     public function calculateAddressCost(Address|string $address): float
@@ -59,3 +62,20 @@ class Shipping
         return $distance <= $this->configManager->getConfig()->getMaxShippingDistance();
     }
 }
+
+// class Shipping
+// {
+//     public function calculateDistanceCost(float $distance): float
+//     {
+//         $config = $this->configManager->getConfig();
+
+//         $minShippingCost = $config->getMinShippingCost();
+//         $maxShippingCost = $config->getMaxShippingCost();
+//         $shipCostStartIncrAt = $config->getShipCostStartIncrAt();
+//         $maxShipCostReachdAt = $config->getMaxShipCostReachAt();
+
+//         return $this->math->boundedLerp($minShippingCost, $maxShippingCost, $shipCostStartIncrAt, $maxShipCostReachdAt, $distance);
+//     }
+// }
+
+// class

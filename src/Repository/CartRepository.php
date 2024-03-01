@@ -27,8 +27,8 @@ class CartRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->leftJoin('c.user', 'u')
             ->andWhere('u IS NULL')
-            ->andWhere('c.createdAt < :oneHourAgo')
-            ->setParameter('oneHourAgo', new DateTime('-1 hour'))
+            ->andWhere('c.updatedAt < :oneDayAgo')
+            ->setParameter('oneDayAgo', new DateTime('-24 hours'))
             ->getQuery()
             ->getResult()
         ;
@@ -59,3 +59,19 @@ class CartRepository extends ServiceEntityRepository
 //        ;
 //    }
 }
+
+
+// class CartRepository extends ServiceEntityRepository
+// {
+//     public function findExpiredSessionCart(): array
+//     {
+//         return $this->createQueryBuilder('c')
+//             ->leftJoin('c.user', 'u')
+//             ->andWhere('u IS NULL')
+//             ->andWhere('c.updatedAt < :oneDayAgo')
+//             ->setParameter('oneDayAgo', new DateTime('-24 hours'))
+//             ->getQuery()
+//             ->getResult()
+//         ;
+//     }
+// }

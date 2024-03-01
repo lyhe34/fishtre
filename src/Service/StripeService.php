@@ -25,13 +25,13 @@ class StripeService
         Stripe::setApiKey('sk_test_51OKqCHE9VPfeCGyPUb6Q3vdXTOLrBJRavBd0IvB47nqCiUh83aXmlmCRdf187Rl3ouTBm6nB3qT4UgXZ6jjjEKW000FEkrY0vw');
     }
 
-    public function createCheckoutSession(Cart $cart, array $params = null)
+    public function createCheckoutSession(array $params = null)
     {
         $items = [];
         /** @var User */
         $user = $this->security->getUser();
 
-        foreach($cart->getCartProducts()->toArray() as $cartProduct) {
+        foreach($user->getCart()->getCartProducts() as $cartProduct) {
             array_push($items, [
                 'price_data' => [
                     'product_data' => [
@@ -74,6 +74,12 @@ class StripeService
         Refund::create(['payment_intent' => $paymentIntentId]);
     }
 
+    public function expireCheckoutSession($checkoutSessionId) 
+    {
+        $session = Session::retrieve($checkoutSessionId);
+        $session->expire();
+    }
+
     public function getWebhookEvent(Request $request)
     {
         $payload = $request->getContent();
@@ -102,3 +108,52 @@ class StripeService
         return null;
     }
 }
+
+// class StripeService
+// {
+//     public function createCheckoutSession(array $params = null)
+//     {
+//         $items = [];
+//         /** @var User */
+//         $user = $this->security->getUser();
+
+//         foreach($user->getCart()->getCartProducts() as $cartProduct) {
+//             array_push($items, [
+//                 'price_data' => [
+//                     'product_data' => [
+//                         'name' => $cartProduct->getProduct()->getName(),
+//                         'metadata' => [
+//                             'product_id' => $cartProduct->getProduct()->getId(),
+//                         ],
+//                     ],
+//                     'currency' => 'eur',
+//                     'unit_amount' => $cartProduct->getProduct()->getPriceInCents(),
+//                 ],
+//                 'quantity' => $cartProduct->getQuantity(),
+//             ]);
+//         }
+
+//         $defaultParams = [
+//             'ui_mode' => 'embedded',
+//             'line_items' => $items,
+//             'mode' => 'payment',
+//             'return_url' => $this->router->generate('app_payment_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
+//             'metadata' => [
+//                 'user_id' => $user->getId()
+//             ],
+//             'customer_email' => $user->getEmail(),
+//             'expires_at' => time() + (60 * 30),
+//         ];
+        
+//         if($params !== null) {
+//             $mergedParams = array_merge($defaultParams, $params);
+//             $checkoutSession = Session::create($mergedParams);
+//             return $checkoutSession;
+//         }
+
+//         $checkoutSession = Session::create($defaultParams);
+//         return $checkoutSession;
+//     }
+// }
+
+// class

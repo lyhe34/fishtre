@@ -1,26 +1,14 @@
-.security-form
-{
+.security-form {
     max-width: 500px;
     margin-top: 3rem;
 }
 
-.security-form .form-head
-{
-    font-size: 2.5em;
-}
-
-.security-form .form-row
-{
-    margin-top: 2rem;
-}
-
-.security-form .form-button
-{
+.security-form__button {
     height: 50px;
-    width: 130px;
+    width: 150px;
+    border-radius: 7px;
 }
 
-.security-form .form-error
-{
-    margin-top: 0.5rem;
+.security-form__row {
+    margin-top: 1.5rem;
 }

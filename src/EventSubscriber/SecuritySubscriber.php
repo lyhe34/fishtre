@@ -17,6 +17,10 @@ class SecuritySubscriber implements EventSubscriberInterface
         
     }
 
+    /**
+     * If session cart contains products, and user cart is empty,
+     * add them to the user cart on login.
+     */
     public function onLoginSuccessEvent(LoginSuccessEvent $event): void
     {
         /** @var User */
@@ -47,3 +51,35 @@ class SecuritySubscriber implements EventSubscriberInterface
         ];
     }
 }
+
+// class SecuritySubscriber implements EventSubscriberInterface
+// {
+//     /**
+//      * If session cart contains products, and user cart is empty,
+//      * add them to the user cart on login.
+//      */
+//     public function onLoginSuccessEvent(LoginSuccessEvent $event): void
+//     {
+//         /** @var User */
+//         $user = $event->getUser();
+//         $userCart = $user->getCart();
+
+//         if($userCart->getCartProducts()->count() > 0) {
+//             return;
+//         }
+
+//         $sessionCart = $this->sessionStorage->get('cart', Cart::class);
+
+//         if($sessionCart === null) {
+//             return;
+//         }
+        
+//         $userCart->setCartProducts($sessionCart->getCartProducts());
+
+//         $this->entityManager->remove($sessionCart);
+//         $this->entityManager->persist($userCart);
+//         $this->entityManager->flush();
+//     }
+// }
+
+// class

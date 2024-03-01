@@ -95,7 +95,7 @@
         <span class="address-component">{{ this.initialFormData.city }}</span>
         <span class="address-component">{{ this.initialFormData.phone }}</span>
         <button type="button" class="shipping-address-form__modify-button bg-transparent text-start fw-bold" data-model="modifyAddress" data-value="true" data-action="live#update">Modifier</button>
-        <a class="shipping-address-form__finalize-button w-100 bg-blue bg-turquoise-dark-hover text-white flex-center" href="{{ path('app_payment_checkout_delivery') }}">Finaliser la commande</a>
+        <a class="shipping-address-form__finalize-button w-100 bg-blue bg-turquoise-dark-hover text-white flex-center" href="{{ path('app_payment_checkout_shipping') }}">Finaliser la commande</a>
     </div>
     {% endif %}
     {% endif %}

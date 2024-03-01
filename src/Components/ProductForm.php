@@ -2,6 +2,7 @@
 
 namespace App\Components;
 
+use App\Entity\CartProduct;
 use App\Entity\Product;
 use App\Factory\CartProductFactory;
 use App\Repository\CartProductRepository;
@@ -25,6 +26,9 @@ class ProductForm extends AbstractController
 
     #[LiveProp(writable: true)]
     public int $quantity = 1;
+
+    #[LiveProp]
+    public string $message = '';
 
     private const MAX_QUANTITY = 10;
 
@@ -65,23 +69,36 @@ class ProductForm extends AbstractController
     #[LiveAction]
     public function addToCart()
     {
-        $cart = $this->cartManager->getCart();
+        if(!$this->product->isActive()) {
+            $this->addFlash('shop_error', "Ce produit n'est plus en vente.");
+            return $this->redirectToRoute('app_shop_category', ['categoryName' => 'poissons']);
+        }
 
-        $existingCartProduct = $this->cartProductRepository->findOneBy(['cart' => $cart, 'product' => $this->product]);
-        
         $productStock = $this->product->getStock();
 
-        if(null === $existingCartProduct) {
-            if($this->quantity < $productStock) {
-                $cartProduct = $this->cartProductFactory->create($cart, $this->product, $this->quantity);
-                $cart->addCartProduct($cartProduct);
-            } else {
-                return;
-            }
-        } elseif($existingCartProduct->getQuantity() + $this->quantity <= $productStock) {
-            $existingCartProduct->setQuantity($existingCartProduct->getQuantity() + $this->quantity);
-        } else {
+        if($this->quantity > $productStock) {
+            $this->message = 'Stock insuffisant.';
             return;
+        }
+
+        $cart = $this->cartManager->getCart();
+
+        $existingCartProduct = $this->cartProductRepository->findOneBy(['cart' => $cart, 'product' => $this->product]); 
+
+        if(null === $existingCartProduct) {
+            $cartProduct = $this->cartProductFactory->create($this->product, $this->quantity);
+            $this->product->setStock($productStock - $this->quantity);
+            $cart->addCartProduct($cartProduct);
+        } else {
+            $oldQuantity = $existingCartProduct->getQuantity();
+            $newQuantity = $oldQuantity + $this->quantity;
+            $stockToRemove = $this->quantity;
+            if($newQuantity > CartProduct::MAX_QUANTITY) {
+                $newQuantity = CartProduct::MAX_QUANTITY;
+                $stockToRemove = $newQuantity - $oldQuantity;
+            }
+            $this->product->setStock($productStock - $stockToRemove);
+            $existingCartProduct->setQuantity($newQuantity);
         }
 
         $this->entityManager->flush();
@@ -89,3 +106,48 @@ class ProductForm extends AbstractController
         $this->emit('cartChanged');
     }
 }
+
+// class ProductForm extends AbstractController
+// {
+//     #[LiveAction]
+//     public function addToCart()
+//     {
+//         if(!$this->product->isActive()) {
+//             $this->addFlash('shop_error', "Ce produit n'est plus en vente.");
+//             return $this->redirectToRoute('app_shop_category', ['categoryName' => 'poissons']);
+//         }
+
+//         $productStock = $this->product->getStock();
+
+//         if($this->quantity > $productStock) {
+//             $this->message = 'Stock insuffisant.';
+//             return;
+//         }
+
+//         $cart = $this->cartManager->getCart();
+
+//         $existingCartProduct = $this->cartProductRepository->findOneBy(['cart' => $cart, 'product' => $this->product]); 
+
+//         if(null === $existingCartProduct) {
+//             $cartProduct = $this->cartProductFactory->create($this->product, $this->quantity);
+//             $this->product->setStock($productStock - $this->quantity);
+//             $cart->addCartProduct($cartProduct);
+//         } else {
+//             $oldQuantity = $existingCartProduct->getQuantity();
+//             $newQuantity = $oldQuantity + $this->quantity;
+//             $stockToRemove = $this->quantity;
+//             if($newQuantity > CartProduct::MAX_QUANTITY) {
+//                 $newQuantity = CartProduct::MAX_QUANTITY;
+//                 $stockToRemove = $newQuantity - $oldQuantity;
+//             }
+//             $this->product->setStock($productStock - $stockToRemove);
+//             $existingCartProduct->setQuantity($newQuantity);
+//         }
+
+//         $this->entityManager->flush();
+
+//         $this->emit('cartChanged');
+//     }
+// }
+
+// class

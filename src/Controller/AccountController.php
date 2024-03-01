@@ -6,9 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/account')]
 class AccountController extends AbstractController
 {
-    #[Route('/account', name: 'app_account')]
+    #[Route('/', name: 'app_account')]
     public function index(): Response
     {   
         return $this->render('account/index.html.twig', [
@@ -16,7 +17,7 @@ class AccountController extends AbstractController
         ]);
     }
 
-    #[Route('/account/orders', name: 'app_orders')]
+    #[Route('/orders', name: 'app_orders')]
     public function orders(): Response
     {
         /** @var User */

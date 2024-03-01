@@ -17,7 +17,7 @@
         <div class="featured-categories">
             <div class="container-xl d-flex flex-column justify-content-center align-items-center">
                 <h3 class="featured-categories__title text-center">Notre sélection :</h3>
-                <div class="row justify-content-evenly align-items-center">
+                <div class="row gy-4 justify-content-evenly align-items-center">
                     {% for featuredCategory in featuredCategories %}
                         {% include 'shop/category_card.html.twig' with { category: featuredCategory} %}
                     {% endfor %}

@@ -16,6 +16,7 @@ body {
 
 main {
     flex: 1;
+    min-height: 80vh;
 }
 
 a, p, h1, h2, h3, h4, h5, ul, ol, button {

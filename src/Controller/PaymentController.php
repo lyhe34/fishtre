@@ -12,11 +12,15 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\CartManager;
 use App\Service\ConfigManager;
 use App\Service\Shipping;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+use function Symfony\Component\Clock\now;
+
+#[Route('/payment')]
 class PaymentController extends AbstractController
 {
     public function __construct(
@@ -31,7 +35,7 @@ class PaymentController extends AbstractController
         
     }
 
-    #[Route('/payment/checkout/shipping', name: 'app_payment_checkout_delivery')]
+    #[Route('/checkout/shipping', name: 'app_payment_checkout_shipping')]
     public function checkoutShipping(): Response
     {
         if($this->cartManager->getCart()->getCartProducts()->count() <= 0) {
@@ -46,6 +50,7 @@ class PaymentController extends AbstractController
             return $this->redirectToRoute('app_cart');
         }
 
+        // Check if address is still valid, if not, delete address, redirect and notify user
         if(!$this->shipping->isAddressAllowed($address)) {
             $this->addFlash('cart_error', "Votre addresse n'est plus valide.");
             $user->setAddress(null);
@@ -53,11 +58,16 @@ class PaymentController extends AbstractController
             return $this->redirectToRoute('app_cart');
         }
 
-        $this->entityManager->flush();
+        $cart = $this->cartManager->getCart();
 
-        $shippingCost = $this->shipping->calculateShippingCost($this->cartManager->getCart()->getPrice(), $address);
+        // Prevent product reserved to go back to stock during checkout
+        foreach($cart->getCartProducts() as $cartProduct) {
+            $cartProduct->setUpdatedAt(now());
+        }
 
-        $checkoutSession = $this->stripeService->createCheckoutSession($this->cartManager->getCart(), [
+        $shippingCost = $this->shipping->calculateShippingCost($cart->getPrice(), $address);
+
+        $checkoutSession = $this->stripeService->createCheckoutSession([
             'shipping_options' => [[
                 'shipping_rate_data' => [
                     'type' => 'fixed_amount',
@@ -75,21 +85,26 @@ class PaymentController extends AbstractController
         ]);
     }
 
-    #[Route('/payment/checkout/pickup', name: 'app_payment_checkout_pickup')]
+    #[Route('/checkout/pickup', name: 'app_payment_checkout_pickup')]
     public function checkoutPickup(): Response
     {
         if($this->cartManager->getCart()->getCartProducts()->count() <= 0) {
             return $this->redirectToRoute('app_cart');
         }
 
-        $checkoutSession = $this->stripeService->createCheckoutSession($this->cartManager->getCart());
+        // Prevent product reserved to go back to stock during checkout
+        foreach($this->cartManager->getCart()->getCartProducts() as $cartProduct) {
+            $cartProduct->setUpdatedAt(now());
+        }
+
+        $checkoutSession = $this->stripeService->createCheckoutSession();
 
         return $this->render('payment/checkout.html.twig', [
             'clientSecret' => $checkoutSession->client_secret,
         ]);
     }
 
-    #[Route('/payment/success', name: 'app_payment_success')]
+    #[Route('/success', name: 'app_payment_success')]
     public function success()
     {  
         $cart = $this->cartManager->getCart();
@@ -102,7 +117,7 @@ class PaymentController extends AbstractController
         ]);
     }
 
-    #[Route('/payment/refund/{order}', name: 'app_refund')]
+    #[Route('/refund/{order}', name: 'app_refund')]
     public function refund(Order $order)
     {
         /** @var User */
@@ -121,34 +136,60 @@ class PaymentController extends AbstractController
 
         return $this->redirectToRoute('app_orders');
     }
-
-    #[Route('/webhook', name: 'app_webhook')]
-    public function webhook(Request $request): JsonResponse
-    {
-        try  {
-            $event = $this->stripeService->getWebhookEvent($request);
-        } catch (\UnexpectedValueException $e) {
-            return new JsonResponse('Webhook Error: ' . $e->getMessage(), 400);
-        } catch (\Stripe\Exception\SignatureVerificationException $e) {
-            return new JsonResponse('Webhook Error: ' . $e->getMessage(), 400);
-        }
-
-        switch($event->type) {
-            case 'checkout.session.completed':
-                try {
-                    $session = $this->stripeService->retrieveEventSession($event);
-                } catch (ApiErrorException $e) {
-                    return new JsonResponse('Session Error: ' . $e->getMessage(), 400);
-                }
-
-                $order = $this->orderFactory->create($session);
-
-                $this->entityManager->persist($order);
-                $this->entityManager->flush();
-
-                break;
-        }
-        
-        return new JsonResponse('Webhook Received: ' . $event->id, 200);
-    }
 }
+
+// #[Route('/payment')]
+// class PaymentController extends AbstractController
+// {
+//     #[Route('/checkout/shipping', name: 'app_payment_checkout_shipping')]
+//     public function checkoutShipping(): Response
+//     {
+//         if($this->cartManager->getCart()->getCartProducts()->count() <= 0) {
+//             return $this->redirectToRoute('app_cart');
+//         }
+
+//         /** @var user */
+//         $user = $this->getUser();
+//         $address = $user->getAddress();
+
+//         if($address === null) {
+//             return $this->redirectToRoute('app_cart');
+//         }
+
+//         // Check if address is still valid, if not, delete address, redirect and notify user
+//         if(!$this->shipping->isAddressAllowed($address)) {
+//             $this->addFlash('cart_error', "Votre addresse n'est plus valide.");
+//             $user->setAddress(null);
+//             $this->entityManager->flush();
+//             return $this->redirectToRoute('app_cart');
+//         }
+
+//         $cart = $this->cartManager->getCart();
+
+//         // Prevent product reserved to go back to stock during checkout
+//         foreach($cart->getCartProducts() as $cartProduct) {
+//             $cartProduct->setUpdatedAt(now());
+//         }
+
+//         $shippingCost = $this->shipping->calculateShippingCost($cart->getPrice(), $address);
+
+//         $checkoutSession = $this->stripeService->createCheckoutSession([
+//             'shipping_options' => [[
+//                 'shipping_rate_data' => [
+//                     'type' => 'fixed_amount',
+//                     'fixed_amount' => [
+//                         'amount' => $shippingCost * 100,
+//                         'currency' => 'eur',
+//                     ],
+//                     'display_name' => 'Livraison à domicile',
+//                 ],
+//             ]],
+//         ]);
+
+//         return $this->render('payment/checkout.html.twig', [
+//             'clientSecret' => $checkoutSession->client_secret,
+//         ]);
+//     }
+// }
+
+// class

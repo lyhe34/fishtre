@@ -25,7 +25,7 @@ class ShippingAddressForm extends AbstractController
     use ComponentWithFormTrait;
 
     #[LiveProp]
-    public ?Address $initialFormData;
+    public ?Address $initialFormData = null;
 
     #[LiveProp]
     public ?float $shippingCost;
@@ -111,19 +111,21 @@ class ShippingAddressForm extends AbstractController
         if($this->mode === 'pickup') {
             $this->shippingCost = 0;
             $this->totalPrice = $cartPrice;
-        } else {
-            /** @var User */
-            $user = $this->getUser();
-
-            if(!$address = $user->getAddress()) {
-                $this->shippingCost = null;
-                $this->totalPrice = null;
-            }
-
-            $shippingCost = $this->shipping->calculateShippingCost($cartPrice, $address->getFullAddress());
-
-            $this->shippingCost = $shippingCost;
-            $this->totalPrice = $cartPrice + $this->shippingCost;
+            return;
         }
+         
+        /** @var User */
+        $user = $this->getUser();
+
+        if(!$address = $user->getAddress()) {
+            $this->shippingCost = null;
+            $this->totalPrice = null;
+            return;
+        }
+
+        $shippingCost = $this->shipping->calculateShippingCost($cartPrice, $address);
+
+        $this->shippingCost = $shippingCost;
+        $this->totalPrice = $cartPrice + $this->shippingCost;
     }
 }

@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Entity\Cart;
 use App\Entity\User;
-use App\Factory\CartProductFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -14,9 +13,6 @@ class CartManager
         private Security $security, 
         private SessionStorage $sessionStorage, 
         private EntityManagerInterface $entityManager,
-        private CartProductFactory $cartProductFactory,
-        private ConfigManager $configManager,
-        private Shipping $shipping,
     ) { 
 
     }
@@ -42,7 +38,7 @@ class CartManager
             $this->entityManager->persist($cart);
             $this->entityManager->flush();
         }
-                
+        
         return $cart;
     }
 }

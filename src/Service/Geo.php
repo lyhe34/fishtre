@@ -6,6 +6,12 @@ use Exception;
 
 class Geo
 {
+    public function __construct(
+        private Math $math,
+    ) {
+
+    }
+
     public function getAddressData($address): array
     {
         try { 
@@ -54,26 +60,11 @@ class Geo
     {
         $coords1 = $this->getLatLong($address1);
         $coords2 = $this->getLatLong($address2);
-        return $this->haversineDistance($coords1, $coords2);
-    }
+        
+        if(null === $coords1 || null === $coords2) {
+            return null;
+        }
 
-    public function haversineDistance($coords1, $coords2): float
-    {
-        $earthRadius = 6371;
-    
-        $lat1 = deg2rad($coords1[0]);
-        $lng1 = deg2rad($coords1[1]);
-        $lat2 = deg2rad($coords2[0]);
-        $lng2 = deg2rad($coords2[1]);
-    
-        $dlat = $lat2 - $lat1;
-        $dlng = $lng2 - $lng1;
-    
-        $a = sin($dlat/2) * sin($dlat/2) + cos($lat1) * cos($lat2) * sin($dlng/2) * sin($dlng/2);
-        $c = 2 * atan2(sqrt($a), sqrt(1-$a));
-    
-        $distance = $earthRadius * $c;
-    
-        return round($distance, 2);
+        return $this->math->haversineDistance($coords1, $coords2);
     }
 }

@@ -1,0 +1,9 @@
+.button-blue {
+    background-color: var(--blue);
+    color: white;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.button-blue:hover {
+    background-color: var(--turquoise-dark);
+}

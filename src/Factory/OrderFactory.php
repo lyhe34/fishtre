@@ -2,6 +2,7 @@
 
 namespace App\Factory;
 
+use App\Entity\Address;
 use App\Repository\ProductRepository;
 use Stripe\Checkout\Session;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -44,14 +45,17 @@ class OrderFactory
             $order->setShippingCost(0);
 
         } else {
+            $address = new Address();
+            $address->setAddress1($userAddress->getAddress1());
+            $address->setAddress2($userAddress->getAddress2());
+            $address->setPostalCode($userAddress->getPostalCode());
+            $address->setCity($userAddress->getCity());
+            $address->setFirstName($userAddress->getFirstName());
+            $address->setLastName($userAddress->getLastName());
+            $address->setPhone($userAddress->getPhone());
+
+            $order->setAddress($address);
             $order->setMode('shipping');
-            $order->setAddress1($userAddress->getAddress1());
-            $order->setAddress2($userAddress->getAddress2());
-            $order->setPostalCode($userAddress->getPostalCode());
-            $order->setCity($userAddress->getCity());
-            $order->setFirstName($userAddress->getFirstName());
-            $order->setLastName($userAddress->getLastName());
-            $order->setPhone($userAddress->getPhone());
             $order->setShippingCost($session->shipping_cost['amount_total'] / 100);
         }
 

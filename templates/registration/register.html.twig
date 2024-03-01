@@ -5,35 +5,31 @@
 {% block body %}
     {% include 'header.html.twig' %}
     <main>
-        {% for flash_error in app.flashes('verify_email_error') %}
-            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-        {% endfor %}
-
-        {{ form_start(registrationForm, { attr: { class: 'form container security-form color-blue' } }) }}
-            <h1 class="form-head text-center color-blue">Inscription</h1>
-            <div class="form-row">
+        {{ form_start(registrationForm, { attr: { class: 'form container security-form' } }) }}
+            <h1 class="form-head text-center">Inscription</h1>
+            <div class="security-form__row form-row">
                 {{ form_label(registrationForm.email, null, { label_attr: { class: 'form-label' } }) }}
                 {{ form_widget(registrationForm.email, { attr: { class: 'form-control' } }) }}
                 {% include 'errors.html.twig' with { errors: registrationForm.email.vars.errors } %} 
             </div>
-            <div class="form-row">
+            <div class="security-form__row form-row">
                 {{ form_label(registrationForm.plainPassword.first, 'Mot de passe', { label_attr: { class: 'form-label' } }) }}
                 {{ form_widget(registrationForm.plainPassword.first, { attr: { class: 'form-control' } }) }}
                 {% include 'errors.html.twig' with { errors: registrationForm.plainPassword.first.vars.errors } %} 
             </div>
-            <div class="form-row">
+            <div class="security-form__row form-row">
                 {{ form_label(registrationForm.plainPassword.second, 'Confirmer mot de passe', { label_attr: { class: 'form-label' } }) }}
                 {{ form_widget(registrationForm.plainPassword.second, { attr: { class: 'form-control' } }) }}
                 {% include 'errors.html.twig' with { errors: registrationForm.plainPassword.second.vars.errors } %} 
             </div>
-            <div class="form-row">
+            <div class="security-form__row form-row">
                 {{ form_label(registrationForm.agreeTerms, 'J\'accepte les', { label_attr: { class: 'form-check-label' } }) }}
                 <a href="#">conditions d'utilisation</a>
                 {{ form_widget(registrationForm.agreeTerms) }}
                 {% include 'errors.html.twig' with { errors: registrationForm.agreeTerms.vars.errors } %} 
             </div>
-            <div class="form-row d-flex d-flex justify-content-center">
-                <button class="form-button bg-blue text-white" type="submit">S'inscrire</button>
+            <div class="security-form__row form-row d-flex d-flex justify-content-center">
+                <button class="security-form__button button-blue form-button" type="submit">S'inscrire</button>
             </div>
         {{ form_end(registrationForm) }}
     </main>

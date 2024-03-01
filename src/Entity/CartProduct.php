@@ -17,6 +17,10 @@ class CartProduct
 
     #[ORM\Column]
     private ?int $quantity = null;
+    
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Timestampable(on: 'update')]
+    private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'cartProducts')]
     #[ORM\JoinColumn(nullable: true)]
@@ -26,9 +30,7 @@ class CartProduct
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Timestampable(on: 'update')]
-    private ?\DateTimeInterface $updatedAt = null;
+    public const MAX_QUANTITY = 10;
 
     public function getId(): ?int
     {
@@ -43,6 +45,18 @@ class CartProduct
     public function getPriceInCents(): float
     {
         return $this->product->getPriceInCents() * $this->quantity;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     public function getCart(): ?Cart
@@ -80,16 +94,30 @@ class CartProduct
 
         return $this;
     }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
 }
+
+// #[ORM\Entity(repositoryClass: CartProductRepository::class)]
+// class CartProduct
+// {
+//     #[ORM\Id]
+//     #[ORM\GeneratedValue]
+//     #[ORM\Column]
+//     private ?int $id = null;
+
+//     #[ORM\Column]
+//     private ?int $quantity = null;
+    
+//     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+//     #[Timestampable(on: 'update')]
+//     private ?\DateTimeInterface $updatedAt = null;
+
+//     #[ORM\ManyToOne(inversedBy: 'cartProducts')]
+//     #[ORM\JoinColumn(nullable: true)]
+//     private ?Cart $cart = null;
+
+//     #[ORM\ManyToOne(inversedBy: 'cartProducts')]
+//     #[ORM\JoinColumn(nullable: false)]
+//     private ?Product $product = null;
+// }
+
+// class

@@ -37,36 +37,19 @@ class Order
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $deliveryDate = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $address1 = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $address2 = null;
-
-    #[ORM\Column(length: 5, nullable: true)]
-    private ?string $postalCode = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $city = null;
     
     #[ORM\Column]
     private ?float $shippingCost = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $firstName = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $lastName = null;
-
-    #[ORM\Column(length: 14, nullable: true)]
-    private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
     private ?string $paymentIntentId = null;
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderProduct::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $orderProducts;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Address $address = null;
 
     public function __construct()
     {
@@ -138,54 +121,6 @@ class Order
         return $this;
     }
 
-    public function getAddress1(): ?string
-    {
-        return $this->address1;
-    }
-
-    public function setAddress1(string $address1): static
-    {
-        $this->address1 = $address1;
-
-        return $this;
-    }
-
-    public function getAddress2(): ?string
-    {
-        return $this->address2;
-    }
-
-    public function setAddress2(?string $address2): static
-    {
-        $this->address2 = $address2;
-
-        return $this;
-    }
-
-    public function getPostalCode(): ?string
-    {
-        return $this->postalCode;
-    }
-
-    public function setPostalCode(string $postalCode): static
-    {
-        $this->postalCode = $postalCode;
-
-        return $this;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(string $city): static
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
     public function getShippingCost(): ?float
     {
         return $this->shippingCost;
@@ -212,47 +147,6 @@ class Order
     public function getTotalPrice(): float
     {
         return $this->getSubtotalPrice() + $this->shippingCost;
-    }
-
-    public function getFullName()
-    {
-        return $this->address1 . ' ' . $this->postalCode . ' ' . $this->city;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(string $firstName): static
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(string $lastName): static
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): static
-    {
-        $this->phone = $phone;
-
-        return $this;
     }
 
     /**
@@ -293,6 +187,18 @@ class Order
                 $orderProduct->setOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(Address $address): static
+    {
+        $this->address = $address;
 
         return $this;
     }
