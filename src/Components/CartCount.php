@@ -28,3 +28,20 @@ class CartCount
         $this->count = $this->cartManager->getCart()->getProductsQuantity();
     }
 }
+
+// #[AsLiveComponent]
+// class CartCount
+// {
+//     use DefaultActionTrait;
+
+//     #[LiveProp]
+//     public int $count = 0;
+
+//     #[LiveListener('cartChanged')]
+//     public function setCount()
+//     {
+//         $this->count = $this->cartManager->getCart()->getProductsQuantity();
+//     }
+// }
+
+// c

@@ -44,6 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Address $address = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?string $currentCheckoutSessionId = null;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -181,6 +184,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAddress(?Address $address): static
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getCurrentCheckoutSessionId(): ?string
+    {
+        return $this->currentCheckoutSessionId;
+    }
+
+    public function setCurrentCheckoutSessionId(?string $currentCheckoutSessionId): static
+    {
+        $this->currentCheckoutSessionId = $currentCheckoutSessionId;
 
         return $this;
     }

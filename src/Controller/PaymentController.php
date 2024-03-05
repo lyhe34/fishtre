@@ -12,11 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\CartManager;
 use App\Service\ConfigManager;
 use App\Service\Shipping;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Stripe\Exception\ApiErrorException;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 use function Symfony\Component\Clock\now;
 
@@ -57,6 +53,11 @@ class PaymentController extends AbstractController
             $this->entityManager->flush();
             return $this->redirectToRoute('app_cart');
         }
+        
+        // Prevent user form having multiple checkout session active
+        if($currentCheckoutSessionId = $user->getCurrentCheckoutSessionId()) {
+            $this->stripeService->expireCheckoutSession($currentCheckoutSessionId);
+        }
 
         $cart = $this->cartManager->getCart();
 
@@ -80,6 +81,9 @@ class PaymentController extends AbstractController
             ]],
         ]);
 
+        $user->setCurrentCheckoutSessionId($checkoutSession->id);
+        $this->entityManager->flush();
+
         return $this->render('payment/checkout.html.twig', [
             'clientSecret' => $checkoutSession->client_secret,
         ]);
@@ -97,7 +101,18 @@ class PaymentController extends AbstractController
             $cartProduct->setUpdatedAt(now());
         }
 
+        /** @var user */
+        $user = $this->getUser();
+
+        // Prevent user form having multiple checkout session active
+        if($currentCheckoutSessionId = $user->getCurrentCheckoutSessionId()) {
+            $this->stripeService->expireCheckoutSession($currentCheckoutSessionId);
+        }
+
         $checkoutSession = $this->stripeService->createCheckoutSession();
+
+        $user->setCurrentCheckoutSessionId($checkoutSession->id);
+        $this->entityManager->flush();
 
         return $this->render('payment/checkout.html.twig', [
             'clientSecret' => $checkoutSession->client_secret,
@@ -141,24 +156,34 @@ class PaymentController extends AbstractController
 // #[Route('/payment')]
 // class PaymentController extends AbstractController
 // {
-//     #[Route('/refund/{order}', name: 'app_refund')]
-//     public function refund(Order $order)
+//     #[Route('/checkout/pickup', name: 'app_payment_checkout_pickup')]
+//     public function checkoutPickup(): Response
 //     {
-//         /** @var User */
+//         if($this->cartManager->getCart()->getCartProducts()->count() <= 0) {
+//             return $this->redirectToRoute('app_cart');
+//         }
+
+//         // Prevent product reserved to go back to stock during checkout
+//         foreach($this->cartManager->getCart()->getCartProducts() as $cartProduct) {
+//             $cartProduct->setUpdatedAt(now());
+//         }
+
+//         /** @var user */
 //         $user = $this->getUser();
 
-//         // Verify that this order is from the user.
-//         if($order->getUser()->getId() !== $user->getId()) {
-//             return $this->redirectToRoute('app_orders');
+//         // Prevent user form having multiple checkout session active
+//         if($currentCheckoutSessionId = $user->getCurrentCheckoutSessionId()) {
+//             $this->stripeService->expireCheckoutSession($currentCheckoutSessionId);
 //         }
 
-//         if($order->getState() === Order::STATE_CONFIRMED) {
-//             $this->stripeService->refundPayment($order->getPaymentIntentId());
-//             $order->setState(Order::STATE_CANCELED);
-//             $this->entityManager->flush();
-//         }
+//         $checkoutSession = $this->stripeService->createCheckoutSession();
 
-//         return $this->redirectToRoute('app_orders');
+//         $user->setCurrentCheckoutSessionId($checkoutSession->id);
+//         $this->entityManager->flush();
+
+//         return $this->render('payment/checkout.html.twig', [
+//             'clientSecret' => $checkoutSession->client_secret,
+//         ]);
 //     }
 // }
 

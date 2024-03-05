@@ -34,6 +34,11 @@ crons:
         spec: 0 1 * * *
         cmd: |
             symfony console app:clean-session-carts
+    cart-products-cleanup:
+        # Cleanup every hour
+        spec: 0 * * * *
+        cmd: |
+            symfony console app:clean-cart-products
 
 workers:
     messenger:

@@ -24,7 +24,7 @@ class ProductForm extends AbstractController
     #[LiveProp]
     public Product $product;
 
-    #[LiveProp(writable: true)]
+    #[LiveProp]
     public int $quantity = 1;
 
     #[LiveProp]

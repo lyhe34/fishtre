@@ -15,8 +15,8 @@ class AddressType extends AbstractType
         $builder
             ->add('firstName', TextType::class, ['label' => 'Prénom'])
             ->add('lastName', TextType::class, ['label' => 'Nom'])
-            ->add('address1', TextType::class, ['label' => 'Adresse'])
-            ->add('address2', TextType::class, ['required' => false, 'label' => 'Appartement, suite, etc.. (optionnel)'])
+            ->add('streetName1', TextType::class, ['label' => 'Adresse'])
+            ->add('streetName2', TextType::class, ['required' => false, 'label' => 'Appartement, suite, etc.. (optionnel)'])
             ->add('postalCode', TextType::class, ['label' => 'Code Postal'])
             ->add('city', TextType::class, ['label' => 'Ville'])
             ->add('phone', TextType::class, ['label' => 'Numéro de téléphone'])

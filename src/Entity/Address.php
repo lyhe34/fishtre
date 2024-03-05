@@ -15,10 +15,10 @@ class Address implements Stringable
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $address1 = null;
+    private ?string $streetName1 = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    private ?string $address2 = null;
+    private ?string $streetName2 = null;
 
     #[ORM\Column(length: 5)]
     private ?string $postalCode = null;
@@ -40,26 +40,26 @@ class Address implements Stringable
         return $this->id;
     }
 
-    public function getAddress1(): ?string
+    public function getStreetName1(): ?string
     {
-        return $this->address1;
+        return $this->streetName1;
     }
 
-    public function setAddress1(string $address1): static
+    public function setStreetName1(string $streetName1): static
     {
-        $this->address1 = $address1;
+        $this->streetName1 = $streetName1;
 
         return $this;
     }
 
-    public function getAddress2(): ?string
+    public function getStreetName2(): ?string
     {
-        return $this->address2;
+        return $this->streetName2;
     }
 
-    public function setAddress2(?string $address2): static
+    public function setStreetName2(?string $streetName2): static
     {
-        $this->address2 = $address2;
+        $this->streetName2 = $streetName2;
 
         return $this;
     }
@@ -126,6 +126,6 @@ class Address implements Stringable
 
     public function __toString(): string
     {
-        return $this->address1 . ' ' . $this->postalCode . ' ' . $this->city;
+        return $this->streetName1 . ' ' . $this->postalCode . ' ' . $this->city;
     }
 }

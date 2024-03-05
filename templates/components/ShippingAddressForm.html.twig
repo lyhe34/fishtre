@@ -59,14 +59,14 @@
             {% include 'errors.html.twig' with { errors: form.lastName.vars.errors } %} 
         </div>
         <div class="form-row">
-            {{ form_label(form.address1, null, { label_attr: { class: 'form-label' } }) }}
-            {{ form_widget(form.address1, { attr: { class: 'form-control' } }) }}
-            {% include 'errors.html.twig' with { errors: form.address1.vars.errors } %} 
+            {{ form_label(form.streetName1, null, { label_attr: { class: 'form-label' } }) }}
+            {{ form_widget(form.streetName1, { attr: { class: 'form-control' } }) }}
+            {% include 'errors.html.twig' with { errors: form.streetName1.vars.errors } %} 
         </div>
         <div class="form-row">
-            {{ form_label(form.address2, null, { label_attr: { class: 'form-label' } }) }}
-            {{ form_widget(form.address2, { attr: { class: 'form-control' } }) }}
-            {% include 'errors.html.twig' with { errors: form.address2.vars.errors } %} 
+            {{ form_label(form.streetName2, null, { label_attr: { class: 'form-label' } }) }}
+            {{ form_widget(form.streetName2, { attr: { class: 'form-control' } }) }}
+            {% include 'errors.html.twig' with { errors: form.streetName2.vars.errors } %} 
         </div>
         <div class="form-row">
             {{ form_label(form.postalCode, null, { label_attr: { class: 'form-label' } }) }}
@@ -90,7 +90,7 @@
         <span class="shipping-address-form__address-title">Vous serez livrer à cette addresse :</span>
         <span class="address-component">{{ this.initialFormData.firstName }}</span>
         <span class="address-component">{{ this.initialFormData.lastName }}</span>
-        <span class="address-component">{{ this.initialFormData.address1 }}</span>
+        <span class="address-component">{{ this.initialFormData.streetName1 }}</span>
         <span class="address-component">{{ this.initialFormData.postalCode }}</span>
         <span class="address-component">{{ this.initialFormData.city }}</span>
         <span class="address-component">{{ this.initialFormData.phone }}</span>

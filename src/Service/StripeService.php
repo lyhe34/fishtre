@@ -31,6 +31,7 @@ class StripeService
         /** @var User */
         $user = $this->security->getUser();
 
+        // Set checkout session products data
         foreach($user->getCart()->getCartProducts() as $cartProduct) {
             array_push($items, [
                 'price_data' => [
@@ -59,19 +60,30 @@ class StripeService
             'expires_at' => time() + (60 * 30),
         ];
         
+        // Merge default parameters with additional parameters
         if($params !== null) {
-            $mergedParams = array_merge($defaultParams, $params);
+            $mergedParams = array_merge_recursive($defaultParams, $params);
             $checkoutSession = Session::create($mergedParams);
             return $checkoutSession;
         }
 
         $checkoutSession = Session::create($defaultParams);
+
         return $checkoutSession;
     }
 
     public function refundPayment($paymentIntentId) 
     {
         Refund::create(['payment_intent' => $paymentIntentId]);
+    }
+
+    public function expireCheckoutSession($checkoutSessionId)
+    {
+        $session = Session::retrieve($checkoutSessionId);
+
+        if($session->status === 'open') {
+            $session->expire();
+        }
     }
 
     public function getWebhookEvent(Request $request)
@@ -111,6 +123,7 @@ class StripeService
 //         /** @var User */
 //         $user = $this->security->getUser();
 
+//         // Set checkout session products data
 //         foreach($user->getCart()->getCartProducts() as $cartProduct) {
 //             array_push($items, [
 //                 'price_data' => [
@@ -139,13 +152,15 @@ class StripeService
 //             'expires_at' => time() + (60 * 30),
 //         ];
         
+//         // Merge default parameters with additional parameters
 //         if($params !== null) {
-//             $mergedParams = array_merge($defaultParams, $params);
+//             $mergedParams = array_merge_recursive($defaultParams, $params);
 //             $checkoutSession = Session::create($mergedParams);
 //             return $checkoutSession;
 //         }
 
 //         $checkoutSession = Session::create($defaultParams);
+
 //         return $checkoutSession;
 //     }
 // }

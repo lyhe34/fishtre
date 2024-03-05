@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Factory\OrderFactory;
+use App\Repository\UserRepository;
+use App\Service\CartManager;
 use App\Service\StripeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,6 +19,8 @@ class WebhookController extends AbstractController
         private StripeService $stripeService,
         private OrderFactory $orderFactory,
         private EntityManagerInterface $entityManager,
+        private CartManager $cartManager,
+        private UserRepository $userRepository,
     ) {
         
     }
@@ -39,6 +43,9 @@ class WebhookController extends AbstractController
                 } catch (ApiErrorException $e) {
                     return new JsonResponse('Session Error: ' . $e->getMessage(), 400);
                 }
+
+                $user = $this->userRepository->find($session->metadata['user_id']);
+                $user->getCart()->clear();
 
                 $order = $this->orderFactory->create($session);
 
@@ -72,6 +79,9 @@ class WebhookController extends AbstractController
 //                 } catch (ApiErrorException $e) {
 //                     return new JsonResponse('Session Error: ' . $e->getMessage(), 400);
 //                 }
+
+//                 $user = $this->userRepository->find($session->metadata['user_id']);
+//                 $user->getCart()->clear();
 
 //                 $order = $this->orderFactory->create($session);
 

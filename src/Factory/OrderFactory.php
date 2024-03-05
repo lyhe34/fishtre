@@ -37,7 +37,7 @@ class OrderFactory
         $order->setUser($user);
         $order->setDate(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
         $order->setDeliveryDate($this->orderHelper->getOrderDeliveryDate($order->getDate()));
-        $order->setState('confirmed');
+        $order->setState(Order::STATE_CONFIRMED);
         $order->setPaymentIntentId($session->payment_intent);
 
         if(empty($session->shipping_options)) {
@@ -45,8 +45,8 @@ class OrderFactory
             $order->setShippingCost(0);
         } else {
             $address = new Address();
-            $address->setAddress1($userAddress->getAddress1());
-            $address->setAddress2($userAddress->getAddress2());
+            $address->setStreetName1($userAddress->getStreetName1());
+            $address->setStreetName2($userAddress->getStreetName2());
             $address->setPostalCode($userAddress->getPostalCode());
             $address->setCity($userAddress->getCity());
             $address->setFirstName($userAddress->getFirstName());
@@ -80,7 +80,7 @@ class OrderFactory
 //      * 
 //      * @return Order The order created
 //      */
-//     public function create(Session $session): Order
+//     public function create(Session $session)
 //     {
 //         $user = $this->userRepository->find($session->metadata['user_id']);
 //         $userAddress = $user->getAddress();
@@ -89,7 +89,7 @@ class OrderFactory
 //         $order->setUser($user);
 //         $order->setDate(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
 //         $order->setDeliveryDate($this->orderHelper->getOrderDeliveryDate($order->getDate()));
-//         $order->setState('confirmed');
+//         $order->setState(Order::STATE_CONFIRMED);
 //         $order->setPaymentIntentId($session->payment_intent);
 
 //         if(empty($session->shipping_options)) {
@@ -97,8 +97,8 @@ class OrderFactory
 //             $order->setShippingCost(0);
 //         } else {
 //             $address = new Address();
-//             $address->setAddress1($userAddress->getAddress1());
-//             $address->setAddress2($userAddress->getAddress2());
+//             $address->setStreetName1($userAddress->getStreetName1());
+//             $address->setStreetName2($userAddress->getStreetName2());
 //             $address->setPostalCode($userAddress->getPostalCode());
 //             $address->setCity($userAddress->getCity());
 //             $address->setFirstName($userAddress->getFirstName());

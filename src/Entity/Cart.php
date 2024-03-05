@@ -127,7 +127,7 @@ class Cart
 
     public function clear()
     {
-        foreach($this->cartProducts->getValues() as $cartProduct) {
+        foreach($this->getCartProducts() as $cartProduct) {
             $this->removeCartProduct($cartProduct);
         }
     }

@@ -33,6 +33,7 @@ class CartRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+}
 
 //    /**
 //     * @return Cart[] Returns an array of Cart objects
@@ -58,7 +59,7 @@ class CartRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-}
+//}
 
 
 // class CartRepository extends ServiceEntityRepository
