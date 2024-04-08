@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\Cart;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,9 +19,11 @@ class StripeService
         private EntityManagerInterface $entityManager,
         private Security $security,
         private UserRepository $userRepository,
-        private UrlGeneratorInterface $router
+        private UrlGeneratorInterface $router,
+        private string $stripe_secret_key,
+        private string $stripe_webhook_secret,
     ) {
-        Stripe::setApiKey('sk_test_51OKqCHE9VPfeCGyPUb6Q3vdXTOLrBJRavBd0IvB47nqCiUh83aXmlmCRdf187Rl3ouTBm6nB3qT4UgXZ6jjjEKW000FEkrY0vw');
+        Stripe::setApiKey($this->stripe_secret_key);
     }
 
     public function createCheckoutSession(array $params = null)
@@ -90,7 +91,7 @@ class StripeService
     {
         $payload = $request->getContent();
         $sigHeader = $request->headers->get('Stripe-Signature');
-        $endpointSecret = 'whsec_cacbadb14f945992a2c70a2741a64dcdd1931d824a37feae9d551184c7b8535f';
+        $endpointSecret = $this->stripe_webhook_secret;
 
         $event = null;
 
@@ -114,55 +115,3 @@ class StripeService
         return null;
     }
 }
-
-// class StripeService
-// {
-//     public function createCheckoutSession(array $params = null)
-//     {
-//         $items = [];
-//         /** @var User */
-//         $user = $this->security->getUser();
-
-//         // Set checkout session products data
-//         foreach($user->getCart()->getCartProducts() as $cartProduct) {
-//             array_push($items, [
-//                 'price_data' => [
-//                     'product_data' => [
-//                         'name' => $cartProduct->getProduct()->getName(),
-//                         'metadata' => [
-//                             'product_id' => $cartProduct->getProduct()->getId(),
-//                         ],
-//                     ],
-//                     'currency' => 'eur',
-//                     'unit_amount' => $cartProduct->getProduct()->getPriceInCents(),
-//                 ],
-//                 'quantity' => $cartProduct->getQuantity(),
-//             ]);
-//         }
-
-//         $defaultParams = [
-//             'ui_mode' => 'embedded',
-//             'line_items' => $items,
-//             'mode' => 'payment',
-//             'return_url' => $this->router->generate('app_payment_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
-//             'metadata' => [
-//                 'user_id' => $user->getId()
-//             ],
-//             'customer_email' => $user->getEmail(),
-//             'expires_at' => time() + (60 * 30),
-//         ];
-        
-//         // Merge default parameters with additional parameters
-//         if($params !== null) {
-//             $mergedParams = array_merge_recursive($defaultParams, $params);
-//             $checkoutSession = Session::create($mergedParams);
-//             return $checkoutSession;
-//         }
-
-//         $checkoutSession = Session::create($defaultParams);
-
-//         return $checkoutSession;
-//     }
-// }
-
-// class

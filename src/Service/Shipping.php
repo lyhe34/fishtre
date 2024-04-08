@@ -62,20 +62,3 @@ class Shipping
         return $distance <= $this->configManager->getConfig()->getMaxShippingDistance();
     }
 }
-
-// class Shipping
-// {
-//     public function calculateDistanceCost(float $distance): float
-//     {
-//         $config = $this->configManager->getConfig();
-
-//         $minShippingCost = $config->getMinShippingCost();
-//         $maxShippingCost = $config->getMaxShippingCost();
-//         $shipCostStartIncrAt = $config->getShipCostStartIncrAt();
-//         $maxShipCostReachdAt = $config->getMaxShipCostReachAt();
-
-//         return $this->math->boundedLerp($minShippingCost, $maxShippingCost, $shipCostStartIncrAt, $maxShipCostReachdAt, $distance);
-//     }
-// }
-
-// class

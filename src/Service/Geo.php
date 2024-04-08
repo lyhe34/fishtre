@@ -8,6 +8,7 @@ class Geo
 {
     public function __construct(
         private Math $math,
+        private string $geocoding_api_key,
     ) {
 
     }
@@ -15,7 +16,7 @@ class Geo
     public function getAddressData($address): array
     {
         try { 
-            $url = "https://maps.googleapis.com/maps/api/geocode/json?address=" . urlencode($address) . "&key=AIzaSyAdDs1B7RFhPQoeDwih5Pii-Y3ouJJrLWM";
+            $url = "https://maps.googleapis.com/maps/api/geocode/json?address=" . urlencode($address) . "&key=" . $this->geocoding_api_key;
 
             $ch = curl_init($url);
     

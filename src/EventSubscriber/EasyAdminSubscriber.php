@@ -56,23 +56,3 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         ];
     }
 }
-
-// class EasyAdminSubscriber implements EventSubscriberInterface
-// {
-//     public function deactivateProduct(AfterEntityUpdatedEvent $event): void
-//     {
-//         $entity = $event->getEntityInstance();
-
-//         if($entity instanceof Product) {
-//             if(!$entity->isActive()) {
-//                 $cartProductsToRemove = $this->cartProductRepository->findBy(['product' => $entity]);
-//                 foreach($cartProductsToRemove as $cartProductToRemove) {
-//                     $this->entityManager->remove($cartProductToRemove);
-//                 }
-//                 $this->entityManager->flush();
-//             }
-//         }
-//     }
-// }
-
-// c

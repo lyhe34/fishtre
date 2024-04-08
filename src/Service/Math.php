@@ -41,25 +41,3 @@ class Math
         return round($distance, 2);
     }
 }
-
-// class Math 
-// {
-//     public function boundedLerp(
-//         float $minValue, 
-//         float $maxValue, 
-//         float $minBound, 
-//         float $maxBound, 
-//         float $input,
-//     ) 
-//     {
-//         if ($input >= $maxBound) {
-//             return $maxValue;
-//         } elseif ($input <= $minBound) {
-//             return $minValue;
-//         } else {
-//             return $minValue + (($input - $minBound) / ($maxBound - $minBound)) * ($maxValue - $minValue);
-//         }
-//     }
-// }
-
-// class

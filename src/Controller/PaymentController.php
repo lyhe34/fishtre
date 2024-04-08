@@ -54,7 +54,7 @@ class PaymentController extends AbstractController
             return $this->redirectToRoute('app_cart');
         }
         
-        // Prevent user form having multiple checkout session active
+        // Prevent user from having multiple checkout session active
         if($currentCheckoutSessionId = $user->getCurrentCheckoutSessionId()) {
             $this->stripeService->expireCheckoutSession($currentCheckoutSessionId);
         }
@@ -152,39 +152,3 @@ class PaymentController extends AbstractController
         return $this->redirectToRoute('app_orders');
     }
 }
-
-// #[Route('/payment')]
-// class PaymentController extends AbstractController
-// {
-//     #[Route('/checkout/pickup', name: 'app_payment_checkout_pickup')]
-//     public function checkoutPickup(): Response
-//     {
-//         if($this->cartManager->getCart()->getCartProducts()->count() <= 0) {
-//             return $this->redirectToRoute('app_cart');
-//         }
-
-//         // Prevent product reserved to go back to stock during checkout
-//         foreach($this->cartManager->getCart()->getCartProducts() as $cartProduct) {
-//             $cartProduct->setUpdatedAt(now());
-//         }
-
-//         /** @var user */
-//         $user = $this->getUser();
-
-//         // Prevent user form having multiple checkout session active
-//         if($currentCheckoutSessionId = $user->getCurrentCheckoutSessionId()) {
-//             $this->stripeService->expireCheckoutSession($currentCheckoutSessionId);
-//         }
-
-//         $checkoutSession = $this->stripeService->createCheckoutSession();
-
-//         $user->setCurrentCheckoutSessionId($checkoutSession->id);
-//         $this->entityManager->flush();
-
-//         return $this->render('payment/checkout.html.twig', [
-//             'clientSecret' => $checkoutSession->client_secret,
-//         ]);
-//     }
-// }
-
-// class

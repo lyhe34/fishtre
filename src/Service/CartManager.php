@@ -42,33 +42,3 @@ class CartManager
         return $cart;
     }
 }
-
-// class CartManager
-// {
-//     /**
-//      * Get the user cart, either from an authenticated user, or else from the session. 
-//      * If no cart session has been found, create a new one.
-//      * 
-//      * @return Cart
-//      */
-//     public function getCart(): Cart
-//     {
-//         /** @var User */
-//         if($user = $this->security->getUser()) {
-//             return $user->getCart();
-//         }
-
-//         $cart = $this->sessionStorage->get('cart', Cart::class);
-
-//         if(null === $cart) {
-//             $cart = new Cart();
-//             $this->sessionStorage->set('cart', $cart);
-//             $this->entityManager->persist($cart);
-//             $this->entityManager->flush();
-//         }
-        
-//         return $cart;
-//     }
-// }
-
-// c
